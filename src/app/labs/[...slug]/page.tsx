@@ -1,6 +1,3 @@
-import { Suspense } from "react";
-import { MDXRemote, type MDXRemoteOptions } from "next-mdx-remote-client/rsc";
-import { mdxComponents } from "@/mdxComponents";
 import { headers } from "next/headers";
 
 import {
@@ -8,12 +5,9 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-
-// NOTE: Remark Plugins
-import remarkFlexibleToc from "remark-flexible-toc";
-
-// NOTE: Rehype Plugins
-import rehypeUnwrapImages from "rehype-unwrap-images";
+import MdxRenderer from "@/components/mdx-renderer";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import Sidebar from "@/components/sidebar";
 
 export default async function Page({
   params,
@@ -32,18 +26,6 @@ export default async function Page({
 
   const source = await response.text();
 
-  const options: MDXRemoteOptions = {
-    mdxOptions: {
-      rehypePlugins: [rehypeUnwrapImages],
-      remarkPlugins: [remarkFlexibleToc],
-    },
-    parseFrontmatter: true,
-    // scope: {
-    //   readingTime: calculateSomeHow(source),
-    // },
-    vfileDataIntoScope: "toc",
-  };
-
   const headersList = await headers();
   const userAgent = headersList.get("user-agent");
 
@@ -51,25 +33,23 @@ export default async function Page({
 
   return (
     <ResizablePanelGroup direction="horizontal">
-      <ResizablePanel defaultSize={20}>One</ResizablePanel>
+      <ResizablePanel defaultSize={20} minSize={10}>
+        <Sidebar pathname={pathname} />
+      </ResizablePanel>
 
-      <ResizableHandle />
+      <ResizableHandle withHandle />
 
-      <ResizablePanel defaultSize={60}>
-        <div className="prose prose-img:m-0 dark:prose-invert max-w-none px-10">
-          <Suspense fallback={<p>Loading...</p>}>
-            <MDXRemote
-              source={source}
-              options={options}
-              components={mdxComponents(pathname)}
-            />
-          </Suspense>
+      <ResizablePanel defaultSize={60} minSize={40}>
+        <div className="h-[calc(100vh-80px)] w-full overflow-y-scroll">
+          <MdxRenderer source={source} pathname={pathname} />
         </div>
       </ResizablePanel>
 
-      <ResizableHandle />
+      <ResizableHandle withHandle />
 
-      <ResizablePanel defaultSize={20}>Two</ResizablePanel>
+      <ResizablePanel defaultSize={20} minSize={10}>
+        Two
+      </ResizablePanel>
     </ResizablePanelGroup>
   );
 }

@@ -1,7 +1,5 @@
 import { AlertCircleIcon, CheckCircle2Icon, PopcornIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import Image from "next/image";
 
 export default async function Home() {
   return (
@@ -31,15 +29,6 @@ export default async function Home() {
             <li>Ensure sufficient funds</li>
             <li>Verify billing address</li>
           </ul>
-
-          <AspectRatio ratio={16 / 9} className="bg-muted rounded-lg">
-            <Image
-              src="https://images.unsplash.com/photo-1621961458348-f013d219b50c"
-              alt="Photo by Drew Beamer"
-              fill
-              className="h-full w-full rounded-lg object-cover"
-            />
-          </AspectRatio>
         </AlertDescription>
       </Alert>
     </div>

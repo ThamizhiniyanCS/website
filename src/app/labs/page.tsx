@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import { MDXRemote, type MDXRemoteOptions } from "next-mdx-remote-client/rsc";
 import remarkFlexibleToc from "remark-flexible-toc";
-import { mdxComponents } from "@/mdxComponents";
 
 export default async function Page() {
   const response = await fetch(

@@ -121,3 +121,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+.expressive-code {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
