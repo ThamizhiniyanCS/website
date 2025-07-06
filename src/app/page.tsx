@@ -1,65 +1,45 @@
 import {
-  Callout,
-  CalloutTitle,
-  CalloutDescription,
-  CalloutContent,
-} from "@/mdxComponents/callout";
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default async function Home() {
   return (
     <div className="mx-auto grid w-full max-w-4xl items-start gap-4 px-10">
-      <Tabs defaultValue="account" className="w-[400px]">
-        <TabsList>
-          <TabsTrigger value="account">Account</TabsTrigger>
-          <TabsTrigger value="password">Password</TabsTrigger>
-        </TabsList>
-        <TabsContent value="account">
-          Make changes to your account here.
-        </TabsContent>
-        <TabsContent value="password">Change your password here.</TabsContent>
-      </Tabs>
+      <Accordion type="single" collapsible>
+        <AccordionItem value="item-1">
+          <AccordionTrigger>Is it accessible?</AccordionTrigger>
+          <AccordionContent>
+            Yes. It adheres to the WAI-ARIA design pattern.
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
 
-      <Callout>
-        <CalloutTitle>Callout</CalloutTitle>
-        <CalloutDescription>
-          A callout is a short piece of text intended to attract attention.
-        </CalloutDescription>
-        <CalloutContent>Wksdflksjdlkfsdlkfjls</CalloutContent>
-      </Callout>
-
-      <Callout variant="info">
-        <CalloutTitle>Callout</CalloutTitle>
-        <CalloutDescription>
-          A callout is a short piece of text intended to attract attention.
-        </CalloutDescription>
-        <CalloutContent>Wksdflksjdlkfsdlkfjls</CalloutContent>
-      </Callout>
-
-      <Callout variant="important">
-        <CalloutTitle>Callout</CalloutTitle>
-        <CalloutDescription>
-          A callout is a short piece of text intended to attract attention.
-        </CalloutDescription>
-        <CalloutContent>Wksdflksjdlkfsdlkfjls</CalloutContent>
-      </Callout>
-
-      <Callout variant="warning">
-        <CalloutTitle>Callout</CalloutTitle>
-        <CalloutDescription>
-          A callout is a short piece of text intended to attract attention.
-        </CalloutDescription>
-        <CalloutContent>Wksdflksjdlkfsdlkfjls</CalloutContent>
-      </Callout>
-
-      <Callout variant="error">
-        <CalloutTitle>Callout</CalloutTitle>
-        <CalloutDescription>
-          A callout is a short piece of text intended to attract attention.
-        </CalloutDescription>
-        <CalloutContent>Wksdflksjdlkfsdlkfjls</CalloutContent>
-      </Callout>
+      <Card>
+        <CardHeader>
+          <CardTitle>Card Title</CardTitle>
+          <CardDescription>Card Description</CardDescription>
+          <CardAction>Card Action</CardAction>
+        </CardHeader>
+        <CardContent>
+          <p>Card Content</p>
+        </CardContent>
+        <CardFooter>
+          <p>Card Footer</p>
+        </CardFooter>
+      </Card>
     </div>
   );
 }

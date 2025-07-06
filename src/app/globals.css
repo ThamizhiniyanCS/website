@@ -123,8 +123,18 @@
   }
 }
 
+.prose
+  :is(div[data-slot="card"], div[data-slot="accordion"])
+  :is(h1, h2, h3, h4, h5, h6, p) {
+  @apply my-0;
+}
+
 .prose div[data-slot="tabs"] {
   @apply rounded-2xl border p-4;
+}
+
+.prose table tr {
+  @apply border-border;
 }
 
 .expressive-code {

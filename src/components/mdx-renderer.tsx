@@ -10,6 +10,7 @@ import { mdxComponents } from "@/mdxComponents";
 
 // NOTE: Remark Plugins
 import remarkFlexibleToc from "remark-flexible-toc";
+import remarkGfm from "remark-gfm";
 
 // NOTE: Rehype Plugins
 import rehypeUnwrapImages from "rehype-unwrap-images";
@@ -41,7 +42,7 @@ const MdxRenderer = ({
         rehypeUnwrapImages,
         [rehypeExpressiveCode, rehypeExpressiveCodeOptions],
       ],
-      remarkPlugins: [remarkFlexibleToc],
+      remarkPlugins: [remarkFlexibleToc, remarkGfm],
     },
     parseFrontmatter: true,
     scope: {
