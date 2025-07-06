@@ -1,36 +1,65 @@
-import { AlertCircleIcon, CheckCircle2Icon, PopcornIcon } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import {
+  Callout,
+  CalloutTitle,
+  CalloutDescription,
+  CalloutContent,
+} from "@/mdxComponents/callout";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default async function Home() {
   return (
     <div className="mx-auto grid w-full max-w-4xl items-start gap-4 px-10">
-      <Alert>
-        <CheckCircle2Icon />
-        <AlertTitle>Success! Your changes have been saved</AlertTitle>
-        <AlertDescription>
-          This is an alert with icon, title and description.
-        </AlertDescription>
-      </Alert>
+      <Tabs defaultValue="account" className="w-[400px]">
+        <TabsList>
+          <TabsTrigger value="account">Account</TabsTrigger>
+          <TabsTrigger value="password">Password</TabsTrigger>
+        </TabsList>
+        <TabsContent value="account">
+          Make changes to your account here.
+        </TabsContent>
+        <TabsContent value="password">Change your password here.</TabsContent>
+      </Tabs>
 
-      <Alert>
-        <PopcornIcon />
-        <AlertTitle>
-          This Alert has a title and an icon. No description.
-        </AlertTitle>
-      </Alert>
+      <Callout>
+        <CalloutTitle>Callout</CalloutTitle>
+        <CalloutDescription>
+          A callout is a short piece of text intended to attract attention.
+        </CalloutDescription>
+        <CalloutContent>Wksdflksjdlkfsdlkfjls</CalloutContent>
+      </Callout>
 
-      <Alert variant="destructive">
-        <AlertCircleIcon />
-        <AlertTitle>Unable to process your payment.</AlertTitle>
-        <AlertDescription>
-          <p>Please verify your billing information and try again.</p>
-          <ul className="list-inside list-disc text-sm">
-            <li>Check your card details</li>
-            <li>Ensure sufficient funds</li>
-            <li>Verify billing address</li>
-          </ul>
-        </AlertDescription>
-      </Alert>
+      <Callout variant="info">
+        <CalloutTitle>Callout</CalloutTitle>
+        <CalloutDescription>
+          A callout is a short piece of text intended to attract attention.
+        </CalloutDescription>
+        <CalloutContent>Wksdflksjdlkfsdlkfjls</CalloutContent>
+      </Callout>
+
+      <Callout variant="important">
+        <CalloutTitle>Callout</CalloutTitle>
+        <CalloutDescription>
+          A callout is a short piece of text intended to attract attention.
+        </CalloutDescription>
+        <CalloutContent>Wksdflksjdlkfsdlkfjls</CalloutContent>
+      </Callout>
+
+      <Callout variant="warning">
+        <CalloutTitle>Callout</CalloutTitle>
+        <CalloutDescription>
+          A callout is a short piece of text intended to attract attention.
+        </CalloutDescription>
+        <CalloutContent>Wksdflksjdlkfsdlkfjls</CalloutContent>
+      </Callout>
+
+      <Callout variant="error">
+        <CalloutTitle>Callout</CalloutTitle>
+        <CalloutDescription>
+          A callout is a short piece of text intended to attract attention.
+        </CalloutDescription>
+        <CalloutContent>Wksdflksjdlkfsdlkfjls</CalloutContent>
+      </Callout>
     </div>
   );
 }
