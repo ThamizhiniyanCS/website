@@ -133,6 +133,10 @@
   @apply rounded-2xl border p-4;
 }
 
+.prose div[data-slot="card"] {
+  @apply my-4;
+}
+
 .prose table tr {
   @apply border-border;
 }

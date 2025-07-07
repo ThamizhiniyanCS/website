@@ -32,8 +32,12 @@ import {
 } from "@/components/ui/table";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import LinkHoverCard from "./link-hover-card";
 
 export const mdxComponents = (pathname: string) => ({
+  a: (props: React.ComponentPropsWithoutRef<"a">) => (
+    <LinkHoverCard props={props} />
+  ),
   img: (props: React.ComponentPropsWithoutRef<"img">) => (
     <MdxImage props={props} pathname={pathname} />
   ),

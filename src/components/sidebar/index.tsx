@@ -13,7 +13,8 @@ const Sidebar = async ({ pathname }: { pathname: string }) => {
   const response = await fetch(`${pathname}/contents.json`);
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch: ${response.status}`);
+    console.log(Error(`Failed to fetch: ${response.status}`));
+    return null;
   }
 
   const data: FileNode[] = await response.json();
@@ -21,17 +22,19 @@ const Sidebar = async ({ pathname }: { pathname: string }) => {
   console.log(data);
 
   return (
-    <ScrollArea className="h-[calc(100vh-80px)] w-full px-2">
-      {data.map((filenode, index) =>
-        filenode.type === "directory" ? (
-          <SidebarCollapsibleDirectory key={index} {...filenode} />
-        ) : (
-          <div key={index} className="w-full">
-            <SidebarFile {...filenode} />
-          </div>
-        ),
-      )}
-    </ScrollArea>
+    <div className="sticky size-full w-full">
+      <ScrollArea className="size-full px-2">
+        {data.map((filenode, index) =>
+          filenode.type === "directory" ? (
+            <SidebarCollapsibleDirectory key={index} {...filenode} />
+          ) : (
+            <div key={index} className="w-full">
+              <SidebarFile {...filenode} />
+            </div>
+          ),
+        )}
+      </ScrollArea>
+    </div>
   );
 };
 

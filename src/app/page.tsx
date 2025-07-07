@@ -15,9 +15,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+import { LinkPreview } from "@/mdxComponents/link-preview";
+
 export default async function Home() {
   return (
     <div className="mx-auto grid w-full max-w-4xl items-start gap-4 px-10">
+      <LinkPreview href="https://thamizhiniyancs.me/" />
+      <LinkPreview href="https://www.geeksforgeeks.org/introduction-to-malware-analysis/" />
+      <LinkPreview href="https://github.com/remarkjs/remark/" />
+
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1">
           <AccordionTrigger>Is it accessible?</AccordionTrigger>

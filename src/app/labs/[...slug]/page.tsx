@@ -6,7 +6,6 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import MdxRenderer from "@/components/mdx-renderer";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import Sidebar from "@/components/sidebar";
 
 export default async function Page({
@@ -40,7 +39,7 @@ export default async function Page({
       <ResizableHandle withHandle />
 
       <ResizablePanel defaultSize={60} minSize={40}>
-        <div className="h-[calc(100vh-80px)] w-full overflow-y-scroll">
+        <div className="w-full">
           <MdxRenderer source={source} pathname={pathname} />
         </div>
       </ResizablePanel>
@@ -48,7 +47,7 @@ export default async function Page({
       <ResizableHandle withHandle />
 
       <ResizablePanel defaultSize={20} minSize={10}>
-        Two
+        On This Page
       </ResizablePanel>
     </ResizablePanelGroup>
   );

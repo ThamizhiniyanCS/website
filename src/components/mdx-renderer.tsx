@@ -11,12 +11,18 @@ import { mdxComponents } from "@/mdxComponents";
 // NOTE: Remark Plugins
 import remarkFlexibleToc from "remark-flexible-toc";
 import remarkGfm from "remark-gfm";
+import remarkEmbedder from "@remark-embedder/core";
+import oembedTransformer, {
+  type Config as OembedTransformerConfig,
+} from "@remark-embedder/transformer-oembed";
+import remarkMath from "remark-math";
 
 // NOTE: Rehype Plugins
 import rehypeUnwrapImages from "rehype-unwrap-images";
 import rehypeExpressiveCode, {
   type RehypeExpressiveCodeOptions,
 } from "rehype-expressive-code";
+import rehypeKatex from "rehype-katex";
 
 // NOTE: Rehype Expressive Code Options
 const rehypeExpressiveCodeOptions: RehypeExpressiveCodeOptions = {
@@ -26,6 +32,16 @@ const rehypeExpressiveCodeOptions: RehypeExpressiveCodeOptions = {
     // Disable line numbers by default
     showLineNumbers: false,
   },
+};
+
+// NOTE: Remark Embedder Options
+const remarkEmbedderOptions = {
+  transformers: [
+    oembedTransformer,
+    {
+      params: { theme: "dark", dnt: true, omit_script: true },
+    } as OembedTransformerConfig,
+  ],
 };
 
 const MdxRenderer = ({
@@ -41,8 +57,14 @@ const MdxRenderer = ({
       rehypePlugins: [
         rehypeUnwrapImages,
         [rehypeExpressiveCode, rehypeExpressiveCodeOptions],
+        rehypeKatex,
       ],
-      remarkPlugins: [remarkFlexibleToc, remarkGfm],
+      remarkPlugins: [
+        remarkFlexibleToc,
+        remarkGfm,
+        // [remarkEmbedder, remarkEmbedderOptions],
+        remarkMath,
+      ],
     },
     parseFrontmatter: true,
     scope: {

@@ -1,5 +1,6 @@
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import Image from "next/image";
+// import Image from "next/image";
+import { ImageZoom } from "@/components/ui/kibo-ui/image-zoom";
+import { isFullUrl } from "@/lib/utils";
 
 const MdxImage = ({
   props,
@@ -11,15 +12,29 @@ const MdxImage = ({
   console.log(props);
 
   return (
-    <AspectRatio ratio={16 / 9} className="bg-muted rounded-lg">
-      <Image
-        src={pathname + "/" + props.src || ""}
-        alt={props.alt || "Image"}
-        fill
-        className="h-full w-full rounded-lg object-cover"
-      />
-    </AspectRatio>
+    <ImageZoom className="bg-muted aspect-video rounded-lg">
+      {isFullUrl(props.src as string) ? (
+        <img
+          src={props.src}
+          alt={props.alt || "Image"}
+          className="h-full w-full rounded-lg object-cover"
+        />
+      ) : (
+        <img
+          src={pathname + "/" + props.src || ""}
+          alt={props.alt || "Image"}
+          className="h-full w-full rounded-lg object-cover"
+        />
+      )}
+    </ImageZoom>
   );
 };
+
+// <Image
+//   src={pathname + "/" + props.src || ""}
+//   alt={props.alt || "Image"}
+//   fill
+//   className="h-full w-full rounded-lg object-cover"
+// />;
 
 export default MdxImage;
