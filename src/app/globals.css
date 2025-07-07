@@ -118,9 +118,22 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    scroll-padding-top: 4rem;
+  }
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.prose :is(h1, h2, h3, h4, h5, h6) {
+  @apply flex items-center gap-3;
+}
+
+.prose :is(h1, h2, h3, h4, h5, h6):hover a {
+  transition: opacity 0.3s ease-in-out;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .prose

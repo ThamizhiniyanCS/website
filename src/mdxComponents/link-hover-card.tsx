@@ -11,7 +11,14 @@ const LinkHoverCard = ({
 }: {
   props: React.ComponentPropsWithoutRef<"a">;
 }) => {
-  return (
+  return props.href && props.href.startsWith("#") ? (
+    <Link
+      href={props.href}
+      className="pointer-events-none cursor-pointer opacity-0"
+    >
+      {props.children}
+    </Link>
+  ) : (
     <HoverCard>
       <HoverCardTrigger asChild>
         {isExternalLink(props.href || "") ? (
