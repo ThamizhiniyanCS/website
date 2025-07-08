@@ -9,8 +9,6 @@ const MdxImage = ({
   props: React.ComponentPropsWithoutRef<"img">;
   pathname: string;
 }) => {
-  console.log(props);
-
   return (
     <ImageZoom className="bg-muted aspect-video rounded-lg">
       {isFullUrl(props.src as string) ? (

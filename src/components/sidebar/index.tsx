@@ -9,8 +9,8 @@ export type FileNode = {
   children?: FileNode[];
 };
 
-const Sidebar = async ({ pathname }: { pathname: string }) => {
-  const response = await fetch(`${pathname}/contents.json`);
+const Sidebar = async ({ absolutePathname }: { absolutePathname: string }) => {
+  const response = await fetch(`${absolutePathname}/contents.json`);
 
   if (!response.ok) {
     console.log(Error(`Failed to fetch: ${response.status}`));
@@ -19,7 +19,7 @@ const Sidebar = async ({ pathname }: { pathname: string }) => {
 
   const data: FileNode[] = await response.json();
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className="sticky size-full w-full">
