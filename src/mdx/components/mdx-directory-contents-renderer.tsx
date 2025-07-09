@@ -3,7 +3,13 @@ import Link from "next/link";
 import { FolderIcon, FileIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
-const DirectoryContentsRenderer = ({ meta }: { meta: MetaJSON }) => {
+const DirectoryContentsRenderer = ({
+  meta,
+  pathname,
+}: {
+  meta: MetaJSON;
+  pathname: string;
+}) => {
   const directories = meta.children.filter(({ type }) => type === "directory");
   const files = meta.children.filter(({ type }) => type === "file");
 
@@ -18,7 +24,11 @@ const DirectoryContentsRenderer = ({ meta }: { meta: MetaJSON }) => {
 
       <div className={gridClass}>
         {directories.map(({ title, slug }, index) => (
-          <Link key={index} href={slug} className="no-underline">
+          <Link
+            key={index}
+            href={`/${pathname}/${slug}`}
+            className="no-underline"
+          >
             <Card className="rounded-sm p-0" style={{ margin: 0 }}>
               <CardContent className="flex gap-2 p-2">
                 <FolderIcon /> {title}
@@ -32,7 +42,11 @@ const DirectoryContentsRenderer = ({ meta }: { meta: MetaJSON }) => {
 
       <div className={gridClass}>
         {files.map(({ title, slug }, index) => (
-          <Link key={index} href={slug} className="no-underline">
+          <Link
+            key={index}
+            href={`/${pathname}/${slug}`}
+            className="no-underline"
+          >
             <Card className="rounded-sm p-0" style={{ margin: 0 }}>
               <CardContent className="flex gap-2 p-2">
                 <FileIcon /> {title}

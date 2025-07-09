@@ -1,13 +1,12 @@
-import { Suspense } from "react";
-import { MDXRemote, type MDXRemoteOptions } from "next-mdx-remote-client/rsc";
+import { evaluate, type EvaluateOptions } from "next-mdx-remote-client/rsc";
+import type { Frontmatter, Scope } from "./types";
+
 import { readingTime } from "reading-time-estimator";
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import { Link } from "lucide-react";
 
 // NOTE: MDX Related Components
-import MdxErrorComponent from "@/mdxComponents/mdx-error-component";
-import MdxLoadingComponent from "@/mdxComponents/mdx-loading-component";
-import { mdxComponents } from "@/mdxComponents";
+import { mdxComponents } from "@/mdx/components/ui";
 
 import { fromHtmlIsomorphic } from "hast-util-from-html-isomorphic";
 /**
@@ -15,13 +14,14 @@ import { fromHtmlIsomorphic } from "hast-util-from-html-isomorphic";
  */
 
 // NOTE: Remark Plugins
-import remarkFlexibleToc from "remark-flexible-toc";
+import remarkFlexibleToc, { type TocItem } from "remark-flexible-toc";
 import remarkGfm from "remark-gfm";
 // import remarkEmbedder from "@remark-embedder/core";
 import oembedTransformer, {
   type Config as OembedTransformerConfig,
 } from "@remark-embedder/transformer-oembed";
 import remarkMath from "remark-math";
+import remarkNormalizeHeadings from "remark-normalize-headings";
 
 // NOTE: Rehype Plugins
 import rehypeUnwrapImages from "rehype-unwrap-images";
@@ -52,15 +52,25 @@ const rehypeExpressiveCodeOptions: RehypeExpressiveCodeOptions = {
 //   ],
 // };
 
-const MdxRenderer = ({
-  source,
-  pathname,
-}: {
-  source: string;
-  pathname: string;
-}) => {
+export default async function (
+  source: string,
+  pathname: string,
+): Promise<
+  | {
+      status: "success";
+      content: React.JSX.Element;
+      mod: Record<string, unknown>;
+      frontmatter: Frontmatter;
+      scope: Scope;
+    }
+  | { status: "failed"; error: string | Error }
+> {
+  if (!source) {
+    return { status: "failed", error: "[-] The mdx source could not found !" };
+  }
+
   // NOTE: MDX Remote Options
-  const options: MDXRemoteOptions = {
+  const options: EvaluateOptions<Scope> = {
     mdxOptions: {
       rehypePlugins: [
         rehypeUnwrapImages,
@@ -79,10 +89,11 @@ const MdxRenderer = ({
         ],
       ],
       remarkPlugins: [
-        remarkFlexibleToc,
+        [remarkFlexibleToc, { skipLevels: [] }],
         remarkGfm,
         // [remarkEmbedder, remarkEmbedderOptions],
         remarkMath,
+        remarkNormalizeHeadings,
       ],
     },
     parseFrontmatter: true,
@@ -92,18 +103,18 @@ const MdxRenderer = ({
     vfileDataIntoScope: "toc",
   };
 
-  return (
-    <div className="prose prose-img:m-0 dark:prose-invert max-w-none px-10">
-      <Suspense fallback={<MdxLoadingComponent />}>
-        <MDXRemote
-          source={source}
-          options={options}
-          components={mdxComponents(pathname)}
-          onError={MdxErrorComponent}
-        />
-      </Suspense>
-    </div>
-  );
-};
+  const { content, frontmatter, scope, mod, error } = await evaluate<
+    Frontmatter,
+    Scope
+  >({
+    source,
+    options,
+    components: mdxComponents(pathname),
+  });
 
-export default MdxRenderer;
+  if (error) {
+    return { status: "failed", error };
+  }
+
+  return { status: "success", content, frontmatter, scope, mod };
+}

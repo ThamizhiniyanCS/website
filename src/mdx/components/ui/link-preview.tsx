@@ -1,4 +1,4 @@
-import { fetchLinkMetadata } from "@/lib/fetchLinkMetadata";
+import { fetchLinkMetadata } from "@/mdx/lib/fetchLinkMetadata";
 import { Link } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 

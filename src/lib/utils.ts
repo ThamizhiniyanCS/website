@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import type { MetaJSON } from "./types";
-import { DOMAIN } from "./constants";
+import { DOMAIN } from "@/lib/constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

@@ -6,13 +6,17 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import MdxRenderer from "@/mdxComponents/mdx-renderer";
-import DirectoryContentsRenderer from "@/mdxComponents/directory-contents-renderer";
+import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer";
 import Sidebar from "@/components/sidebar";
-import MdxBreadcrumbs from "@/mdxComponents/mdx-breadcrumbs";
+import MdxBreadcrumbs from "@/mdx/components/mdx-breadcrumbs";
 import { CDN_URL } from "@/lib/constants";
 
+import MdxErrorComponent from "@/mdx/components/mdx-error-component";
+import MdxRenderer from "@/mdx/components/mdx-renderer";
+
 import { getMetaJSON } from "@/lib/utils";
+import parseMdx from "@/mdx/lib/parseMdx";
+import { DocsTableOfContents } from "@/components/docs-toc";
 
 export default async function Page({
   params,
@@ -42,13 +46,37 @@ export default async function Page({
     source = await response.text();
   }
 
+  const result = await parseMdx(source, pathname);
+
+  if (result.status === "failed") {
+    return <MdxErrorComponent error={result.error} />;
+  }
+
+  const { scope, content } = result;
+
+  const toc: {
+    title?: React.ReactNode;
+    url: string;
+    depth: number;
+  }[] =
+    scope.toc?.map(({ value, href, depth }) => ({
+      title: value,
+      url: href,
+      depth,
+    })) ?? [];
+
   // const headersList = await headers();
   // const userAgent = headersList.get("user-agent");
   //
   // console.log(userAgent);
 
   return (
-    <ResizablePanelGroup direction="horizontal">
+    <ResizablePanelGroup
+      direction="horizontal"
+      style={{
+        height: "calc(100vh-64px)",
+      }}
+    >
       <ResizablePanel defaultSize={20} minSize={10}>
         <Sidebar absolutePathname={absoultePathname} />
       </ResizablePanel>
@@ -58,11 +86,11 @@ export default async function Page({
       <ResizablePanel defaultSize={60} minSize={40}>
         <MdxBreadcrumbs pathnameArray={pathnameArray} />
 
-        <div className="w-full">
+        <div className="h-[calc(100vh-108px)] w-full overflow-y-scroll">
           {metaJSON ? (
-            <DirectoryContentsRenderer meta={metaJSON} />
+            <DirectoryContentsRenderer meta={metaJSON} pathname={pathname} />
           ) : (
-            <MdxRenderer source={source} pathname={pathname} />
+            <MdxRenderer content={content} />
           )}
         </div>
       </ResizablePanel>
@@ -70,7 +98,9 @@ export default async function Page({
       <ResizableHandle withHandle />
 
       <ResizablePanel defaultSize={20} minSize={10}>
-        On This Page
+        <div className="sticky">
+          <DocsTableOfContents toc={toc} />
+        </div>
       </ResizablePanel>
     </ResizablePanelGroup>
   );
