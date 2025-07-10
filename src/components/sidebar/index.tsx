@@ -22,19 +22,17 @@ const Sidebar = async ({ absolutePathname }: { absolutePathname: string }) => {
   // console.log(data);
 
   return (
-    <div className="sticky size-full w-full">
-      <ScrollArea className="size-full px-2">
-        {data.map((filenode, index) =>
-          filenode.type === "directory" ? (
-            <SidebarCollapsibleDirectory key={index} {...filenode} />
-          ) : (
-            <div key={index} className="w-full">
-              <SidebarFile {...filenode} />
-            </div>
-          ),
-        )}
-      </ScrollArea>
-    </div>
+    <ScrollArea className="size-full px-2">
+      {data.map((filenode, index) =>
+        filenode.type === "directory" ? (
+          <SidebarCollapsibleDirectory key={index} {...filenode} />
+        ) : (
+          <div key={index} className="w-full">
+            <SidebarFile {...filenode} />
+          </div>
+        ),
+      )}
+    </ScrollArea>
   );
 };
 

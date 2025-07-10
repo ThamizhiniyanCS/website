@@ -1,4 +1,4 @@
-import { headers } from "next/headers";
+// import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 
 import {
@@ -6,6 +6,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { ImperativePanelGroupHandle } from "react-resizable-panels";
 import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer";
 import Sidebar from "@/components/sidebar";
 import MdxBreadcrumbs from "@/mdx/components/mdx-breadcrumbs";
@@ -72,21 +73,27 @@ export default async function Page({
 
   return (
     <ResizablePanelGroup
+      // autoSaveId="persistance"
       direction="horizontal"
-      style={{
-        height: "calc(100vh-64px)",
-      }}
+      className="min-h-screen w-full"
+      style={{ overflow: "visible" }}
     >
-      <ResizablePanel defaultSize={20} minSize={10}>
-        <Sidebar absolutePathname={absoultePathname} />
+      <ResizablePanel
+        defaultSize={20}
+        minSize={10}
+        style={{ overflow: "visible" }}
+      >
+        <div className="sticky top-0 h-screen w-full pt-16">
+          <Sidebar absolutePathname={absoultePathname} />
+        </div>
       </ResizablePanel>
 
       <ResizableHandle withHandle />
 
-      <ResizablePanel defaultSize={60} minSize={40}>
+      <ResizablePanel defaultSize={60} minSize={40} className="pt-16">
         <MdxBreadcrumbs pathnameArray={pathnameArray} />
 
-        <div className="h-[calc(100vh-108px)] w-full overflow-y-scroll">
+        <div className="w-full">
           {metaJSON ? (
             <DirectoryContentsRenderer meta={metaJSON} pathname={pathname} />
           ) : (
@@ -97,8 +104,12 @@ export default async function Page({
 
       <ResizableHandle withHandle />
 
-      <ResizablePanel defaultSize={20} minSize={10}>
-        <div className="sticky">
+      <ResizablePanel
+        defaultSize={20}
+        minSize={10}
+        style={{ overflow: "visible" }}
+      >
+        <div className="sticky top-0 h-screen w-full pt-16">
           <DocsTableOfContents toc={toc} />
         </div>
       </ResizablePanel>

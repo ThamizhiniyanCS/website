@@ -164,3 +164,7 @@ div[data-slot="tabs-content"] .expressive-code {
   margin-top: 0rem;
   margin-bottom: 0rem;
 }
+
+.mdx-scroll-container div[data-slot="scroll-area-viewport"] > div {
+  display: block !important;
+}

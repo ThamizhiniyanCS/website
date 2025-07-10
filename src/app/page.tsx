@@ -15,7 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { LinkPreview } from "@/mdxComponents/link-preview";
+import { LinkPreview } from "@/mdx/components/ui/link-preview";
 
 export default async function Home() {
   return (
