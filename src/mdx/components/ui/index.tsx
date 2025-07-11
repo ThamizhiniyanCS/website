@@ -30,6 +30,7 @@ import {
   TableRow,
   TableFooter,
 } from "@/components/ui/table";
+import { Step, Steps } from "./steps";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import LinkHoverCard from "./link-hover-card";
@@ -62,6 +63,10 @@ export const mdxComponents = (pathname: string) => ({
   CardFooter,
   CardHeader,
   CardTitle,
+
+  // NOTE: Steps
+  Step,
+  Steps,
 
   // NOTE: Tabs
   Tabs,

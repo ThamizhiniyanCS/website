@@ -22,49 +22,56 @@ import { DocsTableOfContents } from "@/components/docs-toc";
 export default async function Page({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string[] }>;
 }) {
   const { slug } = await params;
 
-  const pathname = `labs/${slug}`;
+  const pathname = `labs/${slug.join("/")}`;
 
-  const pathnameArray = pathname.split("/");
+  const pathnameArray = ["labs", ...slug];
 
   const absoultePathname = `${CDN_URL}${pathname}`;
 
   const metaJSON = await getMetaJSON(absoultePathname);
 
-  let source: string = "";
+  let toc: {
+    title?: React.ReactNode;
+    url: string;
+    depth: number;
+  }[] = [];
+
+  let content: React.ReactNode = null;
 
   if (!metaJSON) {
-    const response = await fetch(`${absoultePathname}/index.mdx`);
+    const response = await fetch(`${absoultePathname}.mdx`);
+    console.log(
+      `[+] Meta Not found condition: ${absoultePathname}/${slug}.mdx`,
+    );
 
     if (!response.ok) {
       // throw new Error(`Failed to fetch MDX from : ${response.statusText}`);
       notFound();
     }
 
-    source = await response.text();
+    const source = await response.text();
+
+    const result = await parseMdx(source, pathname);
+
+    if (result.status === "failed") {
+      return <MdxErrorComponent error={result.error} />;
+    }
+
+    const { scope, content } = result;
+
+    toc =
+      scope.toc?.map(({ value, href, depth }) => ({
+        title: value,
+        url: href,
+        depth,
+      })) ?? [];
+
+    content;
   }
-
-  const result = await parseMdx(source, pathname);
-
-  if (result.status === "failed") {
-    return <MdxErrorComponent error={result.error} />;
-  }
-
-  const { scope, content } = result;
-
-  const toc: {
-    title?: React.ReactNode;
-    url: string;
-    depth: number;
-  }[] =
-    scope.toc?.map(({ value, href, depth }) => ({
-      title: value,
-      url: href,
-      depth,
-    })) ?? [];
 
   // const headersList = await headers();
   // const userAgent = headersList.get("user-agent");
@@ -97,7 +104,7 @@ export default async function Page({
           {metaJSON ? (
             <DirectoryContentsRenderer meta={metaJSON} pathname={pathname} />
           ) : (
-            <MdxRenderer content={content} />
+            content && <MdxRenderer content={content} />
           )}
         </div>
       </ResizablePanel>

@@ -45,6 +45,7 @@ export async function getMetaJSON(
 
     if (!response.ok) {
       console.log("[-] meta.json not found.");
+      console.log(`[-] URL: ${absolutePathname}/meta.json`);
       return false;
     }
 
