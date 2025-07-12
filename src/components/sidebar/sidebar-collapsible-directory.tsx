@@ -5,6 +5,7 @@ import {
   ChevronDownIcon,
   FolderClosedIcon,
   FolderOpenIcon,
+  FolderRoot,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,12 @@ import SidebarCollapsibleDirectoryContent, {
   SidebarCollapsibleDirectoryContentSkeleton,
 } from "./sidebar-collapsible-directory-content";
 import Link from "next/link";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const SidebarCollapsibleDirectory = ({
   title,
@@ -30,12 +37,10 @@ const SidebarCollapsibleDirectory = ({
   openedArray: false | string[];
   pathname: string;
 }) => {
-  console.log(title, slug, children, openedArray, pathname);
-
   const [isOpen, setIsOpen] = React.useState<boolean>(
     openedArray ? true : false,
   );
-  const [loading, isLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   return (
     <Collapsible
@@ -54,7 +59,11 @@ const SidebarCollapsibleDirectory = ({
             </Button>
           </CollapsibleTrigger>
 
-          {isOpen ? <FolderOpenIcon /> : <FolderClosedIcon />}
+          {isOpen ? (
+            <FolderOpenIcon className="size-4 flex-none" />
+          ) : (
+            <FolderClosedIcon className="size-4 flex-none" />
+          )}
 
           <Link
             href={"/" + pathname}
@@ -64,10 +73,23 @@ const SidebarCollapsibleDirectory = ({
           </Link>
         </div>
 
-        <Button variant="ghost" size="icon" className="size-8">
-          <ChevronDownIcon className={cn(isOpen ? "rotate-0" : "-rotate-90")} />
-          <span className="sr-only">Toggle</span>
-        </Button>
+        {/* TODO: Setting root directory if possible */}
+        {/* <Tooltip> */}
+        {/*   <TooltipTrigger asChild> */}
+        {/*     <Button */}
+        {/*       variant="ghost" */}
+        {/*       size="icon" */}
+        {/*       className="size-4" */}
+        {/*       onClick={makeRootOnClickHandle} */}
+        {/*     > */}
+        {/*       <FolderRoot className="" /> */}
+        {/*       <span className="sr-only">Toggle</span> */}
+        {/*     </Button> */}
+        {/*   </TooltipTrigger> */}
+        {/*   <TooltipContent> */}
+        {/*     <p>Click to make this directory as root.</p> */}
+        {/*   </TooltipContent> */}
+        {/* </Tooltip> */}
       </div>
 
       {isOpen && (
@@ -76,9 +98,9 @@ const SidebarCollapsibleDirectory = ({
             pathname={pathname}
             openedArray={openedArray}
             contents={children}
-            isLoading={isLoading}
+            setIsLoading={setIsLoading}
           />
-          {loading && <SidebarCollapsibleDirectoryContentSkeleton />}
+          {isLoading && <SidebarCollapsibleDirectoryContentSkeleton />}
         </>
       )}
     </Collapsible>

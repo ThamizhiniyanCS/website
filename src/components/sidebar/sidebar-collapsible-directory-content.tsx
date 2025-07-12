@@ -12,12 +12,12 @@ const SidebarCollapsibleDirectoryContent = ({
   pathname,
   openedArray,
   contents: initialContents,
-  isLoading,
+  setIsLoading,
 }: {
   pathname: string;
   openedArray: false | string[];
   contents?: MetaJSONchild[];
-  isLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [contents, setContents] = useState<MetaJSONchild[] | undefined>(
     initialContents,
@@ -25,11 +25,11 @@ const SidebarCollapsibleDirectoryContent = ({
 
   useEffect(() => {
     if (!initialContents) {
-      isLoading(true);
+      setIsLoading(true);
 
       getMetaJSON(pathname).then((res) => {
         setContents(res ? res.children : undefined);
-        isLoading(false);
+        setIsLoading(false);
       });
     }
   }, [initialContents, pathname]);

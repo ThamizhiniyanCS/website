@@ -43,13 +43,12 @@ export default async function Page({
   let content: React.ReactNode = null;
 
   if (!metaJSON) {
-    const response = await fetch(`${absoultePathname}/${slug}.mdx`);
-    console.log(
-      `[+] Meta Not found condition: ${absoultePathname}/${slug}.mdx`,
-    );
+    const response = await fetch(`${absoultePathname}.mdx`);
 
     if (!response.ok) {
       // throw new Error(`Failed to fetch MDX from : ${response.statusText}`);
+      console.log(`[+] Failed to fetch MDX: ${absoultePathname}.mdx`);
+
       notFound();
     }
 
@@ -58,19 +57,18 @@ export default async function Page({
     const result = await parseMdx(source, pathname);
 
     if (result.status === "failed") {
+      console.error("Faailed");
       return <MdxErrorComponent error={result.error} />;
     }
 
-    const { scope, content } = result;
-
     toc =
-      scope.toc?.map(({ value, href, depth }) => ({
+      result.scope.toc?.map(({ value, href, depth }) => ({
         title: value,
         url: href,
         depth,
       })) ?? [];
 
-    content;
+    content = result.content;
   } else {
     toc = [
       {
@@ -95,6 +93,7 @@ export default async function Page({
   // const userAgent = headersList.get("user-agent");
   //
   // console.log(userAgent);
+  //
 
   return (
     <ResizablePanelGroup

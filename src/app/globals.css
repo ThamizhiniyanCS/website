@@ -168,3 +168,23 @@ div[data-slot="tabs-content"] .expressive-code {
 .mdx-scroll-container div[data-slot="scroll-area-viewport"] > div {
   display: block !important;
 }
+
+/* Reference: https://github.com/fuma-nama/fumadocs/blob/9b8d3939679d78cdd7fcf4019e70c67ccd29d318/packages/ui/css/preset.css#L278 */
+@utility fd-steps {
+  counter-reset: step;
+  position: relative;
+  @apply border-primary ml-2 border-l pl-6 sm:ml-4 sm:pl-7;
+}
+
+@utility fd-step {
+  &:before {
+    background-color: var(--primary);
+    color: var(--background);
+    content: counter(step);
+    counter-increment: step;
+    font-size: 1rem;
+    line-height: 1.25rem;
+    position: absolute;
+    @apply -start-4 flex size-8 items-center justify-center rounded-full;
+  }
+}

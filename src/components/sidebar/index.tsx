@@ -1,7 +1,6 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import SidebarCollapsibleDirectory from "./sidebar-collapsible-directory";
 import type { MetaJSON } from "@/lib/types";
-import { CDN_URL } from "@/lib/constants";
 import { getMetaJSON } from "@/lib/actions";
 
 const Sidebar = async ({ pathnameArray }: { pathnameArray: string[] }) => {
@@ -18,7 +17,7 @@ const Sidebar = async ({ pathnameArray }: { pathnameArray: string[] }) => {
   }
 
   return (
-    <ScrollArea className="size-full px-2">
+    <ScrollArea id="sidebar" data-root={meta.slug} className="size-full px-2">
       <SidebarCollapsibleDirectory
         title={meta.title}
         slug={meta.slug}
