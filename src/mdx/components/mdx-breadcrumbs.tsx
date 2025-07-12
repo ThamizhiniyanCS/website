@@ -9,7 +9,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { getMetaJSON } from "@/lib/utils";
+import { getMetaJSON } from "@/lib/actions";
 import { CDN_URL } from "@/lib/constants";
 
 export default async function MdxBreadcrumbs({
@@ -19,7 +19,7 @@ export default async function MdxBreadcrumbs({
 }) {
   const metaJsonArrayResolved = await Promise.all(
     pathnameArray.map((_, index) =>
-      getMetaJSON(`${CDN_URL}${pathnameArray.slice(0, index + 1).join("/")}`),
+      getMetaJSON(`${pathnameArray.slice(0, index + 1).join("/")}`),
     ),
   );
 

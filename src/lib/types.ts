@@ -1,4 +1,4 @@
-type Child =
+export type MetaJSONchild =
   | {
       type: "file";
       slug: string;
@@ -15,5 +15,5 @@ type Child =
 export interface MetaJSON {
   slug: string;
   title: string;
-  children: Child[];
+  children: MetaJSONchild[];
 }

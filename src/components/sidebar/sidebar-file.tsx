@@ -1,13 +1,12 @@
-import type { FileNode } from ".";
 import Link from "next/link";
 
-const SidebarFile = ({ title, href }: FileNode) => {
+const SidebarFile = ({ title, href }: { title: string; href: string }) => {
   return (
     <Link
       href={href}
-      className="border-primary w-full border-l px-4 py-2 font-mono text-sm"
+      className="border-primary w-full border-l px-4 py-2 text-sm"
     >
-      {title}
+      <span className="line-clamp-1">{title}</span>
     </Link>
   );
 };

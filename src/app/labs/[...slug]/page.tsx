@@ -15,7 +15,7 @@ import { CDN_URL } from "@/lib/constants";
 import MdxErrorComponent from "@/mdx/components/mdx-error-component";
 import MdxRenderer from "@/mdx/components/mdx-renderer";
 
-import { getMetaJSON } from "@/lib/utils";
+import { getMetaJSON } from "@/lib/actions";
 import parseMdx from "@/mdx/lib/parseMdx";
 import { DocsTableOfContents } from "@/components/docs-toc";
 
@@ -32,7 +32,7 @@ export default async function Page({
 
   const absoultePathname = `${CDN_URL}${pathname}`;
 
-  const metaJSON = await getMetaJSON(absoultePathname);
+  const metaJSON = await getMetaJSON(pathname);
 
   let toc: {
     title?: React.ReactNode;
@@ -43,7 +43,7 @@ export default async function Page({
   let content: React.ReactNode = null;
 
   if (!metaJSON) {
-    const response = await fetch(`${absoultePathname}.mdx`);
+    const response = await fetch(`${absoultePathname}/${slug}.mdx`);
     console.log(
       `[+] Meta Not found condition: ${absoultePathname}/${slug}.mdx`,
     );
@@ -71,6 +71,24 @@ export default async function Page({
       })) ?? [];
 
     content;
+  } else {
+    toc = [
+      {
+        title: metaJSON.title,
+        url: "#" + metaJSON.slug,
+        depth: 1,
+      },
+      {
+        title: "Directories",
+        url: "#directories",
+        depth: 2,
+      },
+      {
+        title: "Files",
+        url: "#files",
+        depth: 2,
+      },
+    ];
   }
 
   // const headersList = await headers();
@@ -91,7 +109,7 @@ export default async function Page({
         style={{ overflow: "visible" }}
       >
         <div className="sticky top-0 h-screen w-full pt-16">
-          <Sidebar absolutePathname={absoultePathname} />
+          <Sidebar pathnameArray={pathnameArray} />
         </div>
       </ResizablePanel>
 

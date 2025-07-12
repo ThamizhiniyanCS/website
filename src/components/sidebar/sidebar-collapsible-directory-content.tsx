@@ -1,21 +1,60 @@
+"use client";
+
 import { CollapsibleContent } from "@/components/ui/collapsible";
-import type { FileNode } from ".";
+import type { MetaJSONchild } from "@/lib/types";
 import { Skeleton } from "@/components/ui/skeleton";
 import SidebarFile from "./sidebar-file";
 import SidebarCollapsibleDirectory from "./sidebar-collapsible-directory";
+import { getMetaJSON } from "@/lib/actions";
+import { useEffect, useState } from "react";
 
 const SidebarCollapsibleDirectoryContent = ({
-  contents,
+  pathname,
+  openedArray,
+  contents: initialContents,
+  isLoading,
 }: {
-  contents: FileNode[];
+  pathname: string;
+  openedArray: false | string[];
+  contents?: MetaJSONchild[];
+  isLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const [contents, setContents] = useState<MetaJSONchild[] | undefined>(
+    initialContents,
+  );
+
+  useEffect(() => {
+    if (!initialContents) {
+      isLoading(true);
+
+      getMetaJSON(pathname).then((res) => {
+        setContents(res ? res.children : undefined);
+        isLoading(false);
+      });
+    }
+  }, [initialContents, pathname]);
+
   return (
     <CollapsibleContent className="flex flex-col pl-4" forceMount>
-      {contents.map((filenode, index) =>
-        filenode.type === "directory" ? (
-          <SidebarCollapsibleDirectory key={index} {...filenode} />
+      {contents?.map((each, index) =>
+        each.type === "directory" ? (
+          <SidebarCollapsibleDirectory
+            key={index}
+            title={each.title}
+            slug={each.slug}
+            pathname={pathname + "/" + each.slug}
+            openedArray={
+              openedArray &&
+              openedArray[0] === pathname + "/" + each.slug &&
+              openedArray.slice(1)
+            }
+          />
         ) : (
-          <SidebarFile key={index} {...filenode} />
+          <SidebarFile
+            key={index}
+            title={each.title}
+            href={"/" + pathname + "/" + each.slug}
+          />
         ),
       )}
     </CollapsibleContent>

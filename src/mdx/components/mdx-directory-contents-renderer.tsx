@@ -1,6 +1,6 @@
 import type { MetaJSON } from "@/lib/types";
 import Link from "next/link";
-import { FolderIcon, FileIcon } from "lucide-react";
+import { FolderIcon, FileIcon, LinkIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const DirectoryContentsRenderer = ({
@@ -18,9 +18,19 @@ const DirectoryContentsRenderer = ({
 
   return (
     <div className="prose prose-invert @container max-w-none px-10">
-      <h1>{meta.title}</h1>
+      <h1 id={meta.slug}>
+        {meta.title}
+        <Link href={"#" + meta.title} className="pointer-events-none opacity-0">
+          <LinkIcon className="size-6" />
+        </Link>
+      </h1>
 
-      <h2>Directories</h2>
+      <h2 id="directories">
+        Directories
+        <Link href="#directories" className="pointer-events-none opacity-0">
+          <LinkIcon className="size-6" />
+        </Link>
+      </h2>
 
       <div className={gridClass}>
         {directories.map(({ title, slug }, index) => (
@@ -38,7 +48,12 @@ const DirectoryContentsRenderer = ({
         ))}
       </div>
 
-      <h2>Files</h2>
+      <h2 id="files">
+        Files
+        <Link href="#files" className="pointer-events-none opacity-0">
+          <LinkIcon className="size-6" />
+        </Link>
+      </h2>
 
       <div className={gridClass}>
         {files.map(({ title, slug }, index) => (

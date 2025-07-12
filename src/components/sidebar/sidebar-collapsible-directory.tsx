@@ -10,18 +10,32 @@ import {
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
-import type { FileNode } from ".";
+import { MetaJSONchild } from "@/lib/types";
 
-import { SidebarCollapsibleDirectoryContentSkeleton } from "./sidebar-collapsible-directory-content";
-import dynamic from "next/dynamic";
+import SidebarCollapsibleDirectoryContent, {
+  SidebarCollapsibleDirectoryContentSkeleton,
+} from "./sidebar-collapsible-directory-content";
+import Link from "next/link";
 
-const SidebarCollapsibleDirectoryContent = dynamic(
-  () => import("./sidebar-collapsible-directory-content"),
-  { loading: () => <SidebarCollapsibleDirectoryContentSkeleton /> },
-);
+const SidebarCollapsibleDirectory = ({
+  title,
+  slug,
+  children,
+  openedArray,
+  pathname,
+}: {
+  title: string;
+  slug: string;
+  children?: MetaJSONchild[];
+  openedArray: false | string[];
+  pathname: string;
+}) => {
+  console.log(title, slug, children, openedArray, pathname);
 
-const SidebarCollapsibleDirectory = ({ title, href, children }: FileNode) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState<boolean>(
+    openedArray ? true : false,
+  );
+  const [loading, isLoading] = React.useState<boolean>(false);
 
   return (
     <Collapsible
@@ -42,7 +56,12 @@ const SidebarCollapsibleDirectory = ({ title, href, children }: FileNode) => {
 
           {isOpen ? <FolderOpenIcon /> : <FolderClosedIcon />}
 
-          <p className="ml-2 text-sm font-semibold">{title}</p>
+          <Link
+            href={"/" + pathname}
+            className="ml-2 line-clamp-1 size-full text-sm font-semibold"
+          >
+            {title}
+          </Link>
         </div>
 
         <Button variant="ghost" size="icon" className="size-8">
@@ -51,8 +70,16 @@ const SidebarCollapsibleDirectory = ({ title, href, children }: FileNode) => {
         </Button>
       </div>
 
-      {children && isOpen && (
-        <SidebarCollapsibleDirectoryContent contents={children} />
+      {isOpen && (
+        <>
+          <SidebarCollapsibleDirectoryContent
+            pathname={pathname}
+            openedArray={openedArray}
+            contents={children}
+            isLoading={isLoading}
+          />
+          {loading && <SidebarCollapsibleDirectoryContentSkeleton />}
+        </>
       )}
     </Collapsible>
   );

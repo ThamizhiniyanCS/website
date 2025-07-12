@@ -115,7 +115,7 @@ export function DocsTableOfContents({
           key={item.url}
           href={item.url}
           className={cn(
-            "text-muted-foreground hover:text-foreground data-[active=true]:text-foreground text-[0.8rem] no-underline transition-colors",
+            "text-muted-foreground hover:text-foreground data-[active=true]:text-foreground line-clamp-1 text-[0.8rem] no-underline transition-colors",
             "data-[depth=2]:pl-4 data-[depth=3]:pl-6 data-[depth=4]:pl-8 data-[depth=5]:pl-10 data-[depth=6]:pl-12",
             index != 0 && "data-[depth=1]:pl-2",
           )}

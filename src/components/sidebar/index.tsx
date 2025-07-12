@@ -1,37 +1,31 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import SidebarCollapsibleDirectory from "./sidebar-collapsible-directory";
-import SidebarFile from "./sidebar-file";
+import type { MetaJSON } from "@/lib/types";
+import { CDN_URL } from "@/lib/constants";
+import { getMetaJSON } from "@/lib/actions";
 
-export type FileNode = {
-  title: string;
-  type: "file" | "directory";
-  href: string;
-  children?: FileNode[];
-};
+const Sidebar = async ({ pathnameArray }: { pathnameArray: string[] }) => {
+  const opened: string[] = pathnameArray.map((_, index) =>
+    pathnameArray.slice(0, index + 1).join("/"),
+  );
 
-const Sidebar = async ({ absolutePathname }: { absolutePathname: string }) => {
-  const response = await fetch(`${absolutePathname}/contents.json`);
+  const meta: MetaJSON | undefined = await getMetaJSON(opened[0]).then((res) =>
+    res ? res : undefined,
+  );
 
-  if (!response.ok) {
-    console.log(Error(`Failed to fetch: ${response.status}`));
+  if (!meta) {
     return null;
   }
 
-  const data: FileNode[] = await response.json();
-
-  // console.log(data);
-
   return (
     <ScrollArea className="size-full px-2">
-      {data.map((filenode, index) =>
-        filenode.type === "directory" ? (
-          <SidebarCollapsibleDirectory key={index} {...filenode} />
-        ) : (
-          <div key={index} className="w-full">
-            <SidebarFile {...filenode} />
-          </div>
-        ),
-      )}
+      <SidebarCollapsibleDirectory
+        title={meta.title}
+        slug={meta.slug}
+        children={meta.children}
+        openedArray={opened.slice(1)}
+        pathname={opened[0]}
+      />
     </ScrollArea>
   );
 };

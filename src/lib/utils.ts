@@ -31,27 +31,3 @@ export function isExternalLink(
     return false;
   }
 }
-
-export async function getMetaJSON(
-  absolutePathname: string,
-): Promise<MetaJSON | false> {
-  try {
-    const response = await fetch(`${absolutePathname}/meta.json`, {
-      cache: "force-cache",
-      next: {
-        revalidate: 60,
-      },
-    });
-
-    if (!response.ok) {
-      console.log("[-] meta.json not found.");
-      console.log(`[-] URL: ${absolutePathname}/meta.json`);
-      return false;
-    }
-
-    return await response.json();
-  } catch (err) {
-    console.error("Error fetching meta.json:", err);
-    return false;
-  }
-}
