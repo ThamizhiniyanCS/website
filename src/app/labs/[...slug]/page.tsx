@@ -19,24 +19,29 @@ import { getMetaJSON } from "@/lib/actions";
 import parseMdx from "@/mdx/lib/parseMdx";
 import { TocItem } from "@/lib/types";
 import MdxToc from "@/mdx/components/mdx-toc";
+import type { SearchParams } from "nuqs/server";
+import { loadSidebarParams } from "./sidebar-params";
+import CategorySelector from "@/components/sidebar/category-selector";
 
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string[] }>;
+  searchParams: Promise<SearchParams>;
 }) {
   const { slug } = await params;
+  const { root } = await loadSidebarParams(searchParams);
 
   const pathname = `labs/${slug.join("/")}`;
-
   const pathnameArray = ["labs", ...slug];
-
+  const sidebarPathnameArray = ["labs/" + slug[0], ...slug.slice(1)];
   const absoultePathname = `${CDN_URL}${pathname}`;
 
   const metaJSON = await getMetaJSON(pathname);
+  const categoriesMetaJSON = await getMetaJSON("labs");
 
   let toc: TocItem[] = [];
-
   let content: React.ReactNode = null;
 
   if (!metaJSON) {
@@ -50,7 +55,6 @@ export default async function Page({
     }
 
     const source = await response.text();
-
     const result = await parseMdx(source, pathname);
 
     if (result.status === "failed") {
@@ -104,8 +108,9 @@ export default async function Page({
         minSize={10}
         style={{ overflow: "visible" }}
       >
-        <div className="sticky top-0 h-screen w-full pt-16">
-          <Sidebar pathnameArray={pathnameArray} />
+        <div className="sticky top-0 h-screen w-full px-4 pt-16">
+          <CategorySelector meta={categoriesMetaJSON} defaultValue={slug[0]} />
+          <Sidebar pathnameArray={sidebarPathnameArray} root={root} />
         </div>
       </ResizablePanel>
 
@@ -116,7 +121,11 @@ export default async function Page({
 
         <div className="w-full">
           {metaJSON ? (
-            <DirectoryContentsRenderer meta={metaJSON} pathname={pathname} />
+            <DirectoryContentsRenderer
+              meta={metaJSON}
+              pathname={pathname}
+              root={root}
+            />
           ) : (
             content && <MdxRenderer content={content} />
           )}

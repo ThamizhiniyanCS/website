@@ -1,6 +1,7 @@
 import { getMetaJSON } from "@/lib/actions";
-import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer";
 import MdxErrorComponent from "@/mdx/components/mdx-error-component";
+import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
 
 export default async function Page() {
   const response = await getMetaJSON("labs");
@@ -9,5 +10,31 @@ export default async function Page() {
     return <MdxErrorComponent error="Failed to fetch meta.json" />;
   }
 
-  return <DirectoryContentsRenderer meta={response} pathname="labs" />;
+  console.log(response);
+
+  return (
+    <div className="prose prose-invert mx-auto min-h-screen w-full max-w-7xl pt-20">
+      <h1 className="">{response.title}</h1>
+
+      <div className="grid w-full grid-cols-3 gap-4">
+        {response.children.map((child, index) => (
+          <Link
+            key={index}
+            href={`/labs/${child.slug}`}
+            className="no-underline"
+          >
+            <Card
+              style={{
+                marginBlock: 0,
+              }}
+            >
+              <CardContent>
+                <h3>{child.title}</h3>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
 }

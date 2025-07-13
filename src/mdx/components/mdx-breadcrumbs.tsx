@@ -10,7 +10,6 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { getMetaJSON } from "@/lib/actions";
-import { CDN_URL } from "@/lib/constants";
 
 export default async function MdxBreadcrumbs({
   pathnameArray,

@@ -66,7 +66,7 @@ const MdxToc = ({ toc, className }: { toc: TocItem[]; className?: string }) => {
         d.push(`L${offset} ${bottom}`);
       }
 
-      console.log(d);
+      // console.log(d);
 
       setSvg({
         path: d.join(" "),

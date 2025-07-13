@@ -13,11 +13,13 @@ const SidebarCollapsibleDirectoryContent = ({
   openedArray,
   contents: initialContents,
   setIsLoading,
+  root,
 }: {
   pathname: string;
   openedArray: false | string[];
   contents?: MetaJSONchild[];
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  root: string | null;
 }) => {
   const [contents, setContents] = useState<MetaJSONchild[] | undefined>(
     initialContents,
@@ -48,12 +50,16 @@ const SidebarCollapsibleDirectoryContent = ({
               openedArray[0] === pathname + "/" + each.slug &&
               openedArray.slice(1)
             }
+            root={root}
           />
         ) : (
           <SidebarFile
             key={index}
             title={each.title}
-            href={"/" + pathname + "/" + each.slug}
+            href={{
+              pathname: "/" + pathname + "/" + each.slug,
+              query: root != null ? { root } : undefined,
+            }}
           />
         ),
       )}

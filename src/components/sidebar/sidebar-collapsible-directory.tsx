@@ -5,7 +5,8 @@ import {
   ChevronDownIcon,
   FolderClosedIcon,
   FolderOpenIcon,
-  FolderRoot,
+  PinIcon,
+  PinOffIcon,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -30,12 +31,14 @@ const SidebarCollapsibleDirectory = ({
   children,
   openedArray,
   pathname,
+  root,
 }: {
   title: string;
   slug: string;
   children?: MetaJSONchild[];
   openedArray: false | string[];
   pathname: string;
+  root: string | null;
 }) => {
   const [isOpen, setIsOpen] = React.useState<boolean>(
     openedArray ? true : false,
@@ -66,30 +69,39 @@ const SidebarCollapsibleDirectory = ({
           )}
 
           <Link
-            href={"/" + pathname}
+            href={{
+              pathname: "/" + pathname,
+              query: root != null ? { root } : undefined,
+            }}
             className="ml-2 line-clamp-1 size-full text-sm font-semibold"
           >
             {title}
           </Link>
         </div>
 
-        {/* TODO: Setting root directory if possible */}
-        {/* <Tooltip> */}
-        {/*   <TooltipTrigger asChild> */}
-        {/*     <Button */}
-        {/*       variant="ghost" */}
-        {/*       size="icon" */}
-        {/*       className="size-4" */}
-        {/*       onClick={makeRootOnClickHandle} */}
-        {/*     > */}
-        {/*       <FolderRoot className="" /> */}
-        {/*       <span className="sr-only">Toggle</span> */}
-        {/*     </Button> */}
-        {/*   </TooltipTrigger> */}
-        {/*   <TooltipContent> */}
-        {/*     <p>Click to make this directory as root.</p> */}
-        {/*   </TooltipContent> */}
-        {/* </Tooltip> */}
+        {/* FIX: Whenever the `root` query param is updated for the same path, the sidbar is not re-rendered */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="ghost" size="icon" className="size-4" asChild>
+              <Link
+                href={{
+                  pathname: "/" + pathname,
+                  query: root === null ? { root: slug } : undefined,
+                }}
+              >
+                {root === slug ? <PinOffIcon /> : <PinIcon />}
+                <span className="sr-only">Toggle</span>
+              </Link>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>
+              {root === slug
+                ? "Click to unpin this directory"
+                : "Click to pin this directory"}
+            </p>
+          </TooltipContent>
+        </Tooltip>
       </div>
 
       {isOpen && (
@@ -99,6 +111,7 @@ const SidebarCollapsibleDirectory = ({
             openedArray={openedArray}
             contents={children}
             setIsLoading={setIsLoading}
+            root={root}
           />
           {isLoading && <SidebarCollapsibleDirectoryContentSkeleton />}
         </>

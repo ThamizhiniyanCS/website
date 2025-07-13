@@ -6,9 +6,11 @@ import { Card, CardContent } from "@/components/ui/card";
 const DirectoryContentsRenderer = ({
   meta,
   pathname,
+  root,
 }: {
   meta: MetaJSON;
   pathname: string;
+  root: string | null;
 }) => {
   const directories = meta.children.filter(({ type }) => type === "directory");
   const files = meta.children.filter(({ type }) => type === "file");
@@ -36,7 +38,10 @@ const DirectoryContentsRenderer = ({
         {directories.map(({ title, slug }, index) => (
           <Link
             key={index}
-            href={`/${pathname}/${slug}`}
+            href={{
+              pathname: `/${pathname}/${slug}`,
+              query: root != null ? { root } : undefined,
+            }}
             className="no-underline"
           >
             <Card className="rounded-sm p-0" style={{ margin: 0 }}>
@@ -59,7 +64,10 @@ const DirectoryContentsRenderer = ({
         {files.map(({ title, slug }, index) => (
           <Link
             key={index}
-            href={`/${pathname}/${slug}`}
+            href={{
+              pathname: `/${pathname}/${slug}`,
+              query: root != null ? { root } : undefined,
+            }}
             className="no-underline"
           >
             <Card className="rounded-sm p-0" style={{ margin: 0 }}>

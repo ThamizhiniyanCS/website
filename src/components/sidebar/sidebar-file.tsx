@@ -1,6 +1,15 @@
 import Link from "next/link";
 
-const SidebarFile = ({ title, href }: { title: string; href: string }) => {
+const SidebarFile = ({
+  title,
+  href,
+}: {
+  title: string;
+  href: {
+    pathname: string;
+    query?: Record<string, string | string[] | undefined>;
+  };
+}) => {
   return (
     <Link
       href={href}
