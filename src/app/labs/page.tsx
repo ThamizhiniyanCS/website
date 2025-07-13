@@ -1,32 +1,13 @@
-import { Suspense } from "react";
-import { MDXRemote, type MDXRemoteOptions } from "next-mdx-remote-client/rsc";
-import remarkFlexibleToc from "remark-flexible-toc";
+import { getMetaJSON } from "@/lib/actions";
+import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer";
+import MdxErrorComponent from "@/mdx/components/mdx-error-component";
 
 export default async function Page() {
-  const response = await fetch(
-    "https://cdn.thamizhiniyancs.me/labs/Malware%20Analysis%20Lab%20Setup/remote.mdx",
-  );
+  const response = await getMetaJSON("labs");
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch MDX from : ${response.statusText}`);
+  if (!response) {
+    return <MdxErrorComponent error="Failed to fetch meta.json" />;
   }
 
-  const source = await response.text();
-
-  const options: MDXRemoteOptions = {
-    mdxOptions: {
-      remarkPlugins: [remarkFlexibleToc],
-    },
-    parseFrontmatter: true,
-    // scope: {
-    //   readingTime: calculateSomeHow(source),
-    // },
-    vfileDataIntoScope: "toc",
-  };
-
-  return (
-    <Suspense fallback={<p>Loading...</p>}>
-      <MDXRemote source={source} options={options} />
-    </Suspense>
-  );
+  return <DirectoryContentsRenderer meta={response} pathname="labs" />;
 }

@@ -17,7 +17,8 @@ import MdxRenderer from "@/mdx/components/mdx-renderer";
 
 import { getMetaJSON } from "@/lib/actions";
 import parseMdx from "@/mdx/lib/parseMdx";
-import { DocsTableOfContents } from "@/components/docs-toc";
+import { TocItem } from "@/lib/types";
+import MdxToc from "@/mdx/components/mdx-toc";
 
 export default async function Page({
   params,
@@ -34,11 +35,7 @@ export default async function Page({
 
   const metaJSON = await getMetaJSON(pathname);
 
-  let toc: {
-    title?: React.ReactNode;
-    url: string;
-    depth: number;
-  }[] = [];
+  let toc: TocItem[] = [];
 
   let content: React.ReactNode = null;
 
@@ -134,7 +131,7 @@ export default async function Page({
         style={{ overflow: "visible" }}
       >
         <div className="sticky top-0 h-screen w-full pt-16">
-          <DocsTableOfContents toc={toc} />
+          <MdxToc toc={toc} />
         </div>
       </ResizablePanel>
     </ResizablePanelGroup>

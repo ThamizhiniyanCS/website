@@ -19,7 +19,7 @@ import { LinkPreview } from "@/mdx/components/ui/link-preview";
 
 export default async function Home() {
   return (
-    <div className="mx-auto grid w-full max-w-4xl items-start gap-4 px-10">
+    <div className="mx-auto grid w-full max-w-4xl items-start gap-4 px-10 pt-20">
       <LinkPreview href="https://thamizhiniyancs.me/" />
       <LinkPreview href="https://www.geeksforgeeks.org/introduction-to-malware-analysis/" />
       <LinkPreview href="https://github.com/remarkjs/remark/" />

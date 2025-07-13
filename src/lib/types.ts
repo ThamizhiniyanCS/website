@@ -17,3 +17,9 @@ export interface MetaJSON {
   title: string;
   children: MetaJSONchild[];
 }
+
+export interface TocItem {
+  title?: React.ReactNode;
+  url: string;
+  depth: number;
+}
