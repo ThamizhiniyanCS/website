@@ -3,7 +3,6 @@ import type { Frontmatter, Scope } from "./types";
 
 import { readingTime } from "reading-time-estimator";
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
-import { Link } from "lucide-react";
 
 // NOTE: MDX Related Components
 import { mdxComponents } from "@/mdx/components/ui";
@@ -16,10 +15,6 @@ import { fromHtmlIsomorphic } from "hast-util-from-html-isomorphic";
 // NOTE: Remark Plugins
 import remarkFlexibleToc, { type TocItem } from "remark-flexible-toc";
 import remarkGfm from "remark-gfm";
-// import remarkEmbedder from "@remark-embedder/core";
-import oembedTransformer, {
-  type Config as OembedTransformerConfig,
-} from "@remark-embedder/transformer-oembed";
 import remarkMath from "remark-math";
 import remarkNormalizeHeadings from "remark-normalize-headings";
 
@@ -41,16 +36,6 @@ const rehypeExpressiveCodeOptions: RehypeExpressiveCodeOptions = {
     showLineNumbers: false,
   },
 };
-
-// NOTE: Remark Embedder Options
-// const remarkEmbedderOptions = {
-//   transformers: [
-//     oembedTransformer,
-//     {
-//       params: { theme: "dark", dnt: true, omit_script: true },
-//     } as OembedTransformerConfig,
-//   ],
-// };
 
 export default async function (
   source: string,
@@ -91,7 +76,6 @@ export default async function (
       remarkPlugins: [
         [remarkFlexibleToc, { skipLevels: [] }],
         remarkGfm,
-        // [remarkEmbedder, remarkEmbedderOptions],
         remarkMath,
         remarkNormalizeHeadings,
       ],
