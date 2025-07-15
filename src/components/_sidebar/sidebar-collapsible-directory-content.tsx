@@ -1,64 +1,40 @@
 "use client";
 
-import { title } from "process";
+import { CollapsibleContent } from "@/components/ui/collapsible";
+import type { MetaJSONchild } from "@/lib/types";
+import { Skeleton } from "@/components/ui/skeleton";
+import SidebarFile from "./sidebar-file";
+import SidebarCollapsibleDirectory from "./sidebar-collapsible-directory";
+import { getMetaJSON } from "@/lib/actions";
 import { useEffect, useState } from "react";
 
-import { getMetaJSON } from "@/lib/actions";
-import type { MetaJSONchild } from "@/lib/types";
-import { CollapsibleContent } from "@/components/ui/collapsible";
-import { Skeleton } from "@/components/ui/skeleton";
-
-import { useSidebarContext } from ".";
-import { useSidebarParams } from "./nuqs/client";
-import SidebarCollapsibleDirectory from "./sidebar-collapsible-directory";
-import SidebarFile from "./sidebar-file";
-import { Tree } from "./types";
-
-export default function SidebarCollapsibleDirectoryContent({
+const SidebarCollapsibleDirectoryContent = ({
   pathname,
+  openedArray,
   contents: initialContents,
   setIsLoading,
-  depth,
+  root,
 }: {
   pathname: string;
-  contents: Tree[] | undefined;
+  openedArray: false | string[];
+  contents?: MetaJSONchild[];
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  depth: number;
-}) {
-  const { root, opened, tree, setTree } = useSidebarContext();
-  const [contents, setContents] = useState<Tree[] | undefined>(initialContents);
-
-  console.log(contents);
+  root: string | null;
+}) => {
+  const [contents, setContents] = useState<MetaJSONchild[] | undefined>(
+    initialContents,
+  );
 
   useEffect(() => {
-    console.log("useEffect");
-
-    if (contents?.length === 0) {
-      console.log("No Content");
+    if (!initialContents) {
       setIsLoading(true);
 
-      console.log("pathname", pathname);
-
       getMetaJSON(pathname).then((res) => {
-        // setContents(res ? res.children : undefined);
-        if (res) {
-          let children: Tree[] = [];
-
-          res.children.map((child) => {
-            children.push({
-              slug: child.slug,
-              title: child.title,
-              type: child.type,
-              depth: depth + 1,
-            });
-          });
-        } else {
-          console.log("failed");
-        }
+        setContents(res ? res.children : undefined);
         setIsLoading(false);
       });
     }
-  }, [contents, pathname]);
+  }, [initialContents, pathname]);
 
   return (
     <CollapsibleContent className="flex flex-col pl-4" forceMount>
@@ -68,9 +44,13 @@ export default function SidebarCollapsibleDirectoryContent({
             key={index}
             title={each.title}
             slug={each.slug}
-            children={each.children}
-            pathname={pathname + "/" + (each.slug || "slug")}
-            depth={depth + 1}
+            pathname={pathname + "/" + each.slug}
+            openedArray={
+              openedArray &&
+              openedArray[0] === pathname + "/" + each.slug &&
+              openedArray.slice(1)
+            }
+            root={root}
           />
         ) : (
           <SidebarFile
@@ -85,7 +65,7 @@ export default function SidebarCollapsibleDirectoryContent({
       )}
     </CollapsibleContent>
   );
-}
+};
 
 export const SidebarCollapsibleDirectoryContentSkeleton = () => {
   return (
@@ -98,3 +78,5 @@ export const SidebarCollapsibleDirectoryContentSkeleton = () => {
     </CollapsibleContent>
   );
 };
+
+export default SidebarCollapsibleDirectoryContent;

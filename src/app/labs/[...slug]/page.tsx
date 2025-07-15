@@ -1,27 +1,19 @@
 // import { headers } from "next/headers";
 import { notFound } from "next/navigation";
-
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-import { ImperativePanelGroupHandle } from "react-resizable-panels";
-import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer";
-import Sidebar from "@/components/sidebar";
 import MdxBreadcrumbs from "@/mdx/components/mdx-breadcrumbs";
-import { CDN_URL } from "@/lib/constants";
-
+import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer";
 import MdxErrorComponent from "@/mdx/components/mdx-error-component";
 import MdxRenderer from "@/mdx/components/mdx-renderer";
+import MdxToc from "@/mdx/components/mdx-toc";
+import parseMdx from "@/mdx/lib/parseMdx";
+import type { SearchParams } from "nuqs/server";
+import { ImperativePanelGroupHandle } from "react-resizable-panels";
 
 import { getMetaJSON } from "@/lib/actions";
-import parseMdx from "@/mdx/lib/parseMdx";
+import { CDN_URL } from "@/lib/constants";
 import { TocItem } from "@/lib/types";
-import MdxToc from "@/mdx/components/mdx-toc";
-import type { SearchParams } from "nuqs/server";
-import { loadSidebarParams } from "./sidebar-params";
-import CategorySelector from "@/components/sidebar/category-selector";
+import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
+import { loadSidebarParams } from "@/components/sidebar/nuqs/server";
 
 export default async function Page({
   params,
@@ -35,11 +27,9 @@ export default async function Page({
 
   const pathname = `labs/${slug.join("/")}`;
   const pathnameArray = ["labs", ...slug];
-  const sidebarPathnameArray = ["labs/" + slug[0], ...slug.slice(1)];
   const absoultePathname = `${CDN_URL}${pathname}`;
 
   const metaJSON = await getMetaJSON(pathname);
-  const categoriesMetaJSON = await getMetaJSON("labs");
 
   let toc: TocItem[] = [];
   let content: React.ReactNode = null;
@@ -97,25 +87,7 @@ export default async function Page({
   //
 
   return (
-    <ResizablePanelGroup
-      // autoSaveId="persistance"
-      direction="horizontal"
-      className="min-h-screen w-full"
-      style={{ overflow: "visible" }}
-    >
-      <ResizablePanel
-        defaultSize={20}
-        minSize={10}
-        style={{ overflow: "visible" }}
-      >
-        <div className="sticky top-0 h-screen w-full px-4 pt-16">
-          <CategorySelector meta={categoriesMetaJSON} defaultValue={slug[0]} />
-          <Sidebar pathnameArray={sidebarPathnameArray} root={root} />
-        </div>
-      </ResizablePanel>
-
-      <ResizableHandle withHandle />
-
+    <>
       <ResizablePanel defaultSize={60} minSize={40} className="pt-16">
         <MdxBreadcrumbs pathnameArray={pathnameArray} />
 
@@ -140,9 +112,9 @@ export default async function Page({
         style={{ overflow: "visible" }}
       >
         <div className="sticky top-0 h-screen w-full pt-16">
-          <MdxToc toc={toc} />
+          {/* <MdxToc toc={toc} /> */}
         </div>
       </ResizablePanel>
-    </ResizablePanelGroup>
+    </>
   );
 }

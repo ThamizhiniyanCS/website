@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import * as React from "react";
 import {
   ChevronDownIcon,
   FolderClosedIcon,
@@ -10,39 +9,41 @@ import {
   PinOffIcon,
 } from "lucide-react";
 
-import { getMetaJSON } from "@/lib/actions";
-import { MetaJSONchild } from "@/lib/types";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { cn } from "@/lib/utils";
+import { MetaJSONchild } from "@/lib/types";
+
+import SidebarCollapsibleDirectoryContent, {
+  SidebarCollapsibleDirectoryContentSkeleton,
+} from "./sidebar-collapsible-directory-content";
+import Link from "next/link";
+
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { useSidebarContext } from ".";
-import SidebarCollapsibleDirectoryContent, {
-  SidebarCollapsibleDirectoryContentSkeleton,
-} from "./sidebar-collapsible-directory-content";
-import type { Tree } from "./types";
-
-export default function SidebarCollapsibleDirectory({
+const SidebarCollapsibleDirectory = ({
   title,
   slug,
   children,
+  openedArray,
   pathname,
-  depth,
+  root,
 }: {
   title: string;
   slug: string;
-  children: Tree[] | undefined;
+  children?: MetaJSONchild[];
+  openedArray: false | string[];
   pathname: string;
-  depth: number;
-}) {
-  const { root, opened, tree } = useSidebarContext();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  root: string | null;
+}) => {
+  const [isOpen, setIsOpen] = React.useState<boolean>(
+    openedArray ? true : false,
+  );
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   return (
     <Collapsible
@@ -78,6 +79,7 @@ export default function SidebarCollapsibleDirectory({
           </Link>
         </div>
 
+        {/* FIX: Whenever the `root` query param is updated for the same path, the sidbar is not re-rendered */}
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="ghost" size="icon" className="size-4" asChild>
@@ -106,13 +108,16 @@ export default function SidebarCollapsibleDirectory({
         <>
           <SidebarCollapsibleDirectoryContent
             pathname={pathname}
+            openedArray={openedArray}
             contents={children}
             setIsLoading={setIsLoading}
-            depth={depth}
+            root={root}
           />
           {isLoading && <SidebarCollapsibleDirectoryContentSkeleton />}
         </>
       )}
     </Collapsible>
   );
-}
+};
+
+export default SidebarCollapsibleDirectory;

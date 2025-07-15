@@ -1,59 +1,146 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
-import SidebarCollapsibleDirectory from "./sidebar-collapsible-directory";
-import type { MetaJSON } from "@/lib/types";
+"use client";
+
+import { title } from "process";
+import { createContext, useContext, useEffect, useState } from "react";
+
 import { getMetaJSON } from "@/lib/actions";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const Sidebar = async ({
+import { useSidebarParams } from "./nuqs/client";
+import SidebarCollapsibleDirectory from "./sidebar-collapsible-directory";
+import type { Tree } from "./types";
+
+type SidebarContextType = {
+  root: string | undefined;
+  tree: Tree | undefined;
+  opened: string[];
+  setRoot: (root: string | undefined) => void;
+  setTree: (tree: Tree | undefined) => void;
+  setOpened: (opened: string[]) => void;
+};
+
+// optional fallback for non-wrapped components
+const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
+
+const Sidebar = ({
+  baseSlug,
   pathnameArray,
-  root,
 }: {
+  baseSlug: string;
   pathnameArray: string[];
-  root: string | null;
 }) => {
-  let opened: string[] = [];
+  const [params, setParams] = useSidebarParams();
 
-  if (root) {
-    const index = pathnameArray.indexOf(root);
-    if (index !== -1) {
-      const baseParts = pathnameArray.slice(0, index + 1);
-      const base = baseParts.join("/");
+  const [root, setRoot] = useState<string | undefined>(
+    params.root ? params.root : undefined,
+  );
 
-      opened = [base];
+  const [tree, setTree] = useState<Tree | undefined>(undefined);
+  const [opened, setOpened] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [cache, updateCache] = useState<
+    {
+      pathname: string;
+      slug: string;
+      title: string;
+      type: "directory" | "file";
+    }[]
+  >();
 
-      let current = base;
-      for (let i = index + 1; i < pathnameArray.length; i++) {
+  useEffect(() => {
+    if (!pathnameArray) return;
+
+    const buildPaths = (startIndex: number) => {
+      const opened: string[] = [];
+      let current = pathnameArray.slice(0, startIndex).join("/");
+
+      if (current) opened.push(current);
+
+      for (let i = startIndex; i < pathnameArray.length; i++) {
         current += `/${pathnameArray[i]}`;
         opened.push(current);
       }
-    }
-  } else {
-    let current = "";
-    for (const part of pathnameArray) {
-      current += (current ? "/" : "") + part;
-      opened.push(current);
-    }
-  }
 
-  const meta: MetaJSON | undefined = await getMetaJSON(opened[0]).then((res) =>
-    res ? res : undefined,
-  );
+      return opened;
+    };
 
-  if (!meta) {
-    return null;
-  }
+    const index = root ? pathnameArray.indexOf(root) : -1;
+    const openedPaths = index !== -1 ? buildPaths(index + 1) : buildPaths(0);
+    setOpened(openedPaths);
+  }, [root, pathnameArray]);
+
+  useEffect(() => {
+    if (tree) {
+      setIsLoading(false);
+    } else {
+      getMetaJSON(pathnameArray[0]).then((res) => {
+        if (res) {
+          const children: Tree[] = [];
+
+          res.children.map((child) => {
+            children.push({
+              slug: child.slug,
+              title: child.slug,
+              type: child.type,
+              depth: 1,
+              children: [],
+            });
+          });
+
+          setTree({
+            slug: res.slug,
+            title: res.title,
+            depth: 0,
+            type: "directory",
+            children,
+          });
+        }
+      });
+    }
+  }, [tree]);
+
+  // useEffect(() => {
+  //
+  // }, [root])
 
   return (
-    <ScrollArea id="sidebar" data-root={meta.slug} className="size-full px-2">
-      <SidebarCollapsibleDirectory
-        title={meta.title}
-        slug={meta.slug}
-        children={meta.children}
-        openedArray={opened.slice(1)}
-        pathname={opened[0]}
-        root={root}
-      />
-    </ScrollArea>
+    <SidebarContext.Provider
+      value={{ root, tree, opened, setRoot, setTree, setOpened }}
+    >
+      <ScrollArea className="size-full px-2">
+        {isLoading ? (
+          <div className="flex flex-col gap-2 border-l py-2 pr-4">
+            <Skeleton className="ml-4 h-4 w-full max-w-60 rounded-full" />
+            <div className="flex flex-col pl-4">
+              {Array.from({ length: 5 }, (_, index) => (
+                <div
+                  key={index}
+                  className="border-l py-2 pr-4 pl-4 font-mono text-sm"
+                >
+                  <Skeleton className="h-4 w-full max-w-60 rounded-full" />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <SidebarCollapsibleDirectory
+            slug={tree?.slug || "slug"}
+            title={tree?.title || "Title"}
+            children={tree?.children}
+            pathname={baseSlug + "/" + (tree?.slug || "slug")}
+            depth={tree?.depth || 0}
+          />
+        )}
+      </ScrollArea>
+    </SidebarContext.Provider>
   );
 };
 
 export default Sidebar;
+
+export const useSidebarContext = () => {
+  const context = useContext(SidebarContext);
+  if (!context) throw new Error("useSidebar must be used within <Sidebar />");
+  return context;
+};

@@ -11,7 +11,7 @@ const MdxImage = ({
   pathname: string;
 }) => {
   return (
-    <ImageZoom className="bg-muted mx-auto aspect-video w-fit rounded-lg">
+    <ImageZoom className="bg-muted mx-auto size-fit rounded-lg">
       {isFullUrl(props.src as string) ? (
         <img
           src={props.src}

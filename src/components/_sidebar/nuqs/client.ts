@@ -1,7 +1,7 @@
-import { useQueryStates, parseAsBoolean } from "nuqs";
+import { useQueryStates, parseAsString } from "nuqs";
 
 const sidebarParams = {
-  root: parseAsBoolean.withDefault(false),
+  root: parseAsString,
 };
 
 export const useSidebarParams = () => {
