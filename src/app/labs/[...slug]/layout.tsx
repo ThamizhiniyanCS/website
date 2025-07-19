@@ -1,10 +1,11 @@
 import { getMetaJSON } from "@/lib/actions";
+import { CDN_URL } from "@/lib/constants";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import Sidebar from "@/components/_sidebar";
+import Sidebar from "@/components/sidebar";
 
 export default async function Layout({
   params,
@@ -16,8 +17,9 @@ export default async function Layout({
   const { slug } = await params;
 
   const sidebarPathnameArray = ["labs/" + slug[0], ...slug.slice(1)];
-
-  const categoriesMetaJSON = await getMetaJSON("labs");
+  const pathname = `labs/${slug.join("/")}`;
+  const pathnameArray = ["labs", ...slug];
+  const absoultePathname = `${CDN_URL}${pathname}`;
 
   return (
     <ResizablePanelGroup
@@ -32,7 +34,7 @@ export default async function Layout({
         style={{ overflow: "visible" }}
       >
         <div className="sticky top-0 h-screen w-full px-4 pt-16">
-          <Sidebar pathnameArray={sidebarPathnameArray} />
+          <Sidebar baseSlug="labs" pathnameArray={sidebarPathnameArray} />
         </div>
       </ResizablePanel>
 

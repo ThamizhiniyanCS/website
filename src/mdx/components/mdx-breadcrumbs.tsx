@@ -1,6 +1,7 @@
-import Link from "next/link";
 import { Fragment } from "react";
+import Link from "next/link";
 
+import { getMetaJSON } from "@/lib/actions";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,7 +10,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { getMetaJSON } from "@/lib/actions";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default async function MdxBreadcrumbs({
   pathnameArray,
@@ -54,3 +55,23 @@ export default async function MdxBreadcrumbs({
     </Breadcrumb>
   );
 }
+
+export const MdxBreadcrumbsSkeleton = () => {
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <Skeleton className="h-4 w-[8rem] rounded-full" />
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <Skeleton className="h-4 w-[8rem] rounded-full" />
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <Skeleton className="h-4 w-[8rem] rounded-full" />
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  );
+};

@@ -4,19 +4,18 @@ import { title } from "process";
 import { createContext, useContext, useEffect, useState } from "react";
 
 import { getMetaJSON } from "@/lib/actions";
+import { MetaJSON, MetaJSONchild } from "@/lib/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { useSidebarParams } from "./nuqs/client";
-import SidebarCollapsibleDirectory from "./sidebar-collapsible-directory";
-import type { Tree } from "./types";
 
 type SidebarContextType = {
   root: string | undefined;
-  tree: Tree | undefined;
+  tree: MetaJSON | undefined;
   opened: string[];
   setRoot: (root: string | undefined) => void;
-  setTree: (tree: Tree | undefined) => void;
+  setTree: (tree: MetaJSON | undefined) => void;
   setOpened: (opened: string[]) => void;
 };
 
@@ -36,73 +35,50 @@ const Sidebar = ({
     params.root ? params.root : undefined,
   );
 
-  const [tree, setTree] = useState<Tree | undefined>(undefined);
+  const [tree, setTree] = useState<MetaJSON | undefined>(undefined);
   const [opened, setOpened] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [cache, updateCache] = useState<
-    {
-      pathname: string;
-      slug: string;
-      title: string;
-      type: "directory" | "file";
-    }[]
-  >();
 
-  useEffect(() => {
-    if (!pathnameArray) return;
+  type Node = {
+    title: string;
+    description: string;
+    children: Node[];
+  };
 
-    const buildPaths = (startIndex: number) => {
-      const opened: string[] = [];
-      let current = pathnameArray.slice(0, startIndex).join("/");
+  const ensurePath = (root: Node, path: string[]): Node => {
+    let current = root;
 
-      if (current) opened.push(current);
+    for (let i = 1; i < path.length; i++) {
+      const title = path[i];
+      let child = current.children.find((c) => c.title === title);
 
-      for (let i = startIndex; i < pathnameArray.length; i++) {
-        current += `/${pathnameArray[i]}`;
-        opened.push(current);
+      if (!child) {
+        child = {
+          title,
+          description: "",
+          children: [],
+        };
+        current.children.push(child);
       }
 
-      return opened;
-    };
+      current = child;
+    }
 
-    const index = root ? pathnameArray.indexOf(root) : -1;
-    const openedPaths = index !== -1 ? buildPaths(index + 1) : buildPaths(0);
-    setOpened(openedPaths);
-  }, [root, pathnameArray]);
+    return current;
+  };
 
   useEffect(() => {
-    if (tree) {
+    if (tree != undefined) {
+      console.log("Tree:", tree);
       setIsLoading(false);
     } else {
       getMetaJSON(pathnameArray[0]).then((res) => {
         if (res) {
-          const children: Tree[] = [];
-
-          res.children.map((child) => {
-            children.push({
-              slug: child.slug,
-              title: child.slug,
-              type: child.type,
-              depth: 1,
-              children: [],
-            });
-          });
-
-          setTree({
-            slug: res.slug,
-            title: res.title,
-            depth: 0,
-            type: "directory",
-            children,
-          });
+          setTree(res);
         }
       });
     }
   }, [tree]);
-
-  // useEffect(() => {
-  //
-  // }, [root])
 
   return (
     <SidebarContext.Provider
@@ -124,18 +100,20 @@ const Sidebar = ({
             </div>
           </div>
         ) : (
-          <SidebarCollapsibleDirectory
-            slug={tree?.slug || "slug"}
-            title={tree?.title || "Title"}
-            children={tree?.children}
-            pathname={baseSlug + "/" + (tree?.slug || "slug")}
-            depth={tree?.depth || 0}
-          />
+          <></>
         )}
       </ScrollArea>
     </SidebarContext.Provider>
   );
 };
+
+// <SidebarCollapsibleDirectory
+//             slug={tree?.slug || "slug"}
+//             title={tree?.title || "Title"}
+//             children={tree?.children}
+//             pathname={baseSlug + "/" + (tree?.slug || "slug")}
+//             depth={0}
+//           />
 
 export default Sidebar;
 
