@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import MdxErrorComponent from "@/mdx/components/mdx-error-component";
 
 import { getMetaJSON } from "@/lib/actions";
+import { ALLOWED_ROUTES } from "@/lib/constants";
 import { Card, CardContent } from "@/components/ui/card";
 
 export default async function Page({
@@ -12,9 +13,7 @@ export default async function Page({
 }) {
   const { baseRoute } = await params;
 
-  const allowedRoutes = ["labs", "workshops", "writeups"];
-
-  if (!allowedRoutes.includes(baseRoute)) {
+  if (!ALLOWED_ROUTES.includes(baseRoute)) {
     notFound();
   }
 

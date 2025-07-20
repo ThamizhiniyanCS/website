@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 
 import { getMetaJSON } from "@/lib/actions";
-import type { MetaJSONchild } from "@/lib/types";
+import type { MetaJSON, MetaJSONchild } from "@/lib/types";
 import { CollapsibleContent } from "@/components/ui/collapsible";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { useSidebarContext } from ".";
+import { useSidebarParams } from "./nuqs/client";
 import SidebarCollapsibleDirectory from "./sidebar-collapsible-directory";
 import SidebarFile from "./sidebar-file";
 
@@ -26,6 +27,7 @@ export default function SidebarCollapsibleDirectoryContent({
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { cache } = useSidebarContext();
+  const [params, setParams] = useSidebarParams();
 
   useEffect(() => {
     if (!contents && isOpen) {
@@ -66,7 +68,7 @@ export default function SidebarCollapsibleDirectoryContent({
             title={each.title}
             href={{
               pathname: "/" + basePathname + "/" + each.slug,
-              // query: root != null ? { root } : undefined,
+              query: params.root != null ? { root: params.root } : undefined,
             }}
           />
         ),

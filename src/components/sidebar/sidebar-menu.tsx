@@ -1,4 +1,4 @@
-const SidebarMenu = ({}: { pathname: string }) => {
+const SidebarMenu = () => {
   return <div></div>;
 };
 

@@ -15,25 +15,25 @@ import { MetaJSON, MetaJSONchild } from "@/lib/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 
-import { useSidebarParams } from "./nuqs/client";
+// import { useSidebarParams } from "./nuqs/client";
 import SidebarCollapsibleDirectory from "./sidebar-collapsible-directory";
 
 type SidebarContextType = {
-  root: string | undefined;
   pathnameArray: RefObject<string[]>;
   cache: RefObject<Record<string, MetaJSON | MetaJSONchild[]>>;
-  setRoot: (root: string | undefined) => void;
 };
 
 // optional fallback for non-wrapped components
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
-const Sidebar = ({ baseRoute }: { baseRoute: string }) => {
-  const [params, setParams] = useSidebarParams();
-
-  const [root, setRoot] = useState<string | undefined>(
-    params.root ? params.root : undefined,
-  );
+const Sidebar = ({
+  baseRoute,
+  variant,
+}: {
+  baseRoute: string;
+  variant: "default" | "directory";
+}) => {
+  // const [params, setParams] = useSidebarParams();
 
   const pathname = usePathname();
   const slugArray = pathname.split("/").filter((each) => each.length > 0);
@@ -47,30 +47,36 @@ const Sidebar = ({ baseRoute }: { baseRoute: string }) => {
   const cache = useRef<Record<string, MetaJSON>>({});
 
   useEffect(() => {
-    if (contents != undefined) {
+    if (contents !== undefined) {
       setIsLoading(false);
-    } else {
-      if (cache.current[pathnameArray.current[0]]) {
-        setContents(cache.current[pathnameArray.current[0]]);
+      return;
+    }
+
+    const load = async () => {
+      const pn = pathnameArray.current[0];
+
+      if (cache.current[pn]) {
+        setContents(cache.current[pn]);
+        setIsLoading(false);
         return;
       }
 
-      getMetaJSON(pathnameArray.current[0]).then((res) => {
-        if (res) {
-          setContents(res);
-          cache.current[pathnameArray.current[0]] = res;
-        }
-      });
-    }
-  }, [contents]);
+      const res = await getMetaJSON(pn);
+      if (res) {
+        setContents(res);
+        cache.current[pn] = res;
+        setIsLoading(false);
+      }
+    };
+
+    load();
+  }, []);
 
   return (
     <SidebarContext.Provider
       value={{
-        root,
         pathnameArray,
         cache,
-        setRoot,
       }}
     >
       <ScrollArea className="size-full px-2">
@@ -88,13 +94,15 @@ const Sidebar = ({ baseRoute }: { baseRoute: string }) => {
               ))}
             </div>
           </div>
-        ) : (
+        ) : variant === "directory" ? (
           <SidebarCollapsibleDirectory
             pathname={baseRoute + "/" + (contents?.slug || "slug")}
             slug={contents?.slug || "slug"}
             title={contents?.title || "Title"}
             children={contents?.children}
           />
+        ) : (
+          <div>Conten</div>
         )}
       </ScrollArea>
     </SidebarContext.Provider>

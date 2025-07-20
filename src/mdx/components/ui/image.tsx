@@ -1,7 +1,7 @@
 // import Image from "next/image";
-import { ImageZoom } from "@/components/ui/kibo-ui/image-zoom";
-import { isFullUrl } from "@/lib/utils";
 import { CDN_URL } from "@/lib/constants";
+import { isFullUrl } from "@/lib/utils";
+import { ImageZoom } from "@/components/ui/kibo-ui/image-zoom";
 
 const MdxImage = ({
   props,
@@ -11,18 +11,18 @@ const MdxImage = ({
   pathname: string;
 }) => {
   return (
-    <ImageZoom className="bg-muted mx-auto size-fit rounded-lg">
+    <ImageZoom className="bg-muted mx-auto aspect-video rounded-lg">
       {isFullUrl(props.src as string) ? (
         <img
           src={props.src}
           alt={props.alt || "Image"}
-          className="h-full w-full rounded-lg object-cover"
+          className="h-full w-full rounded-lg object-contain"
         />
       ) : (
         <img
           src={CDN_URL + pathname + "/" + props.src || ""}
           alt={props.alt || "Image"}
-          className="h-full w-full rounded-lg object-cover"
+          className="h-full w-full rounded-lg object-contain"
         />
       )}
     </ImageZoom>

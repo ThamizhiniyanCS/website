@@ -27,7 +27,10 @@ export default async function Layout({
         style={{ overflow: "visible" }}
       >
         <div className="sticky top-0 h-screen w-full px-4 pt-16">
-          <Sidebar baseRoute={baseRoute} />
+          <Sidebar
+            baseRoute={baseRoute}
+            variant={["writeups"].includes(baseRoute) ? "directory" : "default"}
+          />
         </div>
       </ResizablePanel>
 
