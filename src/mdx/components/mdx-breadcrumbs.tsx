@@ -58,7 +58,7 @@ export default async function MdxBreadcrumbs({
 
 export const MdxBreadcrumbsSkeleton = () => {
   return (
-    <Breadcrumb>
+    <Breadcrumb className="px-10 pb-5">
       <BreadcrumbList>
         <BreadcrumbItem>
           <Skeleton className="h-4 w-[8rem] rounded-full" />

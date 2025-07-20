@@ -1,7 +1,14 @@
 "use client";
 
-import { title } from "process";
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  RefObject,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { usePathname } from "next/navigation";
 
 import { getMetaJSON } from "@/lib/actions";
 import { MetaJSON, MetaJSONchild } from "@/lib/types";
@@ -9,80 +16,65 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { useSidebarParams } from "./nuqs/client";
+import SidebarCollapsibleDirectory from "./sidebar-collapsible-directory";
 
 type SidebarContextType = {
   root: string | undefined;
-  tree: MetaJSON | undefined;
-  opened: string[];
+  pathnameArray: RefObject<string[]>;
+  cache: RefObject<Record<string, MetaJSON | MetaJSONchild[]>>;
   setRoot: (root: string | undefined) => void;
-  setTree: (tree: MetaJSON | undefined) => void;
-  setOpened: (opened: string[]) => void;
 };
 
 // optional fallback for non-wrapped components
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
-const Sidebar = ({
-  baseSlug,
-  pathnameArray,
-}: {
-  baseSlug: string;
-  pathnameArray: string[];
-}) => {
+const Sidebar = ({ baseSlug }: { baseSlug: string }) => {
   const [params, setParams] = useSidebarParams();
 
   const [root, setRoot] = useState<string | undefined>(
     params.root ? params.root : undefined,
   );
 
-  const [tree, setTree] = useState<MetaJSON | undefined>(undefined);
-  const [opened, setOpened] = useState<string[]>([]);
+  const pathname = usePathname();
+  const slugArray = pathname.split("/").filter((each) => each.length > 0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  type Node = {
-    title: string;
-    description: string;
-    children: Node[];
-  };
-
-  const ensurePath = (root: Node, path: string[]): Node => {
-    let current = root;
-
-    for (let i = 1; i < path.length; i++) {
-      const title = path[i];
-      let child = current.children.find((c) => c.title === title);
-
-      if (!child) {
-        child = {
-          title,
-          description: "",
-          children: [],
-        };
-        current.children.push(child);
-      }
-
-      current = child;
-    }
-
-    return current;
-  };
+  const pathnameArray = useRef(
+    slugArray
+      .map((each, index) => slugArray.slice(0, index + 1).join("/"))
+      .slice(1),
+  );
+  // console.log(pathname);
+  // console.log(slugArray);
+  // console.log(pathnameArray);
+  const [contents, setContents] = useState<MetaJSON | undefined>(undefined);
+  const cache = useRef<Record<string, MetaJSON>>({});
 
   useEffect(() => {
-    if (tree != undefined) {
-      console.log("Tree:", tree);
+    if (contents != undefined) {
       setIsLoading(false);
     } else {
-      getMetaJSON(pathnameArray[0]).then((res) => {
+      if (cache.current[pathnameArray.current[0]]) {
+        setContents(cache.current[pathnameArray.current[0]]);
+        return;
+      }
+
+      getMetaJSON(pathnameArray.current[0]).then((res) => {
         if (res) {
-          setTree(res);
+          setContents(res);
+          cache.current[pathnameArray.current[0]] = res;
         }
       });
     }
-  }, [tree]);
+  }, [contents]);
 
   return (
     <SidebarContext.Provider
-      value={{ root, tree, opened, setRoot, setTree, setOpened }}
+      value={{
+        root,
+        pathnameArray,
+        cache,
+        setRoot,
+      }}
     >
       <ScrollArea className="size-full px-2">
         {isLoading ? (
@@ -100,20 +92,17 @@ const Sidebar = ({
             </div>
           </div>
         ) : (
-          <></>
+          <SidebarCollapsibleDirectory
+            pathname={baseSlug + "/" + (contents?.slug || "slug")}
+            slug={contents?.slug || "slug"}
+            title={contents?.title || "Title"}
+            children={contents?.children}
+          />
         )}
       </ScrollArea>
     </SidebarContext.Provider>
   );
 };
-
-// <SidebarCollapsibleDirectory
-//             slug={tree?.slug || "slug"}
-//             title={tree?.title || "Title"}
-//             children={tree?.children}
-//             pathname={baseSlug + "/" + (tree?.slug || "slug")}
-//             depth={0}
-//           />
 
 export default Sidebar;
 

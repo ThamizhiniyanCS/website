@@ -12,14 +12,16 @@ export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ slug: string[] }>;
+  params: Promise<{ baseSlug: string }>;
 }>) {
-  const { slug } = await params;
+  const { baseSlug } = await params;
 
-  const sidebarPathnameArray = ["labs/" + slug[0], ...slug.slice(1)];
-  const pathname = `labs/${slug.join("/")}`;
-  const pathnameArray = ["labs", ...slug];
-  const absoultePathname = `${CDN_URL}${pathname}`;
+  // const sidebarPathnameArray = slug.map(
+  //   (each, index) => "labs/" + slug.slice(0, index + 1).join("/"),
+  // );
+  // const pathname = `labs/${slug.join("/")}`;
+  // const pathnameArray = ["labs", ...slug];
+  // const absoultePathname = `${CDN_URL}${pathname}`;
 
   return (
     <ResizablePanelGroup
@@ -34,7 +36,7 @@ export default async function Layout({
         style={{ overflow: "visible" }}
       >
         <div className="sticky top-0 h-screen w-full px-4 pt-16">
-          <Sidebar baseSlug="labs" pathnameArray={sidebarPathnameArray} />
+          <Sidebar baseSlug="labs" />
         </div>
       </ResizablePanel>
 

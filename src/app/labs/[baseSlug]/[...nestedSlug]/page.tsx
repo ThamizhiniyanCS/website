@@ -19,14 +19,14 @@ export default async function Page({
   params,
   searchParams,
 }: {
-  params: Promise<{ slug: string[] }>;
+  params: Promise<{ baseSlug: string; nestedSlug: string[] }>;
   searchParams: Promise<SearchParams>;
 }) {
-  const { slug } = await params;
+  const { baseSlug, nestedSlug } = await params;
   const { root } = await loadSidebarParams(searchParams);
 
-  const pathname = `labs/${slug.join("/")}`;
-  const pathnameArray = ["labs", ...slug];
+  const pathname = `labs/${baseSlug}/${nestedSlug.join("/")}`;
+  const pathnameArray = ["labs", baseSlug, ...nestedSlug];
   const absoultePathname = `${CDN_URL}${pathname}`;
 
   const metaJSON = await getMetaJSON(pathname);
