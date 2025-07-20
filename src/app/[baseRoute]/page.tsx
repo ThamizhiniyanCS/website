@@ -1,11 +1,24 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import MdxErrorComponent from "@/mdx/components/mdx-error-component";
 
 import { getMetaJSON } from "@/lib/actions";
 import { Card, CardContent } from "@/components/ui/card";
 
-export default async function Page() {
-  const response = await getMetaJSON("labs");
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ baseRoute: string }>;
+}) {
+  const { baseRoute } = await params;
+
+  const allowedRoutes = ["labs", "workshops", "writeups"];
+
+  if (!allowedRoutes.includes(baseRoute)) {
+    notFound();
+  }
+
+  const response = await getMetaJSON(baseRoute);
 
   if (!response) {
     return <MdxErrorComponent error="Failed to fetch meta.json" />;
@@ -21,7 +34,7 @@ export default async function Page() {
         {response.children.map((child, index) => (
           <Link
             key={index}
-            href={`/labs/${child.slug}`}
+            href={baseRoute + "/" + child.slug}
             className="no-underline"
           >
             <Card

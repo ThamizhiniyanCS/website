@@ -12,16 +12,16 @@ export default async function Page({
   params,
   searchParams,
 }: {
-  params: Promise<{ baseSlug: string }>;
+  params: Promise<{ baseRoute: string; baseSlug: string }>;
   searchParams: Promise<SearchParams>;
 }) {
-  const { baseSlug } = await params;
+  const { baseRoute, baseSlug } = await params;
   const { root } = await loadSidebarParams(searchParams);
 
-  const pathname = `labs/${baseSlug}`;
-  const pathnameArray = ["labs", baseSlug];
+  const pathname = baseRoute + "/" + baseSlug;
+  const pathnameArray = [baseRoute, baseSlug];
 
-  const response = await getMetaJSON("labs/" + baseSlug);
+  const response = await getMetaJSON(pathname);
 
   if (!response) {
     return <MdxErrorComponent error="Failed to fetch meta.json" />;
@@ -44,8 +44,6 @@ export default async function Page({
       depth: 2,
     },
   ];
-
-  console.log(response);
 
   return (
     <>

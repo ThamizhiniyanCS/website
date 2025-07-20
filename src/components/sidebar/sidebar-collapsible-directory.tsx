@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   ChevronDownIcon,
   FolderClosedIcon,
@@ -21,9 +22,7 @@ import {
 } from "@/components/ui/tooltip";
 
 import { useSidebarContext } from ".";
-import SidebarCollapsibleDirectoryContent, {
-  SidebarCollapsibleDirectoryContentSkeleton,
-} from "./sidebar-collapsible-directory-content";
+import SidebarCollapsibleDirectoryContent from "./sidebar-collapsible-directory-content";
 
 const SidebarCollapsibleDirectory = ({
   pathname,
@@ -37,6 +36,7 @@ const SidebarCollapsibleDirectory = ({
   children?: MetaJSONchild[];
 }) => {
   const { pathnameArray } = useSidebarContext();
+  const browserPathname = usePathname();
 
   const [isOpen, setIsOpen] = React.useState<boolean>(
     pathnameArray.current.includes(pathname),
@@ -50,9 +50,17 @@ const SidebarCollapsibleDirectory = ({
     <Collapsible
       open={isOpen}
       onOpenChange={setIsOpen}
-      className="border-primary flex w-full flex-col gap-2 border-l"
+      className={cn(
+        "border-l-border flex w-full flex-col gap-2 border-l",
+        browserPathname === "/" + pathname && "border-l-primary",
+      )}
     >
-      <div className="flex items-center justify-between gap-4">
+      <div
+        className={cn(
+          "flex items-center justify-between gap-4",
+          browserPathname === "/" + pathname && "bg-primary/10",
+        )}
+      >
         <div className="flex items-center">
           <CollapsibleTrigger asChild>
             <Button variant="ghost" size="icon" className="size-8">

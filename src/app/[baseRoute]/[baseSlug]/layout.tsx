@@ -1,5 +1,3 @@
-import { getMetaJSON } from "@/lib/actions";
-import { CDN_URL } from "@/lib/constants";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -12,16 +10,9 @@ export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-  params: Promise<{ baseSlug: string }>;
+  params: Promise<{ baseRoute: string; baseSlug: string }>;
 }>) {
-  const { baseSlug } = await params;
-
-  // const sidebarPathnameArray = slug.map(
-  //   (each, index) => "labs/" + slug.slice(0, index + 1).join("/"),
-  // );
-  // const pathname = `labs/${slug.join("/")}`;
-  // const pathnameArray = ["labs", ...slug];
-  // const absoultePathname = `${CDN_URL}${pathname}`;
+  const { baseRoute } = await params;
 
   return (
     <ResizablePanelGroup
@@ -36,7 +27,7 @@ export default async function Layout({
         style={{ overflow: "visible" }}
       >
         <div className="sticky top-0 h-screen w-full px-4 pt-16">
-          <Sidebar baseSlug="labs" />
+          <Sidebar baseRoute={baseRoute} />
         </div>
       </ResizablePanel>
 

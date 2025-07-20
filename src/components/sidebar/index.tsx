@@ -28,7 +28,7 @@ type SidebarContextType = {
 // optional fallback for non-wrapped components
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
-const Sidebar = ({ baseSlug }: { baseSlug: string }) => {
+const Sidebar = ({ baseRoute }: { baseRoute: string }) => {
   const [params, setParams] = useSidebarParams();
 
   const [root, setRoot] = useState<string | undefined>(
@@ -43,9 +43,6 @@ const Sidebar = ({ baseSlug }: { baseSlug: string }) => {
       .map((each, index) => slugArray.slice(0, index + 1).join("/"))
       .slice(1),
   );
-  // console.log(pathname);
-  // console.log(slugArray);
-  // console.log(pathnameArray);
   const [contents, setContents] = useState<MetaJSON | undefined>(undefined);
   const cache = useRef<Record<string, MetaJSON>>({});
 
@@ -93,7 +90,7 @@ const Sidebar = ({ baseSlug }: { baseSlug: string }) => {
           </div>
         ) : (
           <SidebarCollapsibleDirectory
-            pathname={baseSlug + "/" + (contents?.slug || "slug")}
+            pathname={baseRoute + "/" + (contents?.slug || "slug")}
             slug={contents?.slug || "slug"}
             title={contents?.title || "Title"}
             children={contents?.children}

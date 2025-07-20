@@ -19,14 +19,18 @@ export default async function Page({
   params,
   searchParams,
 }: {
-  params: Promise<{ baseSlug: string; nestedSlug: string[] }>;
+  params: Promise<{
+    baseRoute: string;
+    baseSlug: string;
+    nestedSlug: string[];
+  }>;
   searchParams: Promise<SearchParams>;
 }) {
-  const { baseSlug, nestedSlug } = await params;
+  const { baseRoute, baseSlug, nestedSlug } = await params;
   const { root } = await loadSidebarParams(searchParams);
 
-  const pathname = `labs/${baseSlug}/${nestedSlug.join("/")}`;
-  const pathnameArray = ["labs", baseSlug, ...nestedSlug];
+  const pathname = baseRoute + "/" + baseSlug + "/" + nestedSlug.join("/");
+  const pathnameArray = [baseRoute, baseSlug, ...nestedSlug];
   const absoultePathname = `${CDN_URL}${pathname}`;
 
   const metaJSON = await getMetaJSON(pathname);
@@ -112,7 +116,7 @@ export default async function Page({
         style={{ overflow: "visible" }}
       >
         <div className="sticky top-0 h-screen w-full pt-16">
-          {/* <MdxToc toc={toc} /> */}
+          <MdxToc toc={toc} />
         </div>
       </ResizablePanel>
     </>
