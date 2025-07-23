@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import MdxBreadcrumbs from "@/mdx/components/mdx-breadcrumbs";
 import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer";
 import MdxErrorComponent from "@/mdx/components/mdx-error-component";
+import MdxPreviousNextButtons from "@/mdx/components/mdx-previous-next-buttons";
 import MdxRenderer from "@/mdx/components/mdx-renderer";
 import MdxToc from "@/mdx/components/mdx-toc";
 import parseMdx from "@/mdx/lib/parseMdx";
@@ -49,7 +50,7 @@ export default async function Page({
     }
 
     const source = await response.text();
-    const result = await parseMdx(source, pathname);
+    const result = await parseMdx(source, baseRoute, baseSlug, pathname);
 
     if (result.status === "failed") {
       console.error("Faailed");
@@ -106,6 +107,12 @@ export default async function Page({
             content && <MdxRenderer content={content} />
           )}
         </div>
+
+        <MdxPreviousNextButtons
+          baseRoute={baseRoute}
+          baseSlug={baseSlug}
+          nestedSlug={nestedSlug}
+        />
       </ResizablePanel>
 
       <ResizableHandle withHandle />

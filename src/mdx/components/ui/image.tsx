@@ -5,13 +5,28 @@ import { ImageZoom } from "@/components/ui/kibo-ui/image-zoom";
 
 const MdxImage = ({
   props,
+  baseRoute,
+  baseSlug,
   pathname,
 }: {
   props: React.ComponentPropsWithoutRef<"img">;
+  baseRoute: string;
+  baseSlug: string;
   pathname: string;
 }) => {
+  let path = pathname + "/" + props.src;
+
+  if (["labs", "workshops"].includes(baseRoute)) {
+    path =
+      baseRoute +
+      "/" +
+      baseSlug +
+      "/" +
+      (props.src as string).replaceAll("../", "");
+  }
+
   return (
-    <ImageZoom className="bg-muted mx-auto aspect-video rounded-lg">
+    <ImageZoom className="bg-muted mx-auto flex aspect-video items-center justify-center rounded-lg">
       {isFullUrl(props.src as string) ? (
         <img
           src={props.src}
@@ -20,7 +35,7 @@ const MdxImage = ({
         />
       ) : (
         <img
-          src={CDN_URL + pathname + "/" + props.src || ""}
+          src={CDN_URL + path || ""}
           alt={props.alt || "Image"}
           className="h-full w-full rounded-lg object-contain"
         />

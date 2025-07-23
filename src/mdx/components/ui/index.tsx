@@ -1,4 +1,3 @@
-import MdxImage from "./image";
 import {
   Accordion,
   AccordionContent,
@@ -15,32 +14,42 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
-  Callout,
-  CalloutTitle,
-  CalloutDescription,
-  CalloutContent,
-} from "./callout";
-import {
   Table,
   TableBody,
   TableCaption,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
-  TableFooter,
 } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+import {
+  Callout,
+  CalloutContent,
+  CalloutDescription,
+  CalloutTitle,
+} from "./callout";
+import MdxImage from "./image";
+import LinkHoverCard from "./link-hover-card";
 import { Step, Steps } from "./steps";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import LinkHoverCard from "./link-hover-card";
-
-export const mdxComponents = (pathname: string) => ({
+export const mdxComponents = (
+  baseRoute: string,
+  baseSlug: string,
+  pathname: string,
+) => ({
   a: (props: React.ComponentPropsWithoutRef<"a">) => (
     <LinkHoverCard props={props} />
   ),
   img: (props: React.ComponentPropsWithoutRef<"img">) => (
-    <MdxImage props={props} pathname={pathname} />
+    <MdxImage
+      props={props}
+      baseRoute={baseRoute}
+      baseSlug={baseSlug}
+      pathname={pathname}
+    />
   ),
 
   // NOTE: Accordion

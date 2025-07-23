@@ -9,14 +9,18 @@ import {
   useState,
 } from "react";
 import { usePathname } from "next/navigation";
+import { LoaderCircleIcon } from "lucide-react";
 
 import { getMetaJSON } from "@/lib/actions";
 import { MetaJSON, MetaJSONchild } from "@/lib/types";
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// import { useSidebarParams } from "./nuqs/client";
+import BaseSlugSelector from "./base-slug-selector";
 import SidebarCollapsibleDirectory from "./sidebar-collapsible-directory";
+
+// import { useSidebarParams } from "./nuqs/client";
 
 type SidebarContextType = {
   pathnameArray: RefObject<string[]>;
@@ -28,9 +32,11 @@ const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
 const Sidebar = ({
   baseRoute,
+  baseSlug,
   variant,
 }: {
   baseRoute: string;
+  baseSlug: string;
   variant: "default" | "directory";
 }) => {
   // const [params, setParams] = useSidebarParams();
@@ -45,6 +51,22 @@ const Sidebar = ({
   );
   const [contents, setContents] = useState<MetaJSON | undefined>(undefined);
   const cache = useRef<Record<string, MetaJSON>>({});
+
+  const [baseRouteMeta, setBaseRouteMeta] = useState<MetaJSON | undefined>(
+    undefined,
+  );
+
+  useEffect(() => {
+    const load = async () => {
+      const res = await getMetaJSON(baseRoute);
+
+      if (res) {
+        setBaseRouteMeta(res);
+      }
+    };
+
+    load();
+  }, []);
 
   useEffect(() => {
     if (contents !== undefined) {
@@ -80,6 +102,18 @@ const Sidebar = ({
       }}
     >
       <ScrollArea className="size-full px-2">
+        {baseRouteMeta ? (
+          <BaseSlugSelector meta={baseRouteMeta} defaultValue={baseSlug} />
+        ) : (
+          <Button
+            variant="outline"
+            role="combobox"
+            className="mb-4 flex w-full items-center justify-center"
+          >
+            <LoaderCircleIcon className="animate-spin" />
+          </Button>
+        )}
+
         {isLoading ? (
           <div className="flex flex-col gap-2 border-l py-2 pr-4">
             <Skeleton className="ml-4 h-4 w-full max-w-60 rounded-full" />
@@ -94,7 +128,7 @@ const Sidebar = ({
               ))}
             </div>
           </div>
-        ) : variant === "directory" ? (
+        ) : variant === "default" ? (
           <SidebarCollapsibleDirectory
             pathname={baseRoute + "/" + (contents?.slug || "slug")}
             slug={contents?.slug || "slug"}

@@ -1,13 +1,17 @@
-import { evaluate, type EvaluateOptions } from "next-mdx-remote-client/rsc";
-import type { Frontmatter, Scope } from "./types";
-
-import { readingTime } from "reading-time-estimator";
-import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
-
 // NOTE: MDX Related Components
 import { mdxComponents } from "@/mdx/components/ui";
-
+import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers";
 import { fromHtmlIsomorphic } from "hast-util-from-html-isomorphic";
+import { evaluate, type EvaluateOptions } from "next-mdx-remote-client/rsc";
+import { readingTime } from "reading-time-estimator";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeExpressiveCode, {
+  type RehypeExpressiveCodeOptions,
+} from "rehype-expressive-code";
+import rehypeKatex from "rehype-katex";
+import rehypeSlug from "rehype-slug";
+// NOTE: Rehype Plugins
+import rehypeUnwrapImages from "rehype-unwrap-images";
 /**
  * @import {ElementContent} from 'hast'
  */
@@ -18,14 +22,7 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import remarkNormalizeHeadings from "remark-normalize-headings";
 
-// NOTE: Rehype Plugins
-import rehypeUnwrapImages from "rehype-unwrap-images";
-import rehypeExpressiveCode, {
-  type RehypeExpressiveCodeOptions,
-} from "rehype-expressive-code";
-import rehypeKatex from "rehype-katex";
-import rehypeSlug from "rehype-slug";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import type { Frontmatter, Scope } from "./types";
 
 // NOTE: Rehype Expressive Code Options
 const rehypeExpressiveCodeOptions: RehypeExpressiveCodeOptions = {
@@ -39,6 +36,8 @@ const rehypeExpressiveCodeOptions: RehypeExpressiveCodeOptions = {
 
 export default async function (
   source: string,
+  baseRoute: string,
+  baseSlug: string,
   pathname: string,
 ): Promise<
   | {
@@ -93,7 +92,7 @@ export default async function (
   >({
     source,
     options,
-    components: mdxComponents(pathname),
+    components: mdxComponents(baseRoute, baseSlug, pathname),
   });
 
   if (error) {

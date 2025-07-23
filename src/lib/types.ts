@@ -13,10 +13,13 @@ export type MetaJSONchild =
     };
 
 export interface MetaJSON {
+  group?: boolean;
   slug: string;
   title: string;
   children: MetaJSONchild[];
 }
+
+export type MetaJsonArray = MetaJSON[];
 
 export interface TocItem {
   title?: React.ReactNode;

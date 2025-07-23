@@ -12,7 +12,7 @@ export default async function Layout({
   children: React.ReactNode;
   params: Promise<{ baseRoute: string; baseSlug: string }>;
 }>) {
-  const { baseRoute } = await params;
+  const { baseRoute, baseSlug } = await params;
 
   return (
     <ResizablePanelGroup
@@ -29,6 +29,7 @@ export default async function Layout({
         <div className="sticky top-0 h-screen w-full px-4 pt-16">
           <Sidebar
             baseRoute={baseRoute}
+            baseSlug={baseSlug}
             variant={["writeups"].includes(baseRoute) ? "directory" : "default"}
           />
         </div>

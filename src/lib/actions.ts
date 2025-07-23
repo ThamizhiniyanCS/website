@@ -1,9 +1,11 @@
 "use server";
 
-import type { MetaJSON } from "./types";
 import { CDN_URL } from "./constants";
+import type { MetaJSON } from "./types";
 
-export async function getMetaJSON(pathname: string): Promise<MetaJSON | false> {
+export async function getMetaJSON(
+  pathname: string,
+): Promise<MetaJSON | MetaJSON | undefined> {
   try {
     const url = `${CDN_URL}${pathname}/meta.json`;
 
@@ -16,12 +18,12 @@ export async function getMetaJSON(pathname: string): Promise<MetaJSON | false> {
 
     if (!response.ok) {
       console.log(`[-] meta.json not found at ${url}`);
-      return false;
+      return undefined;
     }
 
     return await response.json();
   } catch (err) {
     console.error("Error fetching meta.json:", err);
-    return false;
+    return undefined;
   }
 }

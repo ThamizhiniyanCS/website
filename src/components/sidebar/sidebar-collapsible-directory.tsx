@@ -53,7 +53,7 @@ const SidebarCollapsibleDirectory = ({
       open={isOpen}
       onOpenChange={setIsOpen}
       className={cn(
-        "border-l-border flex w-full flex-col gap-2 border-l",
+        "border-l-border flex w-full flex-col border-l",
         browserPathname === "/" + pathname && "border-l-primary",
         // params.root && !browserPathname.startsWith(params.root) && "hidden",
       )}
