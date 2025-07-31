@@ -128,15 +128,14 @@ const Sidebar = ({
               ))}
             </div>
           </div>
-        ) : variant === "default" ? (
+        ) : (
           <SidebarCollapsibleDirectory
             pathname={baseRoute + "/" + (contents?.slug || "slug")}
             slug={contents?.slug || "slug"}
             title={contents?.title || "Title"}
             children={contents?.children}
+            isRoot={contents?.root}
           />
-        ) : (
-          <div>Conten</div>
         )}
       </ScrollArea>
     </SidebarContext.Provider>

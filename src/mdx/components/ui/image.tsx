@@ -1,5 +1,5 @@
 // import Image from "next/image";
-import { CDN_URL } from "@/lib/constants";
+import { CDN_URL, DIRECTORIES } from "@/lib/constants";
 import { isFullUrl } from "@/lib/utils";
 import { ImageZoom } from "@/components/ui/kibo-ui/image-zoom";
 
@@ -16,7 +16,7 @@ const MdxImage = ({
 }) => {
   let path = pathname + "/" + props.src;
 
-  if (["labs", "workshops"].includes(baseRoute)) {
+  if (!DIRECTORIES.includes(baseRoute)) {
     path =
       baseRoute +
       "/" +

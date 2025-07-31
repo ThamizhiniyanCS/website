@@ -35,7 +35,7 @@ const MdxPreviousNextButtons = async ({
     : undefined;
 
   return (
-    <div className="grid grid-cols-2 gap-5 px-10">
+    <div className="mt-10 grid grid-cols-2 gap-5 px-10">
       <Button variant="outline" asChild>
         <Link
           className={cn(
@@ -59,7 +59,7 @@ const MdxPreviousNextButtons = async ({
             )}
           />
 
-          <div className="flex flex-col">
+          <div className="flex flex-col items-end">
             <p
               className={cn(
                 "text-sm",

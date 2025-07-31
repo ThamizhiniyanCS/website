@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 
 import { getMetaJSON } from "@/lib/actions";
-import type { MetaJSON, MetaJSONchild } from "@/lib/types";
+import type { MetaJSONchild } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { CollapsibleContent } from "@/components/ui/collapsible";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -17,10 +18,14 @@ export default function SidebarCollapsibleDirectoryContent({
   contents,
   setContentsAction,
   isOpen,
+  isGroup,
+  isRoot,
 }: {
   basePathname: string;
   contents?: MetaJSONchild[];
   isOpen: boolean;
+  isGroup?: boolean;
+  isRoot?: boolean;
   setContentsAction: React.Dispatch<
     React.SetStateAction<MetaJSONchild[] | undefined>
   >;
@@ -53,13 +58,19 @@ export default function SidebarCollapsibleDirectoryContent({
   return isLoading ? (
     <SidebarCollapsibleDirectoryContentSkeleton />
   ) : (
-    <CollapsibleContent className="CollapsibleContent flex flex-col pl-4">
+    <CollapsibleContent
+      className={cn(
+        "CollapsibleContent flex flex-col",
+        !isRoot && !isGroup && "pl-4",
+      )}
+    >
       {contents?.map((each) =>
         each.type === "directory" ? (
           <SidebarCollapsibleDirectory
             key={basePathname + "/" + each.slug}
             title={each.title}
             slug={each.slug}
+            group={each.group}
             pathname={basePathname + "/" + each.slug}
           />
         ) : (
@@ -81,7 +92,7 @@ export function SidebarCollapsibleDirectoryContentSkeleton() {
   return (
     <CollapsibleContent className="CollapsibleContent flex flex-col pl-4">
       {Array.from({ length: 5 }, (_, index) => (
-        <div key={index} className="border-l py-2 pr-4 pl-6 font-mono text-sm">
+        <div key={index} className="border-l px-4 py-2 font-mono text-sm">
           <Skeleton className="h-4 w-full max-w-60 rounded-full" />
         </div>
       ))}

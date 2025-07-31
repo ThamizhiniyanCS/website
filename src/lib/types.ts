@@ -7,13 +7,14 @@ export type MetaJSONchild =
       filename: string;
     }
   | {
-      slug: string;
       type: "directory";
+      slug: string;
       title: string;
+      group?: boolean;
     };
 
 export interface MetaJSON {
-  group?: boolean;
+  root?: boolean;
   slug: string;
   title: string;
   children: MetaJSONchild[];

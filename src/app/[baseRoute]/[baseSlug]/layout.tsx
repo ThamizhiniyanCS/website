@@ -1,3 +1,4 @@
+import { DIRECTORIES } from "@/lib/constants";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -30,7 +31,7 @@ export default async function Layout({
           <Sidebar
             baseRoute={baseRoute}
             baseSlug={baseSlug}
-            variant={["writeups"].includes(baseRoute) ? "directory" : "default"}
+            variant={DIRECTORIES.includes(baseRoute) ? "directory" : "default"}
           />
         </div>
       </ResizablePanel>

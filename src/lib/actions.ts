@@ -5,7 +5,7 @@ import type { MetaJSON } from "./types";
 
 export async function getMetaJSON(
   pathname: string,
-): Promise<MetaJSON | MetaJSON | undefined> {
+): Promise<MetaJSON | undefined> {
   try {
     const url = `${CDN_URL}${pathname}/meta.json`;
 

@@ -11,7 +11,7 @@ import type { SearchParams } from "nuqs/server";
 import { ImperativePanelGroupHandle } from "react-resizable-panels";
 
 import { getMetaJSON } from "@/lib/actions";
-import { CDN_URL } from "@/lib/constants";
+import { CDN_URL, DIRECTORIES } from "@/lib/constants";
 import { TocItem } from "@/lib/types";
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
 import { loadSidebarParams } from "@/components/sidebar/nuqs/server";
@@ -40,7 +40,11 @@ export default async function Page({
   let content: React.ReactNode = null;
 
   if (!metaJSON) {
-    const response = await fetch(`${absoultePathname}.mdx`);
+    const response = await fetch(
+      DIRECTORIES.includes(baseRoute)
+        ? `${absoultePathname}/index.mdx`
+        : `${absoultePathname}.mdx`,
+    );
 
     if (!response.ok) {
       // throw new Error(`Failed to fetch MDX from : ${response.statusText}`);

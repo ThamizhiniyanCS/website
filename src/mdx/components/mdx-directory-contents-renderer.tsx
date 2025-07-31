@@ -1,6 +1,7 @@
-import type { MetaJSON } from "@/lib/types";
 import Link from "next/link";
-import { FolderIcon, FileIcon, LinkIcon } from "lucide-react";
+import { FileIcon, FolderIcon, LinkIcon } from "lucide-react";
+
+import type { MetaJSON } from "@/lib/types";
 import { Card, CardContent } from "@/components/ui/card";
 
 const DirectoryContentsRenderer = ({

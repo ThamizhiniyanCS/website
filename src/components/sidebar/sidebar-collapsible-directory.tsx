@@ -30,31 +30,40 @@ const SidebarCollapsibleDirectory = ({
   pathname,
   title,
   slug,
+  group,
   children,
+  isRoot,
 }: {
   pathname: string;
   title: string;
   slug: string;
+  group?: boolean;
   children?: MetaJSONchild[];
+  isRoot?: boolean;
 }) => {
   const { pathnameArray } = useSidebarContext();
   const browserPathname = usePathname();
   // const [params, setParams] = useSidebarParams();
 
   const [isOpen, setIsOpen] = React.useState<boolean>(
-    pathnameArray.current.includes(pathname),
+    group ? true : pathnameArray.current.includes(pathname),
   );
   const [contents, setContents] = React.useState<MetaJSONchild[] | undefined>(
     children,
   );
+
+  React.useEffect(() => {
+    browserPathname.startsWith("/" + pathname + "/") && console.log(pathname);
+  }, [browserPathname]);
 
   return (
     <Collapsible
       open={isOpen}
       onOpenChange={setIsOpen}
       className={cn(
-        "border-l-border flex w-full flex-col border-l",
-        browserPathname === "/" + pathname && "border-l-primary",
+        "flex w-full flex-col",
+        !isRoot && !group && "border-l-border border-l",
+        browserPathname === "/" + pathname && !group && "border-l-primary",
         // params.root && !browserPathname.startsWith(params.root) && "hidden",
       )}
     >
@@ -64,32 +73,39 @@ const SidebarCollapsibleDirectory = ({
           browserPathname === "/" + pathname && "bg-primary/10",
         )}
       >
-        <div className="flex items-center">
-          <CollapsibleTrigger asChild>
-            <Button variant="ghost" size="icon" className="size-8">
-              <ChevronDownIcon
-                className={cn(isOpen ? "rotate-0" : "-rotate-90")}
-              />
-              <span className="sr-only">Toggle</span>
-            </Button>
-          </CollapsibleTrigger>
-
-          {isOpen ? (
-            <FolderOpenIcon className="size-4 flex-none" />
+        {!isRoot &&
+          (group ? (
+            <p className="py-4 font-mono text-sm font-bold tracking-widest uppercase">
+              {title}
+            </p>
           ) : (
-            <FolderClosedIcon className="size-4 flex-none" />
-          )}
+            <div className="flex items-center">
+              <CollapsibleTrigger asChild>
+                <Button variant="ghost" size="icon" className="size-8">
+                  <ChevronDownIcon
+                    className={cn(isOpen ? "rotate-0" : "-rotate-90")}
+                  />
+                  <span className="sr-only">Toggle</span>
+                </Button>
+              </CollapsibleTrigger>
 
-          <Link
-            href={{
-              pathname: "/" + pathname,
-              // query: params.root != null ? { root: params.root } : undefined,
-            }}
-            className="ml-2 line-clamp-1 size-full text-sm font-semibold"
-          >
-            {title}
-          </Link>
-        </div>
+              {isOpen ? (
+                <FolderOpenIcon className="size-4 flex-none" />
+              ) : (
+                <FolderClosedIcon className="size-4 flex-none" />
+              )}
+
+              <Link
+                href={{
+                  pathname: "/" + pathname,
+                  // query: params.root != null ? { root: params.root } : undefined,
+                }}
+                className="ml-2 line-clamp-1 size-full text-sm font-semibold"
+              >
+                {title}
+              </Link>
+            </div>
+          ))}
 
         {/* FIX: Whenever the `root` query param is updated for the same path, the sidbar is not re-rendered */}
         {/* <Tooltip> */}
@@ -124,6 +140,8 @@ const SidebarCollapsibleDirectory = ({
         contents={contents}
         setContentsAction={setContents}
         isOpen={isOpen}
+        isGroup={group}
+        isRoot={isRoot}
       />
     </Collapsible>
   );
