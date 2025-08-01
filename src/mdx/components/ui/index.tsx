@@ -34,6 +34,7 @@ import {
 import MdxImage from "./image";
 import LinkHoverCard from "./link-hover-card";
 import { Step, Steps } from "./steps";
+import Video from "./video";
 
 export const mdxComponents = (
   baseRoute: string,
@@ -100,4 +101,15 @@ export const mdxComponents = (
   TableHeader,
   TableRow,
   TableFooter,
+
+  // NOTE: VideoPlayer
+
+  Video: (props: { src: string }) => (
+    <Video
+      src={props.src}
+      baseRoute={baseRoute}
+      baseSlug={baseSlug}
+      pathname={pathname}
+    />
+  ),
 });

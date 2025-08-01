@@ -32,6 +32,7 @@ export default async function MdxBreadcrumbs({
               {index + 1 < pathnameArray.length ? (
                 <BreadcrumbLink asChild>
                   <Link
+                    className="capitalize"
                     href={`/${pathnameArray.slice(0, index + 1).join("/")}`}
                   >
                     {metaJsonArrayResolved[index]
@@ -40,7 +41,7 @@ export default async function MdxBreadcrumbs({
                   </Link>
                 </BreadcrumbLink>
               ) : (
-                <BreadcrumbPage>
+                <BreadcrumbPage className="capitalize">
                   {metaJsonArrayResolved[index]
                     ? metaJsonArrayResolved[index].title
                     : pathname}
