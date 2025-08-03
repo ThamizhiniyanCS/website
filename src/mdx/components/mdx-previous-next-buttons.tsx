@@ -60,7 +60,7 @@ const MdxPreviousNextButtons = async ({
               Previous
             </p>
             {previousPage && (
-              <p className="line-clamp-1 text-base font-normal text-wrap">
+              <p className="text-base font-normal text-wrap">
                 {previousPage.title}
               </p>
             )}
@@ -95,7 +95,7 @@ const MdxPreviousNextButtons = async ({
             </p>
 
             {nextPage && (
-              <p className="line-clamp-1 text-base font-normal text-wrap">
+              <p className="text-base font-normal text-wrap">
                 {nextPage.title}
               </p>
             )}

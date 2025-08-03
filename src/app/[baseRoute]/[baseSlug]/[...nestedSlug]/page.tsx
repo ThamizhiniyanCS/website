@@ -15,6 +15,7 @@ import { getMetaJSON } from "@/lib/actions";
 import { CDN_URL, DIRECTORIES } from "@/lib/constants";
 import { TocItem } from "@/lib/types";
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
+import { Separator } from "@/components/ui/separator";
 import { loadSidebarParams } from "@/components/sidebar/nuqs/server";
 
 export default async function Page({
@@ -101,7 +102,10 @@ export default async function Page({
   return (
     <>
       <ResizablePanel defaultSize={60} minSize={40} className="pt-16">
-        <MdxBreadcrumbs pathnameArray={pathnameArray} />
+        <MdxBreadcrumbs
+          pathnameArray={pathnameArray}
+          frontmatterTitle={frontmatter?.title}
+        />
 
         <div className="w-full">
           {metaJSON ? (
@@ -132,6 +136,19 @@ export default async function Page({
         style={{ overflow: "visible" }}
       >
         <div className="sticky top-0 h-screen w-full pt-16">
+          {frontmatter?.lastmod && (
+            <>
+              <p className="p-2 font-mono text-sm">
+                <span className="text-muted-foreground">Last Updated:</span>{" "}
+                {new Date(frontmatter.lastmod).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </p>
+              <Separator className="mb-2 ml-2 max-w-[90%]" />
+            </>
+          )}
           <MdxToc toc={toc} />
         </div>
       </ResizablePanel>
