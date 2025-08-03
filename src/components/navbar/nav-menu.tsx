@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
 
+import type { MetaJSON } from "@/lib/types";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -52,7 +53,13 @@ const components: { title: string; href: string; description: string }[] = [
   },
 ];
 
-export default function NavMenu() {
+export default function NavMenu({
+  labsLinks,
+  writeupsLinks,
+}: {
+  labsLinks: MetaJSON;
+  writeupsLinks: MetaJSON;
+}) {
   return (
     <NavigationMenu viewport={false}>
       <NavigationMenuList>
@@ -87,6 +94,66 @@ export default function NavMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Writeups</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+              <li className="row-span-3">
+                <NavigationMenuLink asChild>
+                  <a
+                    className="from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md"
+                    href="/writeups"
+                  >
+                    <div className="mt-4 mb-2 text-lg font-medium">
+                      Writeups
+                    </div>
+                    <p className="text-muted-foreground text-sm leading-tight">
+                      Step-by-step walkthroughs and insights for various labs
+                      and challenges.
+                    </p>
+                  </a>
+                </NavigationMenuLink>
+              </li>
+              {writeupsLinks.children.map(({ title, slug }, index) => (
+                <ListItem
+                  key={index}
+                  href={"/writeups/" + slug}
+                  title={title}
+                ></ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Labs</NavigationMenuTrigger>
+          <NavigationMenuContent>
+            <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+              <li className="row-span-3">
+                <NavigationMenuLink asChild>
+                  <a
+                    className="from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md"
+                    href="/labs"
+                  >
+                    <div className="mt-4 mb-2 text-lg font-medium">Labs</div>
+                    <p className="text-muted-foreground text-sm leading-tight">
+                      My lab setups for various tasks.
+                    </p>
+                  </a>
+                </NavigationMenuLink>
+              </li>
+              {labsLinks.children.map(({ title, slug }, index) => (
+                <ListItem
+                  key={index}
+                  href={"/labs/" + slug}
+                  title={title}
+                ></ListItem>
+              ))}
+            </ul>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+
         <NavigationMenuItem>
           <NavigationMenuTrigger>Components</NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -103,11 +170,13 @@ export default function NavMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
+
         <NavigationMenuItem>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
             <Link href="/docs">Docs</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
+
         <NavigationMenuItem>
           <NavigationMenuTrigger>List</NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -141,6 +210,7 @@ export default function NavMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
+
         <NavigationMenuItem>
           <NavigationMenuTrigger>Simple</NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -159,6 +229,7 @@ export default function NavMenu() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
+
         <NavigationMenuItem>
           <NavigationMenuTrigger>With Icon</NavigationMenuTrigger>
           <NavigationMenuContent>

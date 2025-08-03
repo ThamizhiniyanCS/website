@@ -23,8 +23,11 @@ import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
 // } from "@/components/ui/tooltip";
 
 import { useSidebarContext } from ".";
+import { Skeleton } from "../ui/skeleton";
 // import { useSidebarParams } from "./nuqs/client";
-import SidebarCollapsibleDirectoryContent from "./sidebar-collapsible-directory-content";
+import SidebarCollapsibleDirectoryContent, {
+  SidebarCollapsibleDirectoryContentSkeleton,
+} from "./sidebar-collapsible-directory-content";
 
 const SidebarCollapsibleDirectory = ({
   pathname,
@@ -53,7 +56,7 @@ const SidebarCollapsibleDirectory = ({
   );
 
   React.useEffect(() => {
-    browserPathname.startsWith("/" + pathname + "/") && console.log(pathname);
+    browserPathname.startsWith("/" + pathname + "/") && setIsOpen(true);
   }, [browserPathname]);
 
   return (
@@ -148,3 +151,12 @@ const SidebarCollapsibleDirectory = ({
 };
 
 export default SidebarCollapsibleDirectory;
+
+export const SidebarCollapsibleDirectorySkeleton = () => {
+  return (
+    <div className="flex flex-col gap-2 border-l py-2 pr-4">
+      <Skeleton className="ml-4 h-4 w-full max-w-60 rounded-full" />
+      <SidebarCollapsibleDirectoryContentSkeleton />
+    </div>
+  );
+};

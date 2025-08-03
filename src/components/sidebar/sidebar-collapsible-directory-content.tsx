@@ -90,12 +90,12 @@ export default function SidebarCollapsibleDirectoryContent({
 
 export function SidebarCollapsibleDirectoryContentSkeleton() {
   return (
-    <CollapsibleContent className="CollapsibleContent flex flex-col pl-4">
+    <div className="flex flex-col pl-4">
       {Array.from({ length: 5 }, (_, index) => (
-        <div key={index} className="border-l px-4 py-2 font-mono text-sm">
+        <div key={index} className="border-l py-2 pr-4 pl-4 font-mono text-sm">
           <Skeleton className="h-4 w-full max-w-60 rounded-full" />
         </div>
       ))}
-    </CollapsibleContent>
+    </div>
   );
 }

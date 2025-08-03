@@ -9,16 +9,17 @@ import {
   useState,
 } from "react";
 import { usePathname } from "next/navigation";
-import { LoaderCircleIcon } from "lucide-react";
 
 import { getMetaJSON } from "@/lib/actions";
 import { MetaJSON, MetaJSONchild } from "@/lib/types";
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Skeleton } from "@/components/ui/skeleton";
 
-import BaseSlugSelector from "./base-slug-selector";
-import SidebarCollapsibleDirectory from "./sidebar-collapsible-directory";
+import BaseSlugSelector, {
+  BaseslugSelectorSkeleton,
+} from "./base-slug-selector";
+import SidebarCollapsibleDirectory, {
+  SidebarCollapsibleDirectorySkeleton,
+} from "./sidebar-collapsible-directory";
 
 // import { useSidebarParams } from "./nuqs/client";
 
@@ -105,29 +106,11 @@ const Sidebar = ({
         {baseRouteMeta ? (
           <BaseSlugSelector meta={baseRouteMeta} defaultValue={baseSlug} />
         ) : (
-          <Button
-            variant="outline"
-            role="combobox"
-            className="mb-4 flex w-full items-center justify-center"
-          >
-            <LoaderCircleIcon className="animate-spin" />
-          </Button>
+          <BaseslugSelectorSkeleton />
         )}
 
         {isLoading ? (
-          <div className="flex flex-col gap-2 border-l py-2 pr-4">
-            <Skeleton className="ml-4 h-4 w-full max-w-60 rounded-full" />
-            <div className="flex flex-col pl-4">
-              {Array.from({ length: 5 }, (_, index) => (
-                <div
-                  key={index}
-                  className="border-l py-2 pr-4 pl-4 font-mono text-sm"
-                >
-                  <Skeleton className="h-4 w-full max-w-60 rounded-full" />
-                </div>
-              ))}
-            </div>
-          </div>
+          <SidebarCollapsibleDirectorySkeleton />
         ) : (
           <SidebarCollapsibleDirectory
             pathname={baseRoute + "/" + (contents?.slug || "slug")}
@@ -148,4 +131,13 @@ export const useSidebarContext = () => {
   const context = useContext(SidebarContext);
   if (!context) throw new Error("useSidebar must be used within <Sidebar />");
   return context;
+};
+
+export const SidebarSkeleton = () => {
+  return (
+    <ScrollArea className="size-full px-2">
+      <BaseslugSelectorSkeleton />
+      <SidebarCollapsibleDirectorySkeleton />
+    </ScrollArea>
+  );
 };

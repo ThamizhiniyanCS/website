@@ -1,16 +1,21 @@
+import Link from "next/link";
+
+import { isExternalLink } from "@/lib/utils";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import Link from "next/link";
-import { isExternalLink } from "@/lib/utils";
 
 const LinkHoverCard = ({
   props,
 }: {
   props: React.ComponentPropsWithoutRef<"a">;
 }) => {
+  if (props.href?.startsWith("mailto:") || props.href?.startsWith("tel:")) {
+    return <strong className="font-mono">{props.children}</strong>;
+  }
+
   return props.href && props.href.startsWith("#") ? (
     <Link
       href={props.href}

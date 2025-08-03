@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, LoaderCircleIcon } from "lucide-react";
 
 import { MetaJSON } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -104,3 +104,15 @@ export default function BaseSlugSelector({
     </Popover>
   );
 }
+
+export const BaseslugSelectorSkeleton = () => {
+  return (
+    <Button
+      variant="outline"
+      role="combobox"
+      className="mb-4 flex w-full items-center justify-center"
+    >
+      <LoaderCircleIcon className="animate-spin" />
+    </Button>
+  );
+};
