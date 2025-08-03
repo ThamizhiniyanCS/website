@@ -7,6 +7,7 @@ import MdxPreviousNextButtons from "@/mdx/components/mdx-previous-next-buttons";
 import MdxRenderer from "@/mdx/components/mdx-renderer";
 import MdxToc from "@/mdx/components/mdx-toc";
 import parseMdx from "@/mdx/lib/parseMdx";
+import { Frontmatter } from "@/mdx/lib/types";
 import type { SearchParams } from "nuqs/server";
 import { ImperativePanelGroupHandle } from "react-resizable-panels";
 
@@ -38,6 +39,7 @@ export default async function Page({
 
   let toc: TocItem[] = [];
   let content: React.ReactNode = null;
+  let frontmatter: Frontmatter | undefined = undefined;
 
   if (!metaJSON) {
     const response = await fetch(
@@ -57,7 +59,7 @@ export default async function Page({
     const result = await parseMdx(source, baseRoute, baseSlug, pathname);
 
     if (result.status === "failed") {
-      console.error("Faailed");
+      console.error("Failed");
       return <MdxErrorComponent error={result.error} />;
     }
 
@@ -68,6 +70,7 @@ export default async function Page({
         depth,
       })) ?? [];
 
+    frontmatter = result.frontmatter;
     content = result.content;
   } else {
     toc = [
@@ -112,11 +115,13 @@ export default async function Page({
           )}
         </div>
 
-        <MdxPreviousNextButtons
-          baseRoute={baseRoute}
-          baseSlug={baseSlug}
-          nestedSlug={nestedSlug}
-        />
+        {!DIRECTORIES.includes(baseRoute) && (
+          <MdxPreviousNextButtons
+            baseRoute={baseRoute}
+            previousPage={frontmatter?.previousPage}
+            nextPage={frontmatter?.nextPage}
+          />
+        )}
       </ResizablePanel>
 
       <ResizableHandle withHandle />

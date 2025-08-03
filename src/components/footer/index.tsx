@@ -2,7 +2,7 @@ const Footer = () => {
   const date = new Date();
 
   return (
-    <footer className="flex min-h-40 flex-col items-center">
+    <footer className="flex min-h-40 flex-col items-center py-10">
       <p className="hidden text-xs tracking-widest text-slate-500 md:block">
         Designed & Developed by{" "}
         <span className="text-primary text-base leading-[.5rem]">

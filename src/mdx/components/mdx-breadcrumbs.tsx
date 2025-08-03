@@ -37,14 +37,14 @@ export default async function MdxBreadcrumbs({
                   >
                     {metaJsonArrayResolved[index]
                       ? metaJsonArrayResolved[index].title
-                      : pathname}
+                      : pathname.replaceAll("-", " ")}
                   </Link>
                 </BreadcrumbLink>
               ) : (
                 <BreadcrumbPage className="capitalize">
                   {metaJsonArrayResolved[index]
                     ? metaJsonArrayResolved[index].title
-                    : pathname}
+                    : pathname.replaceAll("-", " ")}
                 </BreadcrumbPage>
               )}
             </BreadcrumbItem>

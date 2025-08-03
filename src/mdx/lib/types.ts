@@ -7,5 +7,15 @@ export type Scope = {
 
 export type Frontmatter = {
   title: string;
-  author: string;
+  description: string;
+  date: Date;
+  lastmod: Date;
+  previousPage?: {
+    title: string;
+    slug: string;
+  };
+  nextPage?: {
+    title: string;
+    slug: string;
+  };
 };

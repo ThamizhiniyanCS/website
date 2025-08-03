@@ -8,54 +8,45 @@ import { Button } from "@/components/ui/button";
 
 const MdxPreviousNextButtons = async ({
   baseRoute,
-  baseSlug,
-  nestedSlug,
+  nextPage,
+  previousPage,
 }: {
   baseRoute: string;
-  baseSlug: string;
-  nestedSlug: string[];
+  nextPage:
+    | {
+        title: string;
+        slug: string;
+      }
+    | undefined;
+  previousPage:
+    | {
+        title: string;
+        slug: string;
+      }
+    | undefined;
 }) => {
-  const result: MetaJSON | undefined = await getMetaJSON(
-    baseRoute + "/" + baseSlug,
-  );
-
-  if (!result) return;
-
-  const index = result.children.findIndex(
-    ({ slug }) => nestedSlug[nestedSlug.length - 1] === slug,
-  );
-  const previousIndex = index - 1 < 0 ? undefined : index - 1;
-  const nextIndex = index + 1 < result.children.length ? index + 1 : undefined;
-
-  const previous: MetaJSONchild | undefined = previousIndex
-    ? result.children[previousIndex]
-    : undefined;
-  const next: MetaJSONchild | undefined = nextIndex
-    ? result.children[nextIndex]
-    : undefined;
-
   return (
     <div className="mt-10 grid grid-cols-2 gap-5 px-10">
       <Button variant="outline" asChild>
         <Link
           className={cn(
             "col-span-1 flex h-auto",
-            previousIndex === undefined && "pointer-events-none",
+            previousPage === undefined && "pointer-events-none",
           )}
           style={{
             backgroundColor:
-              previousIndex === undefined ? "var(--background)" : undefined,
+              previousPage === undefined ? "var(--background)" : undefined,
             justifyContent: "space-between",
             padding: "1rem",
           }}
           href={{
-            pathname: previous?.slug,
+            pathname: "/" + baseRoute + "/" + previousPage?.slug,
           }}
         >
           <ChevronLeftIcon
             className={cn(
               "size-[1.5rem] flex-none",
-              previousIndex === undefined && "text-primary/50",
+              previousPage === undefined && "text-primary/50",
             )}
           />
 
@@ -63,14 +54,14 @@ const MdxPreviousNextButtons = async ({
             <p
               className={cn(
                 "text-sm",
-                previousIndex === undefined && "text-primary/50",
+                previousPage === undefined && "text-primary/50",
               )}
             >
               Previous
             </p>
-            {previous && (
-              <p className="line-clamp-1 text-base font-normal">
-                {previous.title}
+            {previousPage && (
+              <p className="line-clamp-1 text-base font-normal text-wrap">
+                {previousPage.title}
               </p>
             )}
           </div>
@@ -81,37 +72,39 @@ const MdxPreviousNextButtons = async ({
         <Link
           className={cn(
             "col-span-1 flex h-auto",
-            nextIndex === undefined && "pointer-events-none",
+            nextPage === undefined && "pointer-events-none",
           )}
           style={{
             backgroundColor:
-              nextIndex === undefined ? "var(--background)" : undefined,
+              nextPage === undefined ? "var(--background)" : undefined,
             justifyContent: "space-between",
             padding: "1rem",
           }}
           href={{
-            pathname: next?.slug,
+            pathname: "/" + baseRoute + "/" + nextPage?.slug,
           }}
         >
           <div className="flex flex-col">
             <p
               className={cn(
                 "text-sm",
-                nextIndex === undefined && "text-primary/50",
+                nextPage === undefined && "text-primary/50",
               )}
             >
               Next
             </p>
 
-            {next && (
-              <p className="line-clamp-1 text-base font-normal">{next.title}</p>
+            {nextPage && (
+              <p className="line-clamp-1 text-base font-normal text-wrap">
+                {nextPage.title}
+              </p>
             )}
           </div>
 
           <ChevronRightIcon
             className={cn(
               "size-[1.5rem] flex-none",
-              previousIndex === undefined && "text-primary/50",
+              nextPage === undefined && "text-primary/50",
             )}
           />
         </Link>
