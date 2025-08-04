@@ -26,6 +26,7 @@ export default async function Layout({
         defaultSize={20}
         minSize={10}
         style={{ overflow: "visible" }}
+        order={1}
       >
         <div className="sticky top-0 h-screen w-full px-4 pt-16">
           <Sidebar

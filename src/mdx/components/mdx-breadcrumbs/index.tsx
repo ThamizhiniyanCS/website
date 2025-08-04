@@ -34,11 +34,11 @@ export default async function MdxBreadcrumbs({
       href: `/${pathnameArray.slice(0, index + 1).join("/")}`,
     }));
 
-  const breadcrumbPage: string | undefined = frontmatterTitle
-    ? frontmatterTitle
-    : metaJsonArrayResolved[-1]
-      ? metaJsonArrayResolved[-1]?.title
-      : pathnameArray[-1].replaceAll("-", " ");
+  const breadcrumbPage: string | undefined =
+    frontmatterTitle ||
+    (metaJsonArrayResolved.length > 1
+      ? metaJsonArrayResolved[metaJsonArrayResolved.length - 1]?.title
+      : pathnameArray[pathnameArray.length - 1].replaceAll("-", " "));
 
   return (
     <Breadcrumbs

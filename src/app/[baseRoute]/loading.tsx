@@ -20,6 +20,7 @@ const Loading = () => {
       <ResizablePanel
         defaultSize={20}
         minSize={10}
+        order={1}
         style={{ overflow: "visible" }}
       >
         <div className="sticky top-0 h-screen w-full px-4 pt-16">
@@ -29,7 +30,7 @@ const Loading = () => {
 
       <ResizableHandle withHandle />
 
-      <ResizablePanel defaultSize={60} minSize={40} className="pt-16">
+      <ResizablePanel defaultSize={60} minSize={40} order={2} className="pt-16">
         <MdxBreadcrumbsSkeleton />
 
         <div className="w-full">
@@ -60,6 +61,7 @@ const Loading = () => {
       <ResizablePanel
         defaultSize={20}
         minSize={10}
+        order={3}
         style={{ overflow: "visible" }}
       >
         <div className="sticky top-0 h-screen w-full pt-16">

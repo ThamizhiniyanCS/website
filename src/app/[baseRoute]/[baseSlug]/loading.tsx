@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 const Loading = () => {
   return (
     <>
-      <ResizablePanel defaultSize={60} minSize={40} className="pt-16">
+      <ResizablePanel defaultSize={60} minSize={40} className="pt-16" order={2}>
         <MdxBreadcrumbsSkeleton />
 
         <div className="w-full">
@@ -38,6 +38,7 @@ const Loading = () => {
       <ResizablePanel
         defaultSize={20}
         minSize={10}
+        order={3}
         style={{ overflow: "visible" }}
       >
         <div className="sticky top-0 h-screen w-full pt-16">

@@ -63,7 +63,9 @@ export default function RootLayout({
           >
             <NuqsAdapter>
               <Navbar />
-              {children}
+              <main className="bg-background relative z-10 min-h-screen">
+                {children}
+              </main>
               <Footer />
             </NuqsAdapter>
           </ThemeProvider>

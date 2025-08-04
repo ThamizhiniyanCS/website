@@ -101,7 +101,7 @@ export default async function Page({
 
   return (
     <>
-      <ResizablePanel defaultSize={60} minSize={40} className="pt-16">
+      <ResizablePanel defaultSize={60} minSize={40} order={2} className="pt-16">
         <MdxBreadcrumbs
           pathnameArray={pathnameArray}
           frontmatterTitle={frontmatter?.title}
@@ -133,6 +133,7 @@ export default async function Page({
       <ResizablePanel
         defaultSize={20}
         minSize={10}
+        order={3}
         style={{ overflow: "visible" }}
       >
         <div className="sticky top-0 h-screen w-full pt-16">
