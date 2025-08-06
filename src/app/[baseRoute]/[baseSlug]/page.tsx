@@ -18,10 +18,11 @@ export default async function Page({
   const { baseRoute, baseSlug } = await params;
   const { root } = await loadSidebarParams(searchParams);
 
-  const pathname = baseRoute + "/" + baseSlug;
-  const pathnameArray = [baseRoute, baseSlug];
+  const pathname = baseSlug;
+  const cdnPathname = baseRoute + "/" + pathname;
+  const pathnameArray = [baseSlug];
 
-  const response = await getMetaJSON(pathname);
+  const response = await getMetaJSON(cdnPathname);
 
   if (!response) {
     return <MdxErrorComponent error="Failed to fetch meta.json" />;

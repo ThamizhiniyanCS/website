@@ -15,7 +15,7 @@ export default async function MdxBreadcrumbs({
   frontmatterTitle,
 }: {
   pathnameArray: string[];
-  frontmatterTitle: string | undefined;
+  frontmatterTitle?: string;
 }) {
   const metaJsonArrayResolved: (MetaJSON | undefined)[] = await Promise.all(
     pathnameArray

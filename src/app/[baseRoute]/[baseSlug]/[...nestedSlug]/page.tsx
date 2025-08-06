@@ -32,11 +32,12 @@ export default async function Page({
   const { baseRoute, baseSlug, nestedSlug } = await params;
   const { root } = await loadSidebarParams(searchParams);
 
-  const pathname = baseRoute + "/" + baseSlug + "/" + nestedSlug.join("/");
-  const pathnameArray = [baseRoute, baseSlug, ...nestedSlug];
-  const absoultePathname = `${CDN_URL}${pathname}`;
+  const pathname = baseSlug + "/" + nestedSlug.join("/");
+  const cdnPathname = baseRoute + "/" + pathname;
+  const pathnameArray = [baseSlug, ...nestedSlug];
+  const absoultePathname = `${CDN_URL}${cdnPathname}`;
 
-  const metaJSON = await getMetaJSON(pathname);
+  const metaJSON = await getMetaJSON(cdnPathname);
 
   let toc: TocItem[] = [];
   let content: React.ReactNode = null;
@@ -57,7 +58,7 @@ export default async function Page({
     }
 
     const source = await response.text();
-    const result = await parseMdx(source, baseRoute, baseSlug, pathname);
+    const result = await parseMdx(source, baseRoute, baseSlug, cdnPathname);
 
     if (result.status === "failed") {
       console.error("Failed");

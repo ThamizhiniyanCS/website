@@ -85,7 +85,7 @@ export default function BaseSlugSelector({
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
-                    router.push(`/labs/${child.slug}`);
+                    router.push("/" + child.slug);
                   }}
                 >
                   <p className="line-clamp-1">{child.title}</p>

@@ -24,6 +24,8 @@ import SidebarCollapsibleDirectory, {
 // import { useSidebarParams } from "./nuqs/client";
 
 type SidebarContextType = {
+  baseRoute: string;
+  baseSlug: string;
   pathnameArray: RefObject<string[]>;
   cache: RefObject<Record<string, MetaJSON | MetaJSONchild[]>>;
 };
@@ -41,18 +43,17 @@ const Sidebar = ({
   variant: "default" | "directory";
 }) => {
   // const [params, setParams] = useSidebarParams();
-
   const pathname = usePathname();
+
   const slugArray = pathname.split("/").filter((each) => each.length > 0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const pathnameArray = useRef(
-    slugArray
-      .map((each, index) => slugArray.slice(0, index + 1).join("/"))
-      .slice(1),
+    slugArray.map(
+      (_, index) => baseRoute + "/" + slugArray.slice(0, index + 1).join("/"),
+    ),
   );
   const [contents, setContents] = useState<MetaJSON | undefined>(undefined);
   const cache = useRef<Record<string, MetaJSON>>({});
-
   const [baseRouteMeta, setBaseRouteMeta] = useState<MetaJSON | undefined>(
     undefined,
   );
@@ -98,6 +99,8 @@ const Sidebar = ({
   return (
     <SidebarContext.Provider
       value={{
+        baseRoute,
+        baseSlug,
         pathnameArray,
         cache,
       }}
@@ -113,7 +116,7 @@ const Sidebar = ({
           <SidebarCollapsibleDirectorySkeleton />
         ) : (
           <SidebarCollapsibleDirectory
-            pathname={baseRoute + "/" + (contents?.slug || "slug")}
+            pathname={contents?.slug || "slug"}
             slug={contents?.slug || "slug"}
             title={contents?.title || "Title"}
             children={contents?.children}

@@ -17,6 +17,7 @@ export interface MetaJSON {
   root?: boolean;
   slug: string;
   title: string;
+  default?: string;
   children: MetaJSONchild[];
 }
 

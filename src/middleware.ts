@@ -1,6 +1,7 @@
+import { notFound } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
-import { DOMAIN } from "./lib/constants";
+import { ALLOWED_ROUTES, DOMAIN } from "./lib/constants";
 
 export const config = {
   matcher: [
@@ -17,15 +18,22 @@ export const config = {
 
 export default async function middleware(req: NextRequest) {
   const url = req.nextUrl;
+
+  if (url.pathname === "/favicon.ico") return NextResponse.next();
+
   // NOTE: Extract the hostname (e.g., "labs.thamizhiniyancs.me" or "labs.localhost:3000")
   const hostname = req.headers.get("host") || "";
 
   if (hostname.endsWith(`.${DOMAIN}`)) {
     const baseRoute = hostname.replace(`.${DOMAIN}`, "");
 
-    return NextResponse.rewrite(
-      new URL(`/${baseRoute}${url.pathname}`, req.url),
-    );
+    if (ALLOWED_ROUTES.includes(baseRoute)) {
+      return NextResponse.rewrite(
+        new URL(`/${baseRoute}${url.pathname}`, req.url),
+      );
+    } else {
+      notFound();
+    }
   }
 
   return NextResponse.next();

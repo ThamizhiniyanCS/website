@@ -49,7 +49,9 @@ const SidebarCollapsibleDirectory = ({
   // const [params, setParams] = useSidebarParams();
 
   const [isOpen, setIsOpen] = React.useState<boolean>(
-    group ? true : pathnameArray.current.includes(pathname),
+    group ||
+      pathnameArray.current.includes(pathname) ||
+      (isRoot ? isRoot : false),
   );
   const [contents, setContents] = React.useState<MetaJSONchild[] | undefined>(
     children,

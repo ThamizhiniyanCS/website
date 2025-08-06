@@ -31,23 +31,25 @@ export default function SidebarCollapsibleDirectoryContent({
   >;
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { cache } = useSidebarContext();
+  const { cache, baseRoute } = useSidebarContext();
   const [params, setParams] = useSidebarParams();
 
   useEffect(() => {
+    const pathname = baseRoute + "/" + basePathname;
+
     if (!contents && isOpen) {
-      if (cache.current[basePathname]) {
-        setContentsAction(cache.current[basePathname] as MetaJSONchild[]);
+      if (cache.current[pathname]) {
+        setContentsAction(cache.current[pathname] as MetaJSONchild[]);
         return;
       }
 
       setIsLoading(true);
 
-      getMetaJSON(basePathname)
+      getMetaJSON(pathname)
         .then((res) => {
           if (res) {
             setContentsAction(res.children);
-            cache.current[basePathname] = res.children;
+            cache.current[pathname] = res.children;
           }
         })
         .catch(console.error)

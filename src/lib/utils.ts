@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import type { MetaJSON } from "./types";
-import { DOMAIN } from "@/lib/constants";
+
+import { ALLOWED_ROUTES, DOMAIN } from "@/lib/constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -30,4 +30,12 @@ export function isExternalLink(
     // If it can't be parsed as URL, assume it's relative => not external
     return false;
   }
+}
+
+export function generateURL(baseRoute: string, pathname: string = "") {
+  if (!ALLOWED_ROUTES.includes(baseRoute)) return "";
+
+  return process.env.NODE_ENV === "development"
+    ? `http://${baseRoute}.localhost:3000${pathname}`
+    : `http://${baseRoute}.${DOMAIN}${pathname}`;
 }

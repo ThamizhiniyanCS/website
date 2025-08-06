@@ -40,7 +40,7 @@ const MdxPreviousNextButtons = async ({
             padding: "1rem",
           }}
           href={{
-            pathname: "/" + baseRoute + "/" + previousPage?.slug,
+            pathname: "/" + previousPage?.slug,
           }}
         >
           <ChevronLeftIcon
@@ -81,7 +81,7 @@ const MdxPreviousNextButtons = async ({
             padding: "1rem",
           }}
           href={{
-            pathname: "/" + baseRoute + "/" + nextPage?.slug,
+            pathname: "/" + nextPage?.slug,
           }}
         >
           <div className="flex flex-col">

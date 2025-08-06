@@ -26,7 +26,7 @@ const MdxImage = ({
   }
 
   return (
-    <ImageZoom className="bg-muted mx-auto my-5 flex aspect-video items-center justify-center rounded-lg">
+    <ImageZoom className="bg-muted/10 mx-auto my-5 flex aspect-video items-center justify-center rounded-lg">
       {isFullUrl(props.src as string) ? (
         <img
           src={props.src}

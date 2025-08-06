@@ -91,8 +91,10 @@ const Breadcrumbs = ({
   }, [width, breadcrumbLinks]);
 
   return (
-    <Breadcrumb className="px-10 pb-5">
+    <Breadcrumb className="border-border px-10 pb-5">
       <BreadcrumbList ref={breadcrumbsRef}>
+        <BreadcrumbSeparator>/</BreadcrumbSeparator>
+
         {breadcrumbLinks.map(({ title, href }, index) => (
           <Fragment key={index}>
             <BreadcrumbItem>
@@ -103,7 +105,7 @@ const Breadcrumbs = ({
               </BreadcrumbLink>
             </BreadcrumbItem>
 
-            <BreadcrumbSeparator />
+            <BreadcrumbSeparator>/</BreadcrumbSeparator>
           </Fragment>
         ))}
 
@@ -126,7 +128,8 @@ const Breadcrumbs = ({
                 </DropdownMenuContent>
               </DropdownMenu>
             </BreadcrumbItem>
-            <BreadcrumbSeparator />
+
+            <BreadcrumbSeparator>/</BreadcrumbSeparator>
           </Fragment>
         )}
 
