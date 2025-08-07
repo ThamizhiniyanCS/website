@@ -6,6 +6,7 @@ import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
 
 import type { MetaJSON } from "@/lib/types";
 import { generateURL } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -61,7 +62,11 @@ export default function NavMenu({
   labsLinks: MetaJSON;
   writeupsLinks: MetaJSON;
 }) {
-  return (
+  const isMobile = useIsMobile(1024);
+
+  return isMobile ? (
+    <></>
+  ) : (
     <NavigationMenu viewport={false}>
       <NavigationMenuList>
         <NavigationMenuItem>

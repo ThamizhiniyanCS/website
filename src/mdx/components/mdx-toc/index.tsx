@@ -3,13 +3,14 @@
 // References:
 //  - https://github.com/shadcn-ui/ui/blob/main/apps/v4/components/docs-toc.tsx
 //  - https://github.com/fuma-nama/fumadocs/blob/dev/packages/ui/src/components/layout/toc-clerk.tsx
-
-import type { TocItem } from "@/lib/types";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useActiveItem } from "./hooks";
-import { cn } from "@/lib/utils";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ListTreeIcon } from "lucide-react";
+
+import type { TocItem } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+import { useActiveItem } from "./hooks";
 import { getItemOffset, getLineOffset } from "./utils";
 
 const MdxToc = ({ toc, className }: { toc: TocItem[]; className?: string }) => {
@@ -87,7 +88,7 @@ const MdxToc = ({ toc, className }: { toc: TocItem[]; className?: string }) => {
 
   return (
     <ScrollArea className="size-full px-2">
-      <p className="text-muted-foreground bg-background flex h-6 items-center gap-2 text-base">
+      <p className="text-muted-foreground lg:bg-background flex h-6 items-center gap-2 text-base">
         <ListTreeIcon className="size-4 flex-none" />
         On This Page
       </p>

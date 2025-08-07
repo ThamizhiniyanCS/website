@@ -13,9 +13,11 @@ import Breadcrumbs from "./breadcrumbs";
 export default async function MdxBreadcrumbs({
   pathnameArray,
   frontmatterTitle,
+  padding = true,
 }: {
   pathnameArray: string[];
   frontmatterTitle?: string;
+  padding?: boolean;
 }) {
   const metaJsonArrayResolved: (MetaJSON | undefined)[] = await Promise.all(
     pathnameArray
@@ -38,12 +40,17 @@ export default async function MdxBreadcrumbs({
     frontmatterTitle ||
     (metaJsonArrayResolved.length > 1
       ? metaJsonArrayResolved[metaJsonArrayResolved.length - 1]?.title
-      : pathnameArray[pathnameArray.length - 1].replaceAll("-", " "));
+      : undefined);
 
   return (
     <Breadcrumbs
       breadcrumbLinks={breadcrumbLinks}
-      breadcrumbPage={breadcrumbPage || ""}
+      breadcrumbPage={
+        breadcrumbPage
+          ? breadcrumbPage
+          : pathnameArray[pathnameArray.length - 1].replaceAll("-", " ")
+      }
+      padding={padding}
     />
   );
 }

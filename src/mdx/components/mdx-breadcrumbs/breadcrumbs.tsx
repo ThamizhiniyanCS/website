@@ -3,6 +3,7 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
+import { cn } from "@/lib/utils";
 import {
   Breadcrumb,
   BreadcrumbEllipsis,
@@ -22,9 +23,11 @@ import {
 const Breadcrumbs = ({
   breadcrumbLinks: defaultBreadcrumbLinks,
   breadcrumbPage,
+  padding = true,
 }: {
   breadcrumbLinks: { title: string; href: string }[];
   breadcrumbPage: string;
+  padding?: boolean;
 }) => {
   const breadcrumbsRef = useRef<HTMLOListElement>(null);
   const [width, setWidth] = useState<number | null>(null);
@@ -82,16 +85,17 @@ const Breadcrumbs = ({
       itemsWidths.current.length * 10;
 
     if (width < itemsWidthsSum) {
-      setDropdownMenuLinks((state) => [
-        breadcrumbLinks[breadcrumbLinks.length - 1],
-        ...state,
-      ]);
-      setBreadcrumbsLinks((state) => state.slice(0, -1)); // Use slice with -1 for clarity
+      let link = breadcrumbLinks[breadcrumbLinks.length - 1];
+
+      if (link !== undefined) {
+        setDropdownMenuLinks((state) => [link, ...state]);
+        setBreadcrumbsLinks((state) => state.slice(0, -1)); // Use slice with -1 for clarity
+      }
     }
   }, [width, breadcrumbLinks]);
 
   return (
-    <Breadcrumb className="border-border px-10 pb-5">
+    <Breadcrumb className={cn("border-border", padding && "px-10 pb-5")}>
       <BreadcrumbList ref={breadcrumbsRef}>
         <BreadcrumbSeparator>/</BreadcrumbSeparator>
 
@@ -118,13 +122,15 @@ const Breadcrumbs = ({
                   <span className="sr-only">Toggle menu</span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start">
-                  {dropdownMenuLinks.map(({ title, href }, index) => (
-                    <DropdownMenuItem key={index} asChild>
-                      <Link className="cursor-pointer capitalize" href={href}>
-                        {title}
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
+                  {dropdownMenuLinks
+                    .filter(Boolean)
+                    .map(({ title, href }, index) => (
+                      <DropdownMenuItem key={index} asChild>
+                        <Link className="cursor-pointer capitalize" href={href}>
+                          {title}
+                        </Link>
+                      </DropdownMenuItem>
+                    ))}
                 </DropdownMenuContent>
               </DropdownMenu>
             </BreadcrumbItem>

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, userAgent } from "next/server";
 
 import { ALLOWED_ROUTES, DOMAIN } from "./lib/constants";
 
@@ -24,13 +24,24 @@ export default async function middleware(req: NextRequest) {
   // NOTE: Extract the hostname (e.g., "labs.thamizhiniyancs.me" or "labs.localhost:3000")
   const hostname = req.headers.get("host") || "";
 
+  const { device } = userAgent(req);
+
   if (hostname.endsWith(`.${DOMAIN}`)) {
     const baseRoute = hostname.replace(`.${DOMAIN}`, "");
 
     if (ALLOWED_ROUTES.includes(baseRoute)) {
-      return NextResponse.rewrite(
-        new URL(`/${baseRoute}${url.pathname}`, req.url),
-      );
+      switch (device.type) {
+        case "mobile":
+          return NextResponse.rewrite(
+            new URL(`/mobile/${baseRoute}${url.pathname}`, req.url),
+          );
+        case "tablet":
+          return NextResponse.rewrite(new URL(`/under-construction`, req.url));
+        default:
+          return NextResponse.rewrite(
+            new URL(`/${baseRoute}${url.pathname}`, req.url),
+          );
+      }
     } else {
       notFound();
     }

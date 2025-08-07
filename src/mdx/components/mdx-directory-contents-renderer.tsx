@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FileIcon, FolderIcon, LinkIcon } from "lucide-react";
 
 import type { MetaJSON } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 
 const DirectoryContentsRenderer = ({
@@ -20,7 +21,11 @@ const DirectoryContentsRenderer = ({
     "grid w-full grid-cols-2 gap-5 @min-3xl:grid-cols-3 @min-5xl:grid-cols-4 @min-7xl:grid-cols-5 @min-[90rem]:grid-cols-6";
 
   return (
-    <div className="prose prose-invert @container max-w-none px-10">
+    <div
+      className={cn(
+        "prose prose-invert @container max-w-none px-4 md:px-8 lg:px-10",
+      )}
+    >
       <h1 id={meta.slug}>
         {meta.title}
         <Link href={"#" + meta.title} className="pointer-events-none opacity-0">

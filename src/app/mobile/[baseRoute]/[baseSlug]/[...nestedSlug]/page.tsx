@@ -5,6 +5,7 @@ import MdxErrorComponent from "@/mdx/components/mdx-error-component";
 import MdxPreviousNextButtons from "@/mdx/components/mdx-previous-next-buttons";
 import MdxRenderer from "@/mdx/components/mdx-renderer";
 import MdxToc from "@/mdx/components/mdx-toc";
+import MobileMdxToc from "@/mdx/components/mdx-toc/mobile";
 import parseMdx from "@/mdx/lib/parseMdx";
 import { Frontmatter } from "@/mdx/lib/types";
 import type { SearchParams } from "nuqs/server";
@@ -94,59 +95,18 @@ export default async function Page({
   }
 
   return (
-    <>
-      <ResizablePanel defaultSize={60} minSize={40} order={2} className="pt-16">
-        <MdxBreadcrumbs
-          pathnameArray={pathnameArray}
-          frontmatterTitle={frontmatter?.title}
+    <div className="mt-10 w-full">
+      {metaJSON ? (
+        <DirectoryContentsRenderer
+          meta={metaJSON}
+          pathname={pathname}
+          root={root}
         />
+      ) : (
+        content && <MdxRenderer content={content} />
+      )}
 
-        <div className="w-full">
-          {metaJSON ? (
-            <DirectoryContentsRenderer
-              meta={metaJSON}
-              pathname={pathname}
-              root={root}
-            />
-          ) : (
-            content && <MdxRenderer content={content} />
-          )}
-        </div>
-
-        {!DIRECTORIES.includes(baseRoute) && (
-          <MdxPreviousNextButtons
-            baseRoute={baseRoute}
-            previousPage={frontmatter?.previousPage}
-            nextPage={frontmatter?.nextPage}
-          />
-        )}
-      </ResizablePanel>
-
-      <ResizableHandle withHandle />
-
-      <ResizablePanel
-        defaultSize={20}
-        minSize={10}
-        order={3}
-        style={{ overflow: "visible" }}
-      >
-        <div className="sticky top-0 h-screen w-full pt-16">
-          {frontmatter?.lastmod && (
-            <>
-              <p className="p-2 font-mono text-sm">
-                <span className="text-muted-foreground">Last Updated:</span>{" "}
-                {new Date(frontmatter.lastmod).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-              </p>
-              <Separator className="mb-2 ml-2 max-w-[90%]" />
-            </>
-          )}
-          <MdxToc toc={toc} />
-        </div>
-      </ResizablePanel>
-    </>
+      <MobileMdxToc toc={toc} />
+    </div>
   );
 }

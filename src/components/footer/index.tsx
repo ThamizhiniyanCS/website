@@ -1,25 +1,23 @@
+import { TextHoverEffect } from "../ui/unizoy-ui/text-hover-effect";
+
 const Footer = () => {
   const date = new Date();
 
   return (
-    <footer className="sticky bottom-0 left-0 z-0 flex min-h-40 flex-col items-center py-10">
-      <p className="hidden text-xs tracking-widest text-slate-500 md:block">
-        Designed & Developed by{" "}
-        <span className="text-primary text-base leading-[.5rem]">
-          Thamizhiniyan C S
-        </span>{" "}
-        Copyrights &#169; {date.getFullYear()}
-      </p>
-
-      <div className="mt-3 flex w-full flex-col items-center md:hidden">
-        <p className="text-xs tracking-widest text-slate-500">
-          Designed & Developed by
-        </p>
-        <p className="text-primary leading-[.5rem]">Thamizhiniyan C S</p>
-        <p className="text-xs tracking-widest text-slate-500">
-          Copyrights &#169; {date.getFullYear()}
-        </p>
+    <footer className="sticky bottom-0 left-0 z-0 flex min-h-40 flex-col items-center overflow-clip py-10">
+      <div className="flex w-full translate-y-[80%] flex-col items-center gap-10">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <p key={`testing-footer-array-${index}`} className="">
+            testing
+          </p>
+        ))}
       </div>
+
+      <TextHoverEffect
+        text="Thamizhiniyan C S"
+        fontSize={33}
+        className="translate-y-[30%]"
+      />
     </footer>
   );
 };
