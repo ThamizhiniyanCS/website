@@ -4,7 +4,7 @@ import { getMetaJSON } from "@/lib/actions";
 import { cn } from "@/lib/utils";
 
 import { ModeToggle } from "../mode-toggle";
-import NavMenu from "./nav-menu";
+import NavMenu, { NavMobileTrigger } from "./nav-menu";
 
 const Navbar = async () => {
   const labsLinks = await getMetaJSON("labs");
@@ -31,7 +31,10 @@ const Navbar = async () => {
         <NavMenu labsLinks={labsLinks} writeupsLinks={writeupsLinks} />
       </div>
 
-      <ModeToggle />
+      <div className="flex items-center gap-2">
+        <ModeToggle />
+        <NavMobileTrigger />
+      </div>
     </nav>
   );
 };

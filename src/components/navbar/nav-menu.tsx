@@ -2,11 +2,22 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
+import {
+  CircleCheckIcon,
+  CircleHelpIcon,
+  CircleIcon,
+  MenuIcon,
+} from "lucide-react";
 
 import type { MetaJSON } from "@/lib/types";
-import { generateURL } from "@/lib/utils";
+import { cn, generateURL } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -16,6 +27,8 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+
+import { Button } from "../ui/button";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -65,7 +78,61 @@ export default function NavMenu({
   const isMobile = useIsMobile(1024);
 
   return isMobile ? (
-    <></>
+    <Accordion
+      id="nav-menu-mobile"
+      className={cn(
+        "bg-background pointer-events-none fixed top-16 left-0 w-screen -translate-y-2 px-5 opacity-0 transition-all duration-300 ease-in-out",
+        "data-[state=open]:pointer-events-auto data-[state=open]:translate-y-0 data-[state=open]:opacity-100",
+      )}
+      type="single"
+      collapsible
+      data-state="closed"
+    >
+      <AccordionItem value="home" className="w-full">
+        <AccordionTrigger>Home</AccordionTrigger>
+        <AccordionContent className="flex flex-col">
+          <Link href={"#"}>a</Link>
+          <Link href={"#"}>b</Link>
+          <Link href={"#"}>c</Link>
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="writeups" className="w-full">
+        <AccordionTrigger>Writeups</AccordionTrigger>
+        <AccordionContent className="flex flex-col">
+          <p className="text-muted-foreground text-sm leading-tight">
+            Step-by-step walkthroughs and insights for various labs and
+            challenges.
+          </p>
+
+          {writeupsLinks.children.map(({ title, slug }, index) => (
+            <Link
+              key={`mobile-nav-writeups-links-${index}`}
+              href={generateURL("writeups", "/" + slug)}
+            >
+              {title}
+            </Link>
+          ))}
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="labs" className="w-full">
+        <AccordionTrigger>Labs</AccordionTrigger>
+        <AccordionContent className="flex flex-col">
+          <p className="text-muted-foreground text-sm leading-tight">
+            My lab setups for various tasks.
+          </p>
+          {labsLinks.children.map(({ title, slug }, index) => (
+            <Link
+              key={`mobile-nav-lab-links-${index}`}
+              href={generateURL("labs", "/" + slug)}
+            >
+              {title}
+            </Link>
+          ))}
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   ) : (
     <NavigationMenu viewport={false}>
       <NavigationMenuList>
@@ -287,3 +354,73 @@ function ListItem({
     </li>
   );
 }
+
+export const NavMobileTrigger = () => {
+  /**
+   * Handles the click event on the mobile navigation trigger button.
+   * It toggles the visibility and ARIA states of the mobile navigation menu.
+   *
+   * @param {React.MouseEvent<HTMLButtonElement>} event - The React mouse event.
+   */
+  const handleMobileNavTriggerOnClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+  ) => {
+    // Per your instruction, we select the navigation menu using its ID.
+    const navMobile: HTMLElement | null =
+      document.getElementById("nav-menu-mobile");
+
+    // The trigger button is the element that was clicked.
+    const trigger: HTMLButtonElement = event.currentTarget;
+
+    // Type guard: Ensure both elements exist before proceeding.
+    if (!navMobile) {
+      console.error(
+        "Mobile navigation menu with ID 'nav-menu-mobile' not found.",
+      );
+      return;
+    }
+
+    const currentState = navMobile.getAttribute("data-state");
+
+    if (currentState === "open") {
+      // --- CLOSE MENU LOGIC ---
+      navMobile.setAttribute("data-state", "closed");
+      navMobile.setAttribute("aria-hidden", "true");
+
+      trigger.setAttribute("aria-expanded", "false");
+      trigger.setAttribute("aria-label", "Open navigation menu");
+      trigger.focus(); // Return focus to the trigger button
+    } else {
+      // --- OPEN MENU LOGIC ---
+      navMobile.setAttribute("data-state", "open");
+      navMobile.setAttribute("aria-hidden", "false");
+
+      trigger.setAttribute("aria-expanded", "true");
+      trigger.setAttribute("aria-label", "Close navigation menu");
+
+      // Find all focusable elements within the mobile navigation.
+      const focusableElements: NodeListOf<HTMLElement> =
+        navMobile.querySelectorAll(
+          "a[href], button:not([disabled]), textarea, input, select",
+        );
+      const firstFocusableElement: HTMLElement | undefined =
+        focusableElements[0];
+
+      // Move focus to the first item in the menu.
+      if (firstFocusableElement) {
+        firstFocusableElement.focus();
+      }
+    }
+  };
+
+  return (
+    <Button
+      size="icon"
+      variant="outline"
+      onClick={handleMobileNavTriggerOnClick}
+      className="lg:hidden"
+    >
+      <MenuIcon />
+    </Button>
+  );
+};

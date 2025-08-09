@@ -13,11 +13,9 @@ import Breadcrumbs from "./breadcrumbs";
 export default async function MdxBreadcrumbs({
   pathnameArray,
   frontmatterTitle,
-  padding = true,
 }: {
   pathnameArray: string[];
   frontmatterTitle?: string;
-  padding?: boolean;
 }) {
   const metaJsonArrayResolved: (MetaJSON | undefined)[] = await Promise.all(
     pathnameArray
@@ -50,7 +48,6 @@ export default async function MdxBreadcrumbs({
           ? breadcrumbPage
           : pathnameArray[pathnameArray.length - 1].replaceAll("-", " ")
       }
-      padding={padding}
     />
   );
 }

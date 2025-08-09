@@ -14,7 +14,7 @@ type AnyEvent = MouseEvent | TouchEvent;
  * @param handler - The callback function to execute on an outside interaction.
  */
 export function useOnClickOutside(
-  ref: RefObject<HTMLElement | null>, // <--- THIS IS THE FIX
+  ref: RefObject<HTMLElement | null>,
   handler: (event: AnyEvent) => void,
 ): void {
   useEffect(() => {

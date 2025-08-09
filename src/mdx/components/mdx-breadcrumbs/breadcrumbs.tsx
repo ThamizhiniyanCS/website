@@ -23,11 +23,9 @@ import {
 const Breadcrumbs = ({
   breadcrumbLinks: defaultBreadcrumbLinks,
   breadcrumbPage,
-  padding = true,
 }: {
   breadcrumbLinks: { title: string; href: string }[];
   breadcrumbPage: string;
-  padding?: boolean;
 }) => {
   const breadcrumbsRef = useRef<HTMLOListElement>(null);
   const [width, setWidth] = useState<number | null>(null);
@@ -95,7 +93,7 @@ const Breadcrumbs = ({
   }, [width, breadcrumbLinks]);
 
   return (
-    <Breadcrumb className={cn("border-border", padding && "px-10 pb-5")}>
+    <Breadcrumb className={cn("border-border md:px-10 md:pb-5")}>
       <BreadcrumbList ref={breadcrumbsRef}>
         <BreadcrumbSeparator>/</BreadcrumbSeparator>
 

@@ -36,7 +36,9 @@ export default async function middleware(req: NextRequest) {
             new URL(`/mobile/${baseRoute}${url.pathname}`, req.url),
           );
         case "tablet":
-          return NextResponse.rewrite(new URL(`/under-construction`, req.url));
+          return NextResponse.rewrite(
+            new URL(`/mobile/${baseRoute}${url.pathname}`, req.url),
+          );
         default:
           return NextResponse.rewrite(
             new URL(`/${baseRoute}${url.pathname}`, req.url),
