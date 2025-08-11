@@ -93,7 +93,7 @@ const Breadcrumbs = ({
   }, [width, breadcrumbLinks]);
 
   return (
-    <Breadcrumb className={cn("border-border md:px-10 md:pb-5")}>
+    <Breadcrumb className={cn("border-border lg:px-10 lg:pb-5")}>
       <BreadcrumbList ref={breadcrumbsRef}>
         <BreadcrumbSeparator>/</BreadcrumbSeparator>
 
