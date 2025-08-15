@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Josefin_Sans, Lavishly_Yours } from "next/font/google";
 
 import "./globals.css";
 
@@ -12,13 +12,14 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 import "lenis/dist/lenis.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const FontJosefinSans = Josefin_Sans({
+  variable: "--var-font-josefin-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const FontLavishlyYours = Lavishly_Yours({
+  variable: "--var-font-lavishly-yours",
+  weight: "400",
   subsets: ["latin"],
 });
 
@@ -53,7 +54,7 @@ export default function RootLayout({
         }}
       >
         <body
-          className={`${geistSans.variable} ${geistMono.variable} grid min-h-screen w-full grid-rows-[auto-1fr-auto] scroll-smooth antialiased`}
+          className={`${FontJosefinSans.variable} ${FontLavishlyYours.variable} grid min-h-screen w-full grid-rows-[auto-1fr-auto] scroll-smooth antialiased`}
         >
           <ThemeProvider
             attribute="class"

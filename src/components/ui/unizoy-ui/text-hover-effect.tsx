@@ -164,7 +164,7 @@ export const TextHoverEffect = ({
           textAnchor="middle"
           dominantBaseline="middle"
           strokeWidth="0.3"
-          className={`fill-transparent font-[helvetica] font-bold ${
+          className={`font-josefin-sans fill-transparent font-bold ${
             idx === 0
               ? "stroke-neutral-200 dark:stroke-neutral-800"
               : idx === 1

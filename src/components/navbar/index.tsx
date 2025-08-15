@@ -29,7 +29,9 @@ const Navbar = async () => {
     return (
       <nav className={cn(commonClass)}>
         <div className="flex items-center gap-6">
-          <Link href="/">Thamizhiniyan C S</Link>
+          <Link href="/" className="font-lavishly-yours">
+            Thamizhiniyan C S
+          </Link>
         </div>
 
         <ModeToggle />
@@ -40,7 +42,9 @@ const Navbar = async () => {
   return (
     <nav className={cn(commonClass)}>
       <div className="flex items-center gap-6">
-        <Link href="/">Thamizhiniyan C S</Link>
+        <Link href="/" className="font-lavishly-yours text-3xl">
+          Thamizhiniyan C S
+        </Link>
         <NavMenu labsLinks={labsLinks} writeupsLinks={writeupsLinks} />
       </div>
 
