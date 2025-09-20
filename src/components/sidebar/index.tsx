@@ -1,14 +1,8 @@
 "use client";
 
-import {
-  createContext,
-  RefObject,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { createContext, RefObject, useContext, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 
 import { getMetaJSON } from "@/lib/actions";
 import { MetaJSON, MetaJSONchild } from "@/lib/types";
@@ -46,55 +40,22 @@ const Sidebar = ({
   const pathname = usePathname();
 
   const slugArray = pathname.split("/").filter((each) => each.length > 0);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const pathnameArray = useRef(
     slugArray.map(
       (_, index) => baseRoute + "/" + slugArray.slice(0, index + 1).join("/"),
     ),
   );
-  const [contents, setContents] = useState<MetaJSON | undefined>(undefined);
   const cache = useRef<Record<string, MetaJSON>>({});
-  const [baseRouteMeta, setBaseRouteMeta] = useState<MetaJSON | undefined>(
-    undefined,
-  );
 
-  useEffect(() => {
-    const load = async () => {
-      const res = await getMetaJSON(baseRoute);
+  const baseRouteMeta = useQuery({
+    queryKey: ["sidebar-query", baseRoute],
+    queryFn: () => getMetaJSON(baseRoute),
+  });
 
-      if (res) {
-        setBaseRouteMeta(res);
-      }
-    };
-
-    load();
-  }, []);
-
-  useEffect(() => {
-    if (contents !== undefined) {
-      setIsLoading(false);
-      return;
-    }
-
-    const load = async () => {
-      const pn = pathnameArray.current[0];
-
-      if (cache.current[pn]) {
-        setContents(cache.current[pn]);
-        setIsLoading(false);
-        return;
-      }
-
-      const res = await getMetaJSON(pn);
-      if (res) {
-        setContents(res);
-        cache.current[pn] = res;
-        setIsLoading(false);
-      }
-    };
-
-    load();
-  }, []);
+  const contentsQuery = useQuery({
+    queryKey: ["sidebar-query", pathnameArray.current[0]],
+    queryFn: () => getMetaJSON(pathnameArray.current[0]),
+  });
 
   return (
     <SidebarContext.Provider
@@ -106,21 +67,21 @@ const Sidebar = ({
       }}
     >
       <ScrollArea className="size-full px-2">
-        {baseRouteMeta ? (
-          <BaseSlugSelector meta={baseRouteMeta} defaultValue={baseSlug} />
-        ) : (
-          <BaseslugSelectorSkeleton />
+        {baseRouteMeta.isLoading && <BaseslugSelectorSkeleton />}
+
+        {baseRouteMeta.isSuccess && (
+          <BaseSlugSelector meta={baseRouteMeta.data} defaultValue={baseSlug} />
         )}
 
-        {isLoading ? (
-          <SidebarCollapsibleDirectorySkeleton />
-        ) : (
+        {contentsQuery.isLoading && <SidebarCollapsibleDirectorySkeleton />}
+
+        {contentsQuery.isSuccess && (
           <SidebarCollapsibleDirectory
-            pathname={contents?.slug || "slug"}
-            slug={contents?.slug || "slug"}
-            title={contents?.title || "Title"}
-            children={contents?.children}
-            isRoot={contents?.root}
+            pathname={contentsQuery.data?.slug || "slug"}
+            slug={contentsQuery.data?.slug || "slug"}
+            title={contentsQuery.data?.title || "Title"}
+            children={contentsQuery.data?.children}
+            isRoot={contentsQuery.data?.root}
           />
         )}
       </ScrollArea>

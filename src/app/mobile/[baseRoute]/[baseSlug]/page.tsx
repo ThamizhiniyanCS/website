@@ -46,5 +46,13 @@ export default async function Page({
     },
   ];
 
-  return <div></div>;
+  return (
+    <div>
+      <DirectoryContentsRenderer
+        meta={response}
+        pathname={pathname}
+        root={root}
+      />
+    </div>
+  );
 }

@@ -52,7 +52,7 @@ const DirectoryContentsRenderer = ({
           >
             <Card className="rounded-sm p-0" style={{ margin: 0 }}>
               <CardContent className="flex gap-2 p-2">
-                <FolderIcon /> {title}
+                <FolderIcon className="flex-none" /> {title}
               </CardContent>
             </Card>
           </Link>
@@ -78,7 +78,7 @@ const DirectoryContentsRenderer = ({
           >
             <Card className="rounded-sm p-0" style={{ margin: 0 }}>
               <CardContent className="flex gap-2 p-2">
-                <FileIcon /> {title}
+                <FileIcon className="flex-none" /> {title}
               </CardContent>
             </Card>
           </Link>

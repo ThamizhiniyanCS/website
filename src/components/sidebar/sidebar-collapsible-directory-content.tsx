@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { getMetaJSON } from "@/lib/actions";
 import type { MetaJSONchild } from "@/lib/types";
@@ -30,34 +31,15 @@ export default function SidebarCollapsibleDirectoryContent({
     React.SetStateAction<MetaJSONchild[] | undefined>
   >;
 }) {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { cache, baseRoute } = useSidebarContext();
+  const { baseRoute } = useSidebarContext();
   const [params, setParams] = useSidebarParams();
 
-  useEffect(() => {
-    const pathname = baseRoute + "/" + basePathname;
+  const query = useQuery({
+    queryKey: ["sidebar-query", baseRoute + "/" + basePathname],
+    queryFn: ({ queryKey }) => getMetaJSON(queryKey[1]),
+  });
 
-    if (!contents && isOpen) {
-      if (cache.current[pathname]) {
-        setContentsAction(cache.current[pathname] as MetaJSONchild[]);
-        return;
-      }
-
-      setIsLoading(true);
-
-      getMetaJSON(pathname)
-        .then((res) => {
-          if (res) {
-            setContentsAction(res.children);
-            cache.current[pathname] = res.children;
-          }
-        })
-        .catch(console.error)
-        .finally(() => setIsLoading(false));
-    }
-  }, [basePathname, contents, isOpen]);
-
-  return isLoading ? (
+  return query.isLoading ? (
     <SidebarCollapsibleDirectoryContentSkeleton />
   ) : (
     <CollapsibleContent
@@ -66,7 +48,7 @@ export default function SidebarCollapsibleDirectoryContent({
         !isRoot && !isGroup && "pl-4",
       )}
     >
-      {contents?.map((each) =>
+      {query.data?.children?.map((each) =>
         each.type === "directory" ? (
           <SidebarCollapsibleDirectory
             key={basePathname + "/" + each.slug}

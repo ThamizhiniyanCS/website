@@ -10,6 +10,8 @@ import Footer from "@/components/footer";
 import Navbar from "@/components/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 
+import { Providers } from "./providers";
+
 import "lenis/dist/lenis.css";
 
 const FontJosefinSans = Josefin_Sans({
@@ -56,20 +58,22 @@ export default function RootLayout({
         <body
           className={`${FontJosefinSans.variable} ${FontLavishlyYours.variable} grid min-h-screen w-full grid-rows-[auto-1fr-auto] scroll-smooth antialiased`}
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <NuqsAdapter>
-              <Navbar />
-              <main className="bg-background relative z-10 min-h-screen">
-                {children}
-              </main>
-              <Footer />
-            </NuqsAdapter>
-          </ThemeProvider>
+          <Providers>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <NuqsAdapter>
+                <Navbar />
+                <main className="bg-background relative z-10 min-h-screen">
+                  {children}
+                </main>
+                <Footer />
+              </NuqsAdapter>
+            </ThemeProvider>
+          </Providers>
         </body>
       </ReactLenis>
     </html>
