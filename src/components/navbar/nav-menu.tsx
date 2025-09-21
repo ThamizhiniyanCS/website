@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
 
+import { WEBSITE_URL } from "@/lib/constants";
 import type { MetaJSON } from "@/lib/types";
 import { generateURL } from "@/lib/utils";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -76,13 +77,13 @@ export default function NavMenu({
                   <NavigationMenuLink asChild>
                     <Link
                       className="from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md"
-                      href="/"
+                      href={WEBSITE_URL}
                     >
                       <div className="mt-4 mb-2 text-lg font-medium">
-                        shadcn/ui
+                        Thamizhiniyan C S
                       </div>
                       <p className="text-muted-foreground text-sm leading-tight">
-                        Beautifully designed components built with Tailwind CSS.
+                        Ethical Hacker and Web Developer.
                       </p>
                     </Link>
                   </NavigationMenuLink>
