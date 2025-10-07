@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
+import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
 
 import { WEBSITE_URL } from "@/lib/constants";
 import type { MetaJSON } from "@/lib/types";
@@ -48,14 +50,14 @@ export default function NavMenu({
                     </Link>
                   </NavigationMenuLink>
                 </li>
-                <ListItem href={`${WEBSITE_URL}/#about`} title="About">
+                <ListItem href={`${WEBSITE_URL}#about-me`} title="About">
                   A small intro to myself.
                 </ListItem>
-                <ListItem href={`${WEBSITE_URL}/#skills`} title="Skills">
+                <ListItem href={`${WEBSITE_URL}#skills`} title="Skills">
                   Tools and Technologies I am familiar with.
                 </ListItem>
                 <ListItem
-                  href={`${WEBSITE_URL}/#certifications`}
+                  href={`${WEBSITE_URL}#certifications`}
                   title="Professional Certifications"
                 >
                   Some of my certifications.
@@ -121,6 +123,46 @@ export default function NavMenu({
                     title={title}
                   ></ListItem>
                 ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>Socials</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[200px] gap-4">
+                <li>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href="https://github.com/ThamizhiniyanCS/"
+                      className="flex-row items-center gap-2"
+                      target="_blank"
+                    >
+                      <Image
+                        src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/github-light.svg"
+                        alt="Github Logo"
+                        width={20}
+                        height={20}
+                      />
+                      Github
+                    </Link>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href="https://www.linkedin.com/in/thamizhiniyancs/"
+                      className="flex-row items-center gap-2"
+                      target="_blank"
+                    >
+                      <Image
+                        src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/linkedin.svg"
+                        alt="Linkedin Logo"
+                        width={20}
+                        height={20}
+                      />
+                      LinkedIn
+                    </Link>
+                  </NavigationMenuLink>
+                </li>
               </ul>
             </NavigationMenuContent>
           </NavigationMenuItem>

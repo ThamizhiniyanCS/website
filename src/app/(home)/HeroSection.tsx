@@ -7,7 +7,7 @@ import { GSDevTools, ScrambleTextPlugin } from "gsap/all";
 
 import MatrixRain from "@/components/MatrixRain";
 
-export default function Home() {
+export default function HeroSection() {
   gsap.registerPlugin(useGSAP, ScrambleTextPlugin, GSDevTools);
 
   useGSAP(() => {
