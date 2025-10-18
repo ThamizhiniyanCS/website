@@ -3,7 +3,6 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
 
 import { WEBSITE_URL } from "@/lib/constants";
 import type { MetaJSON } from "@/lib/types";
