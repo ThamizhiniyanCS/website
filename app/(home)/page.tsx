@@ -1,5 +1,14 @@
-import { ComponentExample } from "@/components/component-example";
+import { Fragment } from "react"
+
+import AboutSection from "./AboutSection"
+import HeroSection from "./HeroSection"
 
 export default function Page() {
-return <ComponentExample />;
+  return (
+    <Fragment>
+      <HeroSection />
+      <AboutSection />
+    </Fragment>
+  )
 }
+
