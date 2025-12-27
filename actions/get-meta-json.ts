@@ -19,8 +19,11 @@ export default async function getMetaJSON(
 
     if (!response.ok) {
       console.log(`[-] meta.json not found at ${url}`)
+      console.log(response)
       return undefined
     }
+
+    console.log("[+] getMetaJSON:", url)
 
     return await response.json()
   } catch (err) {
