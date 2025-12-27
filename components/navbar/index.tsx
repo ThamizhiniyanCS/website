@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { AnimatedThemeToggler } from "@/components/magic-ui/animated-theme-toggler"
 
-import { Button } from "../ui/button"
+import { Button } from "@/components/ui/button"
 import NavMenu from "./nav-menu"
 
 const Navbar = async () => {
