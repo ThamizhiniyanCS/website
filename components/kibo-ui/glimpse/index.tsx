@@ -1,40 +1,41 @@
-"use client";
+"use client"
 
-import { cn } from "@repo/shadcn-ui/lib/utils";
-import type { ComponentProps } from "react";
+import type { ComponentProps } from "react"
+
+import { cn } from "@/lib/utils"
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
-} from "@/components/ui/hover-card";
+} from "@/components/ui/hover-card"
 
-export type GlimpseProps = ComponentProps<typeof HoverCard>;
+export type GlimpseProps = ComponentProps<typeof HoverCard>
 
 export const Glimpse = (props: GlimpseProps) => {
-  return <HoverCard {...props} />;
-};
+  return <HoverCard {...props} />
+}
 
-export type GlimpseContentProps = ComponentProps<typeof HoverCardContent>;
+export type GlimpseContentProps = ComponentProps<typeof HoverCardContent>
 
 export const GlimpseContent = (props: GlimpseContentProps) => (
   <HoverCardContent {...props} />
-);
+)
 
-export type GlimpseTriggerProps = ComponentProps<typeof HoverCardTrigger>;
+export type GlimpseTriggerProps = ComponentProps<typeof HoverCardTrigger>
 
 export const GlimpseTrigger = (props: GlimpseTriggerProps) => (
   <HoverCardTrigger {...props} />
-);
+)
 
-export type GlimpseTitleProps = ComponentProps<"p">;
+export type GlimpseTitleProps = ComponentProps<"p">
 
 export const GlimpseTitle = ({ className, ...props }: GlimpseTitleProps) => {
   return (
-    <p className={cn("truncate font-semibold text-sm", className)} {...props} />
-  );
-};
+    <p className={cn("truncate text-sm font-semibold", className)} {...props} />
+  )
+}
 
-export type GlimpseDescriptionProps = ComponentProps<"p">;
+export type GlimpseDescriptionProps = ComponentProps<"p">
 
 export const GlimpseDescription = ({
   className,
@@ -42,13 +43,13 @@ export const GlimpseDescription = ({
 }: GlimpseDescriptionProps) => {
   return (
     <p
-      className={cn("line-clamp-2 text-muted-foreground text-sm", className)}
+      className={cn("text-muted-foreground line-clamp-2 text-sm", className)}
       {...props}
     />
-  );
-};
+  )
+}
 
-export type GlimpseImageProps = ComponentProps<"img">;
+export type GlimpseImageProps = ComponentProps<"img">
 
 export const GlimpseImage = ({
   className,
@@ -64,4 +65,4 @@ export const GlimpseImage = ({
     )}
     {...props}
   />
-);
+)

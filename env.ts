@@ -7,10 +7,12 @@ export const env = createEnv({
       .enum(["development", "test", "production"])
       .default("development"),
     DOMAIN: z.url().default("localhost:3000"),
+    CDN_DOMAIN: z.url().default("localhost:8000"),
   },
   client: {},
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
     DOMAIN: process.env.DOMAIN,
+    CDN_DOMAIN: process.env.CDN_DOMAIN,
   },
 })
