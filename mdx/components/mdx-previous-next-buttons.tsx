@@ -1,29 +1,29 @@
-import Link from "next/link";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import Link from "next/link"
+import getMetaJSON from "@/actions/get-meta-json"
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
-import { getMetaJSON } from "@/lib/actions";
-import type { MetaJSON, MetaJSONchild } from "@/lib/types";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { MetaJSON, MetaJsonChild } from "@/types/meta-json.type"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 const MdxPreviousNextButtons = async ({
   baseRoute,
   nextPage,
   previousPage,
 }: {
-  baseRoute: string;
+  baseRoute: string
   nextPage:
     | {
-        title: string;
-        slug: string;
+        title: string
+        slug: string
       }
-    | undefined;
+    | undefined
   previousPage:
     | {
-        title: string;
-        slug: string;
+        title: string
+        slug: string
       }
-    | undefined;
+    | undefined
 }) => {
   return (
     <div className="mt-10 grid grid-cols-2 gap-5 px-10">
@@ -31,7 +31,7 @@ const MdxPreviousNextButtons = async ({
         <Link
           className={cn(
             "col-span-1 flex h-auto",
-            previousPage === undefined && "pointer-events-none",
+            previousPage === undefined && "pointer-events-none"
           )}
           style={{
             backgroundColor:
@@ -46,7 +46,7 @@ const MdxPreviousNextButtons = async ({
           <ChevronLeftIcon
             className={cn(
               "size-[1.5rem] flex-none",
-              previousPage === undefined && "text-primary/50",
+              previousPage === undefined && "text-primary/50"
             )}
           />
 
@@ -54,7 +54,7 @@ const MdxPreviousNextButtons = async ({
             <p
               className={cn(
                 "text-sm",
-                previousPage === undefined && "text-primary/50",
+                previousPage === undefined && "text-primary/50"
               )}
             >
               Previous
@@ -72,7 +72,7 @@ const MdxPreviousNextButtons = async ({
         <Link
           className={cn(
             "col-span-1 flex h-auto",
-            nextPage === undefined && "pointer-events-none",
+            nextPage === undefined && "pointer-events-none"
           )}
           style={{
             backgroundColor:
@@ -88,7 +88,7 @@ const MdxPreviousNextButtons = async ({
             <p
               className={cn(
                 "text-sm",
-                nextPage === undefined && "text-primary/50",
+                nextPage === undefined && "text-primary/50"
               )}
             >
               Next
@@ -104,13 +104,13 @@ const MdxPreviousNextButtons = async ({
           <ChevronRightIcon
             className={cn(
               "size-[1.5rem] flex-none",
-              nextPage === undefined && "text-primary/50",
+              nextPage === undefined && "text-primary/50"
             )}
           />
         </Link>
       </Button>
     </div>
-  );
-};
+  )
+}
 
-export default MdxPreviousNextButtons;
+export default MdxPreviousNextButtons

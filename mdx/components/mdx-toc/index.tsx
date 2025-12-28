@@ -1,70 +1,70 @@
-"use client";
+"use client"
 
 // References:
 //  - https://github.com/shadcn-ui/ui/blob/main/apps/v4/components/docs-toc.tsx
 //  - https://github.com/fuma-nama/fumadocs/blob/dev/packages/ui/src/components/layout/toc-clerk.tsx
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ListTreeIcon } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react"
+import { ListTreeIcon } from "lucide-react"
 
-import type { TocItem } from "@/lib/types";
-import { cn } from "@/lib/utils";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import type { TocItem } from "@/types/toc.type"
+import { cn } from "@/lib/utils"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
-import { useActiveItem } from "./hooks";
-import { getItemOffset, getLineOffset } from "./utils";
+import { useActiveItem } from "./hooks"
+import { getItemOffset, getLineOffset } from "./utils"
 
 const MdxToc = ({ toc, className }: { toc: TocItem[]; className?: string }) => {
   const itemIds = useMemo(
     () => toc.map((item) => item.url.replace("#", "")),
-    [toc],
-  );
+    [toc]
+  )
 
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const [svg, setSvg] = useState<{
-    path: string;
-    width: number;
-    height: number;
-  }>();
+    path: string
+    width: number
+    height: number
+  }>()
 
-  const activeHeading = useActiveItem(itemIds);
+  const activeHeading = useActiveItem(itemIds)
 
   if (!toc?.length) {
-    return null;
+    return null
   }
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current) return
 
-    const container = containerRef.current;
+    const container = containerRef.current
 
     const onResize = () => {
-      if (container.clientHeight === 0) return;
+      if (container.clientHeight === 0) return
 
-      let w = 0;
-      let h = 0;
+      let w = 0
+      let h = 0
 
-      const d: string[] = [];
+      const d: string[] = []
 
       for (let i = 0; i < toc.length; i++) {
         const element: HTMLElement | null = container.querySelector(
-          `a[href="${toc[i].url}"]`,
-        );
-        if (!element) continue;
+          `a[href="${toc[i].url}"]`
+        )
+        if (!element) continue
 
-        const styles = getComputedStyle(element);
-        const offset = getLineOffset(toc[i].depth) + 1;
-        const top = element.offsetTop + parseFloat(styles.paddingTop);
+        const styles = getComputedStyle(element)
+        const offset = getLineOffset(toc[i].depth) + 1
+        const top = element.offsetTop + parseFloat(styles.paddingTop)
         const bottom =
           element.offsetTop +
           element.clientHeight -
-          parseFloat(styles.paddingBottom);
+          parseFloat(styles.paddingBottom)
 
-        w = Math.max(offset, w);
-        h = Math.max(h, bottom);
+        w = Math.max(offset, w)
+        h = Math.max(h, bottom)
 
-        d.push(`${i === 0 ? "M" : "L"}${offset} ${top}`);
-        d.push(`L${offset} ${bottom}`);
+        d.push(`${i === 0 ? "M" : "L"}${offset} ${top}`)
+        d.push(`L${offset} ${bottom}`)
       }
 
       // console.log(d);
@@ -73,18 +73,18 @@ const MdxToc = ({ toc, className }: { toc: TocItem[]; className?: string }) => {
         path: d.join(" "),
         width: w + 1,
         height: h,
-      });
-    };
+      })
+    }
 
-    const observer = new ResizeObserver(onResize);
-    onResize();
+    const observer = new ResizeObserver(onResize)
+    onResize()
 
-    observer.observe(container);
+    observer.observe(container)
 
     return () => {
-      observer.disconnect();
-    };
-  }, [toc]);
+      observer.disconnect()
+    }
+  }, [toc])
 
   return (
     <ScrollArea className="size-full px-2">
@@ -103,7 +103,7 @@ const MdxToc = ({ toc, className }: { toc: TocItem[]; className?: string }) => {
               maskImage: `url("data:image/svg+xml,${
                 // Inline SVG
                 encodeURIComponent(
-                  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svg.width} ${svg.height}"><path d="${svg.path}" stroke="black" stroke-width="1" fill="none" /></svg>`,
+                  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svg.width} ${svg.height}"><path d="${svg.path}" stroke="black" stroke-width="1" fill="none" /></svg>`
                 )
               }")`,
             }}
@@ -121,7 +121,7 @@ const MdxToc = ({ toc, className }: { toc: TocItem[]; className?: string }) => {
               className={cn(
                 "text-muted-foreground hover:text-foreground data-[active=true]:text-foreground line-clamp-1 text-[0.8rem] no-underline transition-colors",
                 "data-[depth=2]:pl-4 data-[depth=3]:pl-6 data-[depth=4]:pl-8 data-[depth=5]:pl-10 data-[depth=6]:pl-12",
-                index != 0 && "data-[depth=1]:pl-2",
+                index != 0 && "data-[depth=1]:pl-2"
               )}
               data-active={item.url === `#${activeHeading}`}
               data-depth={item.depth}
@@ -132,7 +132,7 @@ const MdxToc = ({ toc, className }: { toc: TocItem[]; className?: string }) => {
         </div>
       </div>
     </ScrollArea>
-  );
-};
+  )
+}
 
-export default MdxToc;
+export default MdxToc

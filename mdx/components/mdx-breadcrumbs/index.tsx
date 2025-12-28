@@ -1,29 +1,30 @@
-import { getMetaJSON } from "@/lib/actions";
-import { MetaJSON } from "@/lib/types";
+import getMetaJSON from "@/actions/get-meta-json"
+
+import type { MetaJSON } from "@/types/meta-json.type"
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbList,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Skeleton } from "@/components/ui/skeleton";
+} from "@/components/ui/breadcrumb"
+import { Skeleton } from "@/components/ui/skeleton"
 
-import Breadcrumbs from "./breadcrumbs";
+import Breadcrumbs from "./breadcrumbs"
 
 export default async function MdxBreadcrumbs({
   pathnameArray,
   frontmatterTitle,
 }: {
-  pathnameArray: string[];
-  frontmatterTitle?: string;
+  pathnameArray: string[]
+  frontmatterTitle?: string
 }) {
   const metaJsonArrayResolved: (MetaJSON | undefined)[] = await Promise.all(
     pathnameArray
       .slice(0, pathnameArray.length - 1)
       .map((_, index) =>
-        getMetaJSON(`${pathnameArray.slice(0, index + 1).join("/")}`),
-      ),
-  );
+        getMetaJSON(`${pathnameArray.slice(0, index + 1).join("/")}`)
+      )
+  )
 
   const breadcrumbLinks: { title: string; href: string }[] = pathnameArray
     .slice(0, pathnameArray.length - 1)
@@ -32,13 +33,13 @@ export default async function MdxBreadcrumbs({
         ? metaJsonArrayResolved[index].title
         : pathname.replaceAll("-", " "),
       href: `/${pathnameArray.slice(0, index + 1).join("/")}`,
-    }));
+    }))
 
   const breadcrumbPage: string | undefined =
     frontmatterTitle ||
     (metaJsonArrayResolved.length > 1
       ? metaJsonArrayResolved[metaJsonArrayResolved.length - 1]?.title
-      : undefined);
+      : undefined)
 
   return (
     <Breadcrumbs
@@ -49,7 +50,7 @@ export default async function MdxBreadcrumbs({
           : pathnameArray[pathnameArray.length - 1].replaceAll("-", " ")
       }
     />
-  );
+  )
 }
 
 export const MdxBreadcrumbsSkeleton = () => {
@@ -69,5 +70,5 @@ export const MdxBreadcrumbsSkeleton = () => {
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
-  );
-};
+  )
+}
