@@ -1,14 +1,115 @@
-import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable"
+import { notFound } from "next/navigation"
+import getMetaJSON from "@/actions/get-meta-json"
+import MdxBreadcrumbs from "@/mdx/components/mdx-breadcrumbs"
+import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer"
+import MdxErrorComponent from "@/mdx/components/mdx-error-component"
+import MdxPreviousNextButtons from "@/mdx/components/mdx-previous-next-buttons"
+import MdxRenderer from "@/mdx/components/mdx-renderer"
+import MdxToc from "@/mdx/components/mdx-toc"
+import type Frontmatter from "@/mdx/types/frontmatter.type"
+import processMDX from "@/mdx/utils/process-mdx"
 
-export default function Page() {
+import { TocItem } from "@/types/toc.type"
+import { CDN_BASE_URL, DIRECTORIES } from "@/lib/constants"
+import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable"
+import { Separator } from "@/components/ui/separator"
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ baseRoute: string; baseSlug: string; nestedSlug: string[] }>
+}) {
+  const { baseRoute, baseSlug, nestedSlug } = await params
+
+  const pathname = baseSlug + "/" + nestedSlug.join("/")
+  const cdnPathname = baseRoute + "/" + pathname
+  const pathnameArray = [baseSlug, ...nestedSlug]
+  const absoultePathname = `${CDN_BASE_URL}${cdnPathname}`
+
+  const metaJSON = await getMetaJSON(cdnPathname)
+
+  let toc: TocItem[] = []
+  let content: React.ReactNode = null
+  let frontmatter: Frontmatter | undefined = undefined
+
+  if (!metaJSON) {
+    const response = await fetch(
+      DIRECTORIES.has(baseRoute)
+        ? `${absoultePathname}/index.mdx`
+        : `${absoultePathname}.mdx`
+    )
+
+    if (!response.ok) {
+      console.error(`[+] Failed to fetch MDX: ${absoultePathname}.mdx`)
+
+      notFound()
+    }
+
+    const source = await response.text()
+    const result = await processMDX(source, baseRoute, baseSlug, cdnPathname)
+
+    if (result.status === "failed") {
+      console.error("Failed")
+      return <MdxErrorComponent error={result.error} />
+    }
+
+    toc =
+      result.scope.toc?.map(({ value, href, depth }) => ({
+        title: value,
+        url: href,
+        depth,
+      })) ?? []
+
+    frontmatter = result.frontmatter
+    content = result.content
+  } else {
+    toc = [
+      {
+        title: metaJSON.title,
+        url: "#" + metaJSON.slug,
+        depth: 1,
+      },
+      {
+        title: "Directories",
+        url: "#directories",
+        depth: 2,
+      },
+      {
+        title: "Files",
+        url: "#files",
+        depth: 2,
+      },
+    ]
+  }
+
   return (
     <>
-      <ResizablePanel
-        defaultSize={60}
-        minSize={40}
-        order={2}
-        className="pt-18"
-      ></ResizablePanel>
+      <ResizablePanel defaultSize={60} minSize={40} order={2} className="pt-16">
+        <MdxBreadcrumbs
+          pathnameArray={pathnameArray}
+          frontmatterTitle={frontmatter?.title}
+        />
+
+        <div className="w-full">
+          {metaJSON ? (
+            <DirectoryContentsRenderer
+              meta={metaJSON}
+              pathname={pathname}
+              root={null}
+            />
+          ) : (
+            content && <MdxRenderer content={content} />
+          )}
+        </div>
+
+        {!DIRECTORIES.has(baseRoute) && (
+          <MdxPreviousNextButtons
+            baseRoute={baseRoute}
+            previousPage={frontmatter?.previousPage}
+            nextPage={frontmatter?.nextPage}
+          />
+        )}
+      </ResizablePanel>
 
       <ResizableHandle withHandle />
 
@@ -16,8 +117,25 @@ export default function Page() {
         defaultSize={20}
         minSize={10}
         order={3}
-        className="pt-18"
-      ></ResizablePanel>
+        style={{ overflow: "visible" }}
+      >
+        <div className="sticky top-0 h-screen w-full pt-16">
+          {frontmatter?.lastmod && (
+            <>
+              <p className="p-2 font-mono text-sm">
+                <span className="text-muted-foreground">Last Updated:</span>{" "}
+                {new Date(frontmatter.lastmod).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </p>
+              <Separator className="mb-2 ml-2 max-w-[90%]" />
+            </>
+          )}
+          <MdxToc toc={toc} />
+        </div>
+      </ResizablePanel>
     </>
   )
 }

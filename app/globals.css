@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -173,6 +174,18 @@
   @apply border-border;
 }
 
+/* Remove backticks around code text => `something` => something */
+.prose
+  :where(code):not(
+    :where([class~="not-prose"], [class~="not-prose"] *)
+  )::before,
+.prose
+  :where(code):not(
+    :where([class~="not-prose"], [class~="not-prose"] *)
+  )::after {
+  content: "";
+}
+
 .expressive-code {
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -197,14 +210,12 @@ div[data-slot="tabs-content"] .expressive-code {
 
 @utility fd-step {
   &:before {
-    background-color: var(--primary);
-    color: var(--background);
     content: counter(step);
     counter-increment: step;
     font-size: 1rem;
     line-height: 1.25rem;
     position: absolute;
-    @apply -start-4 flex size-8 items-center justify-center rounded-full;
+    @apply text-primary -start-4 flex size-8 items-center justify-center rounded-full bg-white;
   }
 }
 

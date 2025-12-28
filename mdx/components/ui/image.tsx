@@ -42,16 +42,13 @@ const MdxImage = ({
   }
 
   return (
-    <ImageZoom className="bg-muted/10 relative mx-auto my-5 flex aspect-video items-center justify-center overflow-hidden rounded-lg">
+    <ImageZoom className="bg-muted/10 relative mx-auto my-5 flex aspect-video max-w-200 items-center justify-center overflow-hidden rounded-lg">
       <Image
         src={finalSrc}
         alt={props.alt || ""}
-        // Adapt to the aspect-video container
-        fill
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 75vw, 50vw"
         className="object-contain"
-        placeholder="empty"
-        loading="lazy"
+        fill
+        unoptimized
       />
     </ImageZoom>
   )

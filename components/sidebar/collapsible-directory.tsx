@@ -51,8 +51,6 @@ export default function CollapsibleDirectory({
     }
   }, [browserPathname, pathname])
 
-  console.log(pathname, title, group, preloadedChildren, isRoot)
-
   return (
     <Collapsible
       open={isOpen}
