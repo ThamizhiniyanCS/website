@@ -23,8 +23,6 @@ export default async function getMetaJSON(
       return undefined
     }
 
-    console.log("[+] getMetaJSON:", url)
-
     return await response.json()
   } catch (err) {
     console.error("Error fetching meta.json:", err)

@@ -34,7 +34,7 @@ export default async function proxy(request: NextRequest) {
   if (hostname?.endsWith(BASE_DOMAIN)) {
     const subdomain = hostname.replace(BASE_DOMAIN, "")
 
-    if (ALLOWED_SUBDOMAINS.includes(subdomain)) {
+    if (ALLOWED_SUBDOMAINS.has(subdomain)) {
       switch (device.type) {
         case "mobile":
           return NextResponse.rewrite(

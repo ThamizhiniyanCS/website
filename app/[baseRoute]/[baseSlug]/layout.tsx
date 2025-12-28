@@ -30,7 +30,7 @@ export default async function Layout({ params, children }: Readonly<Props>) {
           <Sidebar
             baseRoute={baseRoute}
             baseSlug={baseSlug}
-            variant={DIRECTORIES.includes(baseRoute) ? "directory" : "default"}
+            variant={DIRECTORIES.has(baseRoute) ? "directory" : "default"}
           />
         </div>
       </ResizablePanel>

@@ -1,4 +1,8 @@
 export function isFullUrl(pathname: string): boolean {
+  if (!pathname.startsWith("http")) {
+    return false
+  }
+
   try {
     const url = new URL(pathname)
 

@@ -1,11 +1,9 @@
 import { env } from "@/env"
 
-import { ALLOWED_SUBDOMAINS } from "@/lib/constants"
+import { ALLOWED_SUBDOMAINS, PROTOCOL } from "@/lib/constants"
 
 export default function generateURL(subdomain: string, pathname: string = "") {
-  if (!ALLOWED_SUBDOMAINS.includes(subdomain)) return ""
+  if (!ALLOWED_SUBDOMAINS.has(subdomain)) return ""
 
-  return env.NODE_ENV === "development"
-    ? `http://${subdomain}.${env.DOMAIN}${pathname}`
-    : `https://${subdomain}.${env.DOMAIN}${pathname}`
+  return `${PROTOCOL}${subdomain}.${env.DOMAIN}${pathname}`
 }
