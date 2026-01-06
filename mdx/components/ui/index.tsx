@@ -24,6 +24,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { File, Files, Folder } from "@/components/fumadocs-ui/files"
 
 import {
   Callout,
@@ -79,6 +80,11 @@ export default function MdxComponents(
 
     // NOTE: External Link
     ExternalLink,
+
+    // NOTE: Fumadocs File Structure Renderer
+    File,
+    Files,
+    Folder,
 
     // NOTE: Internal Link
     InternalLink,

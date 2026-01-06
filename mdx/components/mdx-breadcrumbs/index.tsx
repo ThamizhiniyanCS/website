@@ -58,15 +58,15 @@ export const MdxBreadcrumbsSkeleton = () => {
     <Breadcrumb className="px-10 pb-5">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <Skeleton className="h-4 w-[8rem] rounded-full" />
+          <Skeleton className="h-4 w-32 rounded-full" />
         </BreadcrumbItem>
         <BreadcrumbSeparator>/</BreadcrumbSeparator>
         <BreadcrumbItem>
-          <Skeleton className="h-4 w-[8rem] rounded-full" />
+          <Skeleton className="h-4 w-32 rounded-full" />
         </BreadcrumbItem>
         <BreadcrumbSeparator>/</BreadcrumbSeparator>
         <BreadcrumbItem>
-          <Skeleton className="h-4 w-[8rem] rounded-full" />
+          <Skeleton className="h-4 w-32 rounded-full" />
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>

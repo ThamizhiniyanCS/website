@@ -1,4 +1,5 @@
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers"
+import { remarkMdxFiles } from "fumadocs-core/mdx-plugins"
 import { type ElementContent } from "hast"
 import { fromHtmlIsomorphic } from "hast-util-from-html-isomorphic"
 import { evaluate, type EvaluateOptions } from "next-mdx-remote-client/rsc"
@@ -52,6 +53,7 @@ const STATIC_MDX_OPTIONS: EvaluateOptions<Scope>["mdxOptions"] = {
     remarkGFM,
     remarkMath,
     remarkNormalizeHeadings,
+    remarkMdxFiles,
   ],
 }
 

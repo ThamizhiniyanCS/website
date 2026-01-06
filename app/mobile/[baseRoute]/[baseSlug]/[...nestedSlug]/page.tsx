@@ -6,8 +6,8 @@ import MdxRenderer from "@/mdx/components/mdx-renderer"
 import MobileMdxToc from "@/mdx/components/mdx-toc/mobile"
 import Frontmatter from "@/mdx/types/frontmatter.type"
 import processMDX from "@/mdx/utils/process-mdx"
+import { TOCItemType } from "fumadocs-core/toc"
 
-import { TocItem } from "@/types/toc.type"
 import { CDN_BASE_URL, DIRECTORIES } from "@/lib/constants"
 
 export default async function Page({
@@ -28,7 +28,7 @@ export default async function Page({
 
   const metaJSON = await getMetaJSON(cdnPathname)
 
-  let toc: TocItem[] = []
+  let toc: TOCItemType[] = []
   let content: React.ReactNode = null
   let frontmatter: Frontmatter | undefined = undefined
 
@@ -92,7 +92,10 @@ export default async function Page({
           root={null}
         />
       ) : (
-        content && <MdxRenderer content={content} />
+        content &&
+        frontmatter && (
+          <MdxRenderer content={content} frontmatter={frontmatter} />
+        )
       )}
 
       <MobileMdxToc toc={toc} />

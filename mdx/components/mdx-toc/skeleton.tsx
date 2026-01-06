@@ -1,11 +1,11 @@
-import { ListTreeIcon } from "lucide-react";
+import { ListTreeIcon } from "lucide-react"
 
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Skeleton } from "@/components/ui/skeleton";
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const MdxTocSkeleton = () => {
   return (
-    <ScrollArea className="size-full px-2">
+    <ScrollArea className="size-full px-2 py-3">
       <p className="text-muted-foreground bg-background flex h-6 items-center gap-2 text-base">
         <ListTreeIcon className="size-4 flex-none" />
         On This Page
@@ -22,7 +22,7 @@ const MdxTocSkeleton = () => {
         </div>
       </div>
     </ScrollArea>
-  );
-};
+  )
+}
 
-export default MdxTocSkeleton;
+export default MdxTocSkeleton

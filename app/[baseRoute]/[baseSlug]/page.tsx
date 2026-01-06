@@ -2,7 +2,8 @@ import getMetaJSON from "@/actions/get-meta-json"
 import MdxBreadcrumbs from "@/mdx/components/mdx-breadcrumbs"
 import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer"
 import MdxErrorComponent from "@/mdx/components/mdx-error-component"
-import MdxToc from "@/mdx/components/mdx-toc"
+import { TOCProvider, TOCScrollArea } from "@/mdx/components/mdx-toc"
+import * as TocClerk from "@/mdx/components/mdx-toc/clerk"
 
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable"
 
@@ -63,7 +64,11 @@ export default async function Page({
         style={{ overflow: "visible" }}
       >
         <div className="sticky top-0 h-screen w-full pt-16">
-          <MdxToc toc={toc} />
+          <TOCProvider toc={toc}>
+            <TOCScrollArea>
+              <TocClerk.TOCItems />
+            </TOCScrollArea>
+          </TOCProvider>
         </div>
       </ResizablePanel>
     </>

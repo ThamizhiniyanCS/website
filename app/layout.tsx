@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Josefin_Sans, Lavishly_Yours } from "next/font/google"
+import { NextProvider } from "fumadocs-core/framework/next"
 
 import "./globals.css"
 
@@ -46,11 +47,15 @@ export default function RootLayout({
         <body
           className={`${fontLavishlyYours.variable} grid min-h-screen w-full grid-rows-[auto-1fr-auto] scroll-smooth antialiased`}
         >
-          <Providers>
-            <Navbar />
-            <main className="bg-background z-10 min-h-screen">{children}</main>
-            <Footer />
-          </Providers>
+          <NextProvider>
+            <Providers>
+              <Navbar />
+              <main className="bg-background z-10 min-h-screen">
+                {children}
+              </main>
+              <Footer />
+            </Providers>
+          </NextProvider>
         </body>
       </ReactLenis>
     </html>
