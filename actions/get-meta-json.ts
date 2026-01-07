@@ -1,7 +1,11 @@
 "use server"
 
+import { env } from "@/env"
+
 import type { MetaJSON } from "@/types/meta-json.type"
 import { CDN_BASE_URL } from "@/lib/constants"
+
+const REVALIDATE = env.NODE_ENV === "production" ? 86400 : 0 // 24 hours
 
 export default async function getMetaJSON(
   pathname: string
@@ -10,11 +14,10 @@ export default async function getMetaJSON(
     const url = `${CDN_BASE_URL}${pathname}/meta.json`
 
     const response = await fetch(url, {
-      // TODO: Implement Caching
-      // cache: "force-cache",
-      // next: {
-      //   revalidate: 3600,
-      // },
+      cache: "force-cache",
+      next: {
+        revalidate: REVALIDATE,
+      },
     })
 
     if (!response.ok) {

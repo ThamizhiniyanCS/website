@@ -21,7 +21,10 @@ export default async function fetchLinkMetadata(
   try {
     const res = await fetch(url, {
       signal: controller.signal,
-      cache: "no-store",
+      cache: "force-cache",
+      next: {
+        revalidate: 86400, // 24 hours
+      },
       headers: {
         "User-Agent": "Mozilla/5.0 (compatible; LinkPreviewBot/1.0)",
         Accept: "text/html",

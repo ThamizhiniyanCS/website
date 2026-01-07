@@ -64,12 +64,7 @@ export function TOCItems({ ref, className, ...props }: ComponentProps<"div">) {
     }
   }, [items])
 
-  if (items.length === 0)
-    return (
-      <div className="bg-fd-card text-fd-muted-foreground rounded-lg border p-3 text-xs">
-        No Headings
-      </div>
-    )
+  if (items.length === 0) return <p>No Headings</p>
 
   return (
     <>
