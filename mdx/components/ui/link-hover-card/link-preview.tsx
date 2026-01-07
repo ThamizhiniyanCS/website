@@ -40,7 +40,7 @@ export default function LinkPreview({
   // If external link is loading
   if (isLoading) {
     return (
-      <div className="bg-muted/50 flex h-40 items-center justify-center">
+      <div className="bg-muted/20 flex aspect-video w-full flex-col items-center justify-center gap-2 p-6 text-center">
         <Spinner />
       </div>
     )

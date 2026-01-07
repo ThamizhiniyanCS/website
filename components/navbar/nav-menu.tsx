@@ -14,25 +14,23 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 
+interface Links {
+  href: string
+  children: {
+    title: string
+    href: string
+  }[]
+}
+
 export default function NavMenu({
   labsLinks,
   writeupsLinks,
+  workshopsLinks,
   baseURL,
 }: {
-  labsLinks: {
-    href: string
-    children: {
-      title: string
-      href: string
-    }[]
-  }
-  writeupsLinks: {
-    href: string
-    children: {
-      title: string
-      href: string
-    }[]
-  }
+  labsLinks: Links
+  writeupsLinks: Links
+  workshopsLinks: Links
   baseURL: string
 }) {
   const isMobile = useIsMobile(1024)
@@ -77,6 +75,59 @@ export default function NavMenu({
           </NavigationMenuItem>
 
           <NavigationMenuItem>
+            <NavigationMenuTrigger>Labs</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                <li className="row-span-3">
+                  <NavigationMenuLink asChild>
+                    <Link
+                      className="from-muted/50 to-muted flex h-full w-full flex-col items-start justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md"
+                      href={labsLinks.href}
+                    >
+                      <div className="font-josefin-sans mt-4 mb-2 text-lg font-medium">
+                        Labs
+                      </div>
+                      <p className="text-muted-foreground text-sm leading-tight">
+                        My lab setups for various tasks.
+                      </p>
+                    </Link>
+                  </NavigationMenuLink>
+                </li>
+                {labsLinks.children.map(({ title, href }, index) => (
+                  <ListItem key={index} href={href} title={title}></ListItem>
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
+            <NavigationMenuTrigger>Workshops</NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                <li className="row-span-3">
+                  <NavigationMenuLink asChild>
+                    <Link
+                      className="from-muted/50 to-muted flex h-full w-full flex-col items-start justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md"
+                      href={workshopsLinks.href}
+                    >
+                      <div className="font-josefin-sans mt-4 mb-2 text-lg font-medium">
+                        Workshops
+                      </div>
+                      <p className="text-muted-foreground text-sm leading-tight">
+                        Detailed walkthroughs and key learnings from workshops I
+                        deliver.
+                      </p>
+                    </Link>
+                  </NavigationMenuLink>
+                </li>
+                {workshopsLinks.children.map(({ title, href }, index) => (
+                  <ListItem key={index} href={href} title={title}></ListItem>
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </NavigationMenuItem>
+
+          <NavigationMenuItem>
             <NavigationMenuTrigger>Writeups</NavigationMenuTrigger>
             <NavigationMenuContent>
               <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
@@ -97,32 +148,6 @@ export default function NavMenu({
                   </NavigationMenuLink>
                 </li>
                 {writeupsLinks.children.map(({ title, href }, index) => (
-                  <ListItem key={index} href={href} title={title}></ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>Labs</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                <li className="row-span-3">
-                  <NavigationMenuLink asChild>
-                    <Link
-                      className="from-muted/50 to-muted flex h-full w-full flex-col items-start justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md"
-                      href={labsLinks.href}
-                    >
-                      <div className="font-josefin-sans mt-4 mb-2 text-lg font-medium">
-                        Labs
-                      </div>
-                      <p className="text-muted-foreground text-sm leading-tight">
-                        My lab setups for various tasks.
-                      </p>
-                    </Link>
-                  </NavigationMenuLink>
-                </li>
-                {labsLinks.children.map(({ title, href }, index) => (
                   <ListItem key={index} href={href} title={title}></ListItem>
                 ))}
               </ul>

@@ -14,8 +14,6 @@ import CollapsibleDirectory, {
   CollapsibleDirectorySkeleton,
 } from "./collapsible-directory"
 
-// TODO: Add Base Slug Selector
-
 type SidebarContextType = {
   baseRoute: string
   baseSlug: string

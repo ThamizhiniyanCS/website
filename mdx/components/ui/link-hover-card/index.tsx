@@ -34,7 +34,7 @@ export default function LinkHoverCard({ children, href, ...props }: Props) {
     )
   }
 
-  const { data: isExternal, isLoading } = useQuery({
+  const { data: isExternal } = useQuery({
     queryKey: ["is-external-link-check", href],
     queryFn: async () => isExternalLink(href),
     enabled: true,
@@ -66,7 +66,10 @@ export default function LinkHoverCard({ children, href, ...props }: Props) {
         )}
       </HoverCardTrigger>
 
-      <HoverCardContent align="start" className="w-150 overflow-hidden p-0">
+      <HoverCardContent
+        align="start"
+        className="aspect-video w-150 overflow-hidden p-0"
+      >
         {isExternal && <LinkPreview url={href} isExternal={isExternal} />}
       </HoverCardContent>
     </HoverCard>

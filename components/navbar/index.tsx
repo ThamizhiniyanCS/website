@@ -11,6 +11,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,16 +19,16 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { AnimatedThemeToggler } from "@/components/magic-ui/animated-theme-toggler"
 
-import { Button } from "@/components/ui/button"
 import NavMenu from "./nav-menu"
 
 const Navbar = async () => {
   const labsLinks = await getMetaJSON("labs")
   const writeupsLinks = await getMetaJSON("writeups")
+  const workshopsLinks = await getMetaJSON("workshops")
   const commonClass =
     "bg-background fixed z-50 flex h-16 w-full items-center justify-between px-4 md:px-8"
 
-  if (!labsLinks || !writeupsLinks) {
+  if (!labsLinks || !writeupsLinks || !workshopsLinks) {
     return (
       <nav className={cn(commonClass)}>
         <div className="flex items-center gap-6">
@@ -57,6 +58,14 @@ const Navbar = async () => {
     })),
   }
 
+  const workshopsData = {
+    href: generateURL("workshops"),
+    children: workshopsLinks.children.map(({ slug, title }) => ({
+      title,
+      href: generateURL("workshops", "/" + slug),
+    })),
+  }
+
   return (
     <nav className={cn(commonClass)}>
       <div className="flex items-center gap-6">
@@ -66,13 +75,14 @@ const Navbar = async () => {
         <NavMenu
           labsLinks={labsData}
           writeupsLinks={writeupsData}
+          workshopsLinks={workshopsData}
           baseURL={BASE_URL}
         />
       </div>
 
       <div className="flex items-center gap-2">
         <AnimatedThemeToggler />
-        {/* <NavMobileTrigger /> */}
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button size="icon" variant="ghost" className="lg:hidden">
@@ -93,9 +103,44 @@ const Navbar = async () => {
               <AccordionItem value="home" className="w-full">
                 <AccordionTrigger>Home</AccordionTrigger>
                 <AccordionContent className="flex flex-col">
-                  <Link href={"#"}>a</Link>
-                  <Link href={"#"}>b</Link>
-                  <Link href={"#"}>c</Link>
+                  <Link href={`${BASE_URL}#about-me`}>About Me</Link>
+                  <Link href={`${BASE_URL}#skills`}>Skills</Link>
+                  <Link href={`${BASE_URL}#certifications`}>
+                    Certifications
+                  </Link>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="labs" className="w-full">
+                <AccordionTrigger>Labs</AccordionTrigger>
+                <AccordionContent className="flex flex-col">
+                  <p className="text-muted-foreground text-sm leading-tight">
+                    My lab setups for various tasks.
+                  </p>
+                  {labsData.children.map(({ title, href }, index) => (
+                    <Link key={`mobile-nav-lab-links-${index}`} href={href}>
+                      {title}
+                    </Link>
+                  ))}
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="writeups" className="w-full">
+                <AccordionTrigger>Workshops</AccordionTrigger>
+                <AccordionContent className="flex flex-col">
+                  <p className="text-muted-foreground text-sm leading-tight">
+                    Detailed walkthroughs and key learnings from workshops I
+                    deliver.
+                  </p>
+
+                  {workshopsData.children.map(({ title, href }, index) => (
+                    <Link
+                      key={`mobile-nav-writeups-links-${index}`}
+                      href={href}
+                    >
+                      {title}
+                    </Link>
+                  ))}
                 </AccordionContent>
               </AccordionItem>
 
@@ -107,27 +152,10 @@ const Navbar = async () => {
                     challenges.
                   </p>
 
-                  {writeupsLinks.children.map(({ title, slug }, index) => (
+                  {writeupsData.children.map(({ title, href }, index) => (
                     <Link
                       key={`mobile-nav-writeups-links-${index}`}
-                      href={generateURL("writeups", "/" + slug)}
-                    >
-                      {title}
-                    </Link>
-                  ))}
-                </AccordionContent>
-              </AccordionItem>
-
-              <AccordionItem value="labs" className="w-full">
-                <AccordionTrigger>Labs</AccordionTrigger>
-                <AccordionContent className="flex flex-col">
-                  <p className="text-muted-foreground text-sm leading-tight">
-                    My lab setups for various tasks.
-                  </p>
-                  {labsLinks.children.map(({ title, slug }, index) => (
-                    <Link
-                      key={`mobile-nav-lab-links-${index}`}
-                      href={generateURL("labs", "/" + slug)}
+                      href={href}
                     >
                       {title}
                     </Link>

@@ -38,7 +38,13 @@ export default async function Page({
     const response = await fetch(
       DIRECTORIES.has(baseRoute)
         ? `${absoultePathname}/index.mdx`
-        : `${absoultePathname}.mdx`
+        : `${absoultePathname}.mdx`,
+      {
+        cache: "force-cache",
+        next: {
+          revalidate: 86400, // 24 hours
+        },
+      }
     )
 
     if (!response.ok) {
