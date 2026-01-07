@@ -10,6 +10,8 @@ import { TOCItemType } from "fumadocs-core/toc"
 
 import { CDN_BASE_URL, DIRECTORIES } from "@/lib/constants"
 
+export const revalidate = 86400 // 24 hrs
+
 export default async function Page({
   params,
 }: {

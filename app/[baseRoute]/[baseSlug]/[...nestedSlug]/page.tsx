@@ -15,6 +15,8 @@ import { CDN_BASE_URL, DIRECTORIES } from "@/lib/constants"
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable"
 import { Separator } from "@/components/ui/separator"
 
+export const revalidate = 86400 // 24 hrs
+
 export default async function Page({
   params,
 }: {
