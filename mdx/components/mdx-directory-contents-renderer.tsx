@@ -23,7 +23,7 @@ const DirectoryContentsRenderer = ({
   return (
     <div
       className={cn(
-        "prose prose-invert @container max-w-none px-4 md:px-8 lg:px-10"
+        "prose dark:prose-invert @container max-w-none px-4 md:px-8 lg:px-10"
       )}
     >
       <h1 id={meta.slug}>

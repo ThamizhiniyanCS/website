@@ -11,7 +11,7 @@ import Navbar from "@/components/navbar"
 import Providers from "./providers"
 
 const fontJosefinSans = Josefin_Sans({
-  variable: "--var-font-lavishly-yours",
+  variable: "--var-font-josefin-sans",
   weight: "400",
   subsets: ["latin"],
 })

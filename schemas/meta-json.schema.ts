@@ -20,6 +20,7 @@ export const MetaJsonSchema = z.object({
   root: z.boolean().optional(),
   slug: z.string(),
   title: z.string(),
+  description: z.string().optional(),
   default: z.string().optional(),
   children: z.array(MetaJsonChildSchema),
 })

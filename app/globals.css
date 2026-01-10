@@ -215,7 +215,7 @@ div[data-slot="tabs-content"] .expressive-code {
     font-size: 1rem;
     line-height: 1.25rem;
     position: absolute;
-    @apply text-primary -start-4 flex size-8 items-center justify-center rounded-full bg-white;
+    @apply border-primary text-foreground bg-background -start-4 flex size-8 items-center justify-center rounded-full border;
   }
 }
 

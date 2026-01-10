@@ -178,7 +178,7 @@ export default function HeroSection() {
           </p>
           <div
             id="role-separator-overlay"
-            className="bg-background w-1px h-7 rounded-full md:h-10 md:w-[2px]"
+            className="w-1px h-7 rounded-full bg-red-500 md:h-10 md:w-[2px]"
           />
           <p id="role-web-developer-overlay" className="text-xl md:text-2xl">
             Web Developer

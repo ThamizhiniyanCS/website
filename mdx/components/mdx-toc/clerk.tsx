@@ -135,7 +135,7 @@ function TOCItem({
       style={{
         paddingInlineStart: getItemOffset(item.depth),
       }}
-      className="text-muted-foreground hover:text-foreground data-[active=true]:text-primary relative py-1.5 text-sm wrap-anywhere transition-colors"
+      className="text-muted-foreground hover:text-foreground data-[active=true]:text-primary dark:data-[active=true]:bg-primary/10 dark:data-[active=true]:text-foreground relative py-1.5 text-sm wrap-anywhere transition-colors"
     >
       {offset !== upperOffset && (
         <svg
