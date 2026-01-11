@@ -1,17 +1,43 @@
+import type { Metadata } from "next"
 import getMetaJSON from "@/actions/get-meta-json"
+import { env } from "@/env"
 import MdxBreadcrumbs from "@/mdx/components/mdx-breadcrumbs"
 import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer"
 import MdxErrorComponent from "@/mdx/components/mdx-error-component"
 import { TOCProvider, TOCScrollArea } from "@/mdx/components/mdx-toc"
 import * as TocClerk from "@/mdx/components/mdx-toc/clerk"
 
+import { PROTOCOL } from "@/lib/constants"
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable"
 
-export default async function Page({
-  params,
-}: {
+interface Props {
   params: Promise<{ baseRoute: string; baseSlug: string }>
-}) {
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { baseRoute, baseSlug } = await params
+
+  const cdnPathname = baseRoute + "/" + baseSlug
+
+  const response = await getMetaJSON(cdnPathname)
+
+  if (!response) {
+    return {
+      title: "Page Not Found",
+      description: "The page you are looking for is not available",
+    }
+  }
+
+  return {
+    title: response.title,
+    description: response.description,
+    alternates: {
+      canonical: `${PROTOCOL}${baseRoute}.${env.DOMAIN}/${baseSlug}`,
+    },
+  }
+}
+
+export default async function Page({ params }: Props) {
   const { baseRoute, baseSlug } = await params
 
   const pathname = baseSlug

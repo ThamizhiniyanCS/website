@@ -18,6 +18,7 @@ export default function File({ href, title }: Props) {
 
   return (
     <Link
+      prefetch={true}
       href={href}
       className={cn(
         "border-l-border w-full rounded-r-sm border-l px-4 py-2 text-sm",

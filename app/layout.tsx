@@ -4,6 +4,8 @@ import { NextProvider } from "fumadocs-core/framework/next"
 
 import "./globals.css"
 
+import { siteConfig } from "@/lib/config"
+import { BASE_URL } from "@/lib/constants"
 import { ReactLenis } from "@/lib/lenis"
 import Footer from "@/components/footer"
 import Navbar from "@/components/navbar"
@@ -23,9 +25,27 @@ const fontLavishlyYours = Lavishly_Yours({
 })
 
 export const metadata: Metadata = {
-  title: "Thamizhiniyan C S",
-  description: "Ethical Hacker | Web Developer",
-  metadataBase: new URL("https://thamizhiniyancs.me"),
+  title: {
+    default: "Thamizhiniyan C S",
+    template: `%s | Thamizhiniyan C S`,
+  },
+  metadataBase: new URL(BASE_URL),
+  description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  authors: siteConfig.authors,
+  openGraph: {
+    title: siteConfig.title,
+    description: siteConfig.description,
+    url: BASE_URL,
+    siteName: siteConfig.siteName,
+    locale: siteConfig.locale,
+    type: siteConfig.type,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.title,
+    description: siteConfig.description,
+  },
 }
 
 export default function RootLayout({

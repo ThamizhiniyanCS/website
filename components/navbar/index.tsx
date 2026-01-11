@@ -99,7 +99,11 @@ const Navbar = async () => {
                       </p>
                     )}
                     {children.map(({ title, href }, index) => (
-                      <Link key={`mobile-nav-lab-links-${index}`} href={href}>
+                      <Link
+                        key={`mobile-nav-lab-links-${index}`}
+                        href={href}
+                        prefetch={true}
+                      >
                         {title}
                       </Link>
                     ))}

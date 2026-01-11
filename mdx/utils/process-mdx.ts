@@ -1,3 +1,4 @@
+import { cache } from "react"
 import { pluginLineNumbers } from "@expressive-code/plugin-line-numbers"
 import { remarkMdxFiles } from "fumadocs-core/mdx-plugins"
 import { type ElementContent } from "hast"
@@ -67,7 +68,7 @@ type MdxResult =
     }
   | { status: "failed"; error: string | Error }
 
-export default async function processMDX(
+async function processMDX(
   source: string,
   baseRoute: string,
   baseSlug: string,
@@ -107,3 +108,14 @@ export default async function processMDX(
     }
   }
 }
+
+export const cachedProcessMDX = cache(
+  async (
+    source: string,
+    baseRoute: string,
+    baseSlug: string,
+    pathname: string
+  ) => {
+    return processMDX(source, baseRoute, baseSlug, pathname)
+  }
+)

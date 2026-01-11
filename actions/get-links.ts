@@ -6,9 +6,9 @@ import generateURL from "@/utils/generate-url"
 import type { Links } from "@/types/links.type"
 
 export default async function getLinks(): Promise<Links | undefined> {
-  const labsMetadata = await getMetaJSON("labs")
-  const workshopsMetadata = await getMetaJSON("workshops")
-  const writeupsMetadata = await getMetaJSON("writeups")
+  const [labsMetadata, workshopsMetadata, writeupsMetadata] = await Promise.all(
+    [getMetaJSON("labs"), getMetaJSON("workshops"), getMetaJSON("writeups")]
+  )
 
   if (!labsMetadata || !workshopsMetadata || !writeupsMetadata) return undefined
 

@@ -44,6 +44,7 @@ const DirectoryContentsRenderer = ({
         {directories.map(({ title, slug }, index) => (
           <Link
             key={index}
+            prefetch={true}
             href={{
               pathname: `/${pathname}/${slug}`,
               query: root != null ? { root } : undefined,
@@ -70,6 +71,7 @@ const DirectoryContentsRenderer = ({
         {files.map(({ title, slug }, index) => (
           <Link
             key={index}
+            prefetch={true}
             href={{
               pathname: `/${pathname}/${slug}`,
               query: root != null ? { root } : undefined,

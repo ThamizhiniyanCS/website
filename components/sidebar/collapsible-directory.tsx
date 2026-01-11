@@ -97,6 +97,7 @@ export default function CollapsibleDirectory({
               )}
 
               <Link
+                prefetch={true}
                 href={"/" + pathname}
                 className="ml-2 line-clamp-1 size-full text-sm font-semibold"
               >

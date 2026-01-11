@@ -68,6 +68,7 @@ export default function NavMenu({
                 <li className="row-span-3">
                   <NavigationMenuLink asChild>
                     <Link
+                      prefetch={true}
                       className="from-muted/50 to-muted flex h-full w-full flex-col items-start justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md"
                       href={href}
                     >

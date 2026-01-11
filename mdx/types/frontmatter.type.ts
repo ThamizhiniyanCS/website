@@ -1,6 +1,6 @@
 type Frontmatter = {
   title: string
-  desciption: string
+  description: string
   date: Date
   lastmod: Date
   previousPage?: {

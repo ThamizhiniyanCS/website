@@ -1,27 +1,94 @@
+import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import getMetaJSON from "@/actions/get-meta-json"
+import { env } from "@/env"
 import MdxBreadcrumbs from "@/mdx/components/mdx-breadcrumbs"
 import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer"
 import MdxErrorComponent from "@/mdx/components/mdx-error-component"
 import MdxPreviousNextButtons from "@/mdx/components/mdx-previous-next-buttons"
 import MdxRenderer from "@/mdx/components/mdx-renderer"
+import MdxStructuredData from "@/mdx/components/mdx-structured-data"
 import { TOCProvider, TOCScrollArea } from "@/mdx/components/mdx-toc"
 import * as TocClerk from "@/mdx/components/mdx-toc/clerk"
 import type Frontmatter from "@/mdx/types/frontmatter.type"
-import processMDX from "@/mdx/utils/process-mdx"
+import { cachedProcessMDX } from "@/mdx/utils/process-mdx"
 import { TOCItemType } from "fumadocs-core/toc"
 
-import { CDN_BASE_URL, DIRECTORIES } from "@/lib/constants"
+import { CDN_BASE_URL, DIRECTORIES, PROTOCOL } from "@/lib/constants"
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable"
 import { Separator } from "@/components/ui/separator"
 
 export const revalidate = 86400 // 24 hrs
 
-export default async function Page({
-  params,
-}: {
+interface Props {
   params: Promise<{ baseRoute: string; baseSlug: string; nestedSlug: string[] }>
-}) {
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { baseRoute, baseSlug, nestedSlug } = await params
+
+  const pathname = baseSlug + "/" + nestedSlug.join("/")
+  const cdnPathname = baseRoute + "/" + pathname
+  const absoultePathname = `${CDN_BASE_URL}${cdnPathname}`
+
+  const metaJSON = await getMetaJSON(cdnPathname)
+
+  if (metaJSON) {
+    return {
+      title: metaJSON.title,
+      description: metaJSON.description,
+      alternates: {
+        canonical: `${PROTOCOL}${baseRoute}.${env.DOMAIN}/${pathname}`,
+      },
+    }
+  }
+
+  const response = await fetch(
+    DIRECTORIES.has(baseRoute)
+      ? `${absoultePathname}/index.mdx`
+      : `${absoultePathname}.mdx`,
+    {
+      cache: "force-cache",
+      next: {
+        revalidate: 86400, // 24 hours
+      },
+    }
+  )
+
+  if (!response) {
+    return {
+      title: "Page Not Found",
+      description: "The page you are looking for is not available",
+    }
+  }
+
+  const source = await response.text()
+  const result = await cachedProcessMDX(
+    source,
+    baseRoute,
+    baseSlug,
+    cdnPathname
+  )
+
+  if (result.status === "failed") {
+    return {
+      title: "Render Page Error",
+      description: "Failed to Render Page",
+    }
+  }
+
+  const { frontmatter } = result
+
+  return {
+    title: frontmatter.title,
+    description: frontmatter.description,
+    alternates: {
+      canonical: `${PROTOCOL}${baseRoute}.${env.DOMAIN}/${pathname}`,
+    },
+  }
+}
+
+export default async function Page({ params }: Props) {
   const { baseRoute, baseSlug, nestedSlug } = await params
 
   const pathname = baseSlug + "/" + nestedSlug.join("/")
@@ -55,7 +122,12 @@ export default async function Page({
     }
 
     const source = await response.text()
-    const result = await processMDX(source, baseRoute, baseSlug, cdnPathname)
+    const result = await cachedProcessMDX(
+      source,
+      baseRoute,
+      baseSlug,
+      cdnPathname
+    )
 
     if (result.status === "failed") {
       console.error("Failed")
@@ -99,7 +171,7 @@ export default async function Page({
           frontmatterTitle={frontmatter?.title}
         />
 
-        <div className="w-full">
+        <article className="w-full">
           {metaJSON ? (
             <DirectoryContentsRenderer
               meta={metaJSON}
@@ -109,10 +181,13 @@ export default async function Page({
           ) : (
             content &&
             frontmatter && (
-              <MdxRenderer content={content} frontmatter={frontmatter} />
+              <>
+                <MdxStructuredData {...frontmatter} />
+                <MdxRenderer content={content} frontmatter={frontmatter} />
+              </>
             )
           )}
-        </div>
+        </article>
 
         {!DIRECTORIES.has(baseRoute) && (
           <MdxPreviousNextButtons

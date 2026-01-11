@@ -36,7 +36,7 @@ const Footer = async () => {
           </p>
         </div>
 
-        <div className="grid w-full grid-cols-1 justify-center gap-x-5 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="grid w-full grid-cols-1 place-content-center justify-center gap-x-5 gap-y-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           <div className="flex flex-col gap-4">
             <Link href={BASE_URL} className={cn(headingStyle)}>
               Home
