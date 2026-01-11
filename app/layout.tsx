@@ -45,6 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteConfig.title,
     description: siteConfig.description,
+    creator: "@ThamizhiniyanCS",
   },
 }
 

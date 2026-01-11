@@ -8,11 +8,13 @@ export const env = createEnv({
       .default("development"),
     DOMAIN: z.string().min(1).default("localhost:3000"),
     CDN_DOMAIN: z.string().min(1).default("localhost:8000"),
+    OG_SECRET: z.string(),
   },
   client: {},
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
     DOMAIN: process.env.DOMAIN,
     CDN_DOMAIN: process.env.CDN_DOMAIN,
+    OG_SECRET: process.env.OG_SECRET,
   },
 })

@@ -8,6 +8,7 @@ export const CDN_BASE_URL = `https://${env.CDN_DOMAIN}/`
 
 export const ALLOWED_SUBDOMAINS = new Set<string>([
   "labs",
+  "og",
   "workshops",
   "writeups",
 ])

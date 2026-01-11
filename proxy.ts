@@ -35,6 +35,10 @@ export default async function proxy(request: NextRequest) {
     const subdomain = hostname.replace(BASE_DOMAIN, "")
 
     if (ALLOWED_SUBDOMAINS.has(subdomain)) {
+      if (subdomain === "og") {
+        return rewriteWithCustomHeaders(new URL(`/api/og`, request.url))
+      }
+
       switch (device.type) {
         case "mobile":
           return rewriteWithCustomHeaders(
