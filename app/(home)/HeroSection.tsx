@@ -1,6 +1,6 @@
 "use client"
 
-import { Fragment } from "react"
+import { useRef } from "react"
 import { useGSAP } from "@gsap/react"
 import gsap from "gsap"
 import { ScrambleTextPlugin } from "gsap/all"
@@ -8,129 +8,141 @@ import { ScrambleTextPlugin } from "gsap/all"
 import MatrixRain from "@/components/matrix-rain"
 
 export default function HeroSection() {
+  const gsapContainerRef = useRef(null)
+
   gsap.registerPlugin(useGSAP, ScrambleTextPlugin)
 
-  useGSAP(() => {
-    let timeline = gsap.timeline({
-      id: "Home Page Timeline",
-      onComplete: () => {},
-    })
-
-    // GSDevTools.create({ animation: timeline });
-
-    document.fonts.ready.then(() => {
-      timeline.fromTo(
-        "#hi-folks-text",
-        {
-          duration: 1,
-          opacity: 0,
-          y: 50,
-        },
-        {
-          duration: 1,
-          opacity: 1,
-          y: 0,
-        },
-        1
-      )
-
-      timeline.to(
-        "#scramble-text",
-        {
-          duration: 2,
-          scrambleText: {
-            text: "Thamizhiniyan C S",
-            chars: "upperAndLowerCase",
-            revealDelay: 0.5,
-            speed: 0.1,
-          },
-        },
-        2
-      )
-
-      timeline.fromTo(
-        "#role-separator",
-        {
-          duration: 1,
-          opacity: 0,
-          y: 30,
-        },
-        {
-          duration: 1,
-          opacity: 1,
-          y: 0,
-        },
-        4
-      )
-
-      timeline.fromTo(
-        "#role-ethical-hacker",
-        {
-          x: -30,
-          opacity: 0,
-        },
-        {
-          x: 0,
-          opacity: 1,
-        },
-        5
-      )
-
-      timeline.fromTo(
-        "#role-web-developer",
-        {
-          x: 30,
-          opacity: 0,
-        },
-        {
-          x: 0,
-          opacity: 1,
-        },
-        5
-      )
-
-      timeline.fromTo(
-        "#hero-overlay",
-        {
-          opacity: 0,
-          duration: 1,
-        },
-        {
-          opacity: 1,
-          duration: 1,
-        },
-        6
-      )
-    })
-
-    function handleMouseMove(event: MouseEvent) {
-      // Reference
-      // - https://www.youtube.com/watch?v=y6z8MYjZ_J8
-      // - https://codepen.io/designcourse/pen/QWxppgv
-
-      const { clientX, clientY } = event
-
-      const x = Math.round((clientX / window.innerWidth) * 100)
-      const y = Math.round((clientY / window.innerHeight) * 100)
-
-      gsap.to("#hero-overlay", {
-        "--x": `${x}%`,
-        "--y": `${y}%`,
-        duration: 0.3,
-        ease: "sine.out",
+  useGSAP(
+    () => {
+      let timeline = gsap.timeline({
+        id: "Home Page Timeline",
+        onComplete: () => {},
       })
-    }
 
-    window.addEventListener("mousemove", handleMouseMove)
+      document.fonts.ready.then(() => {
+        timeline.to("#hero", { autoAlpha: 1 })
 
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove)
+        timeline.fromTo(
+          "#hi-folks-text",
+          {
+            duration: 1,
+            opacity: 0,
+            y: 50,
+          },
+          {
+            duration: 1,
+            opacity: 1,
+            y: 0,
+          },
+          1
+        )
+
+        timeline.to(
+          "#scramble-text",
+          {
+            duration: 2,
+            scrambleText: {
+              text: "Thamizhiniyan C S",
+              chars: "upperAndLowerCase",
+              revealDelay: 0.5,
+              speed: 0.1,
+            },
+          },
+          2
+        )
+
+        timeline.fromTo(
+          "#role-separator",
+          {
+            duration: 1,
+            opacity: 0,
+            y: 30,
+          },
+          {
+            duration: 1,
+            opacity: 1,
+            y: 0,
+          },
+          4
+        )
+
+        timeline.fromTo(
+          "#role-ethical-hacker",
+          {
+            x: -30,
+            opacity: 0,
+          },
+          {
+            x: 0,
+            opacity: 1,
+          },
+          5
+        )
+
+        timeline.fromTo(
+          "#role-web-developer",
+          {
+            x: 30,
+            opacity: 0,
+          },
+          {
+            x: 0,
+            opacity: 1,
+          },
+          5
+        )
+
+        timeline.fromTo(
+          "#hero-overlay",
+          {
+            opacity: 0,
+            duration: 1,
+            autoAlpha: 0,
+          },
+          {
+            opacity: 1,
+            duration: 1,
+            autoAlpha: 1,
+          },
+          6
+        )
+      })
+
+      function handleMouseMove(event: MouseEvent) {
+        // Reference
+        // - https://www.youtube.com/watch?v=y6z8MYjZ_J8
+        // - https://codepen.io/designcourse/pen/QWxppgv
+
+        const { clientX, clientY } = event
+
+        const x = Math.round((clientX / window.innerWidth) * 100)
+        const y = Math.round((clientY / window.innerHeight) * 100)
+
+        gsap.to("#hero-overlay", {
+          "--x": `${x}%`,
+          "--y": `${y}%`,
+          duration: 0.3,
+          ease: "sine.out",
+        })
+      }
+
+      window.addEventListener("mousemove", handleMouseMove)
+
+      return () => {
+        window.removeEventListener("mousemove", handleMouseMove)
+      }
+    },
+    {
+      scope: gsapContainerRef,
     }
-  })
+  )
 
   return (
-    <Fragment>
-      <section className="font-josefin-sans flex min-h-screen w-full flex-col items-center justify-center gap-5 py-20">
+    <div ref={gsapContainerRef}>
+      <section
+        id="hero"
+        className="font-josefin-sans invisible flex min-h-screen w-full flex-col items-center justify-center gap-5 py-20"
+      >
         <p id="hi-folks-text" className="text-xl tracking-widest md:text-2xl">
           Hi Folks, This is
         </p>
@@ -144,7 +156,7 @@ export default function HeroSection() {
           </p>
           <div
             id="role-separator"
-            className="w-1px h-7 rounded-full bg-white md:h-10 md:w-[2px]"
+            className="h-7 w-px rounded-full bg-white md:h-10 md:w-[2px]"
           />
           <p id="role-web-developer" className="text-xl md:text-2xl">
             Web Developer
@@ -157,7 +169,7 @@ export default function HeroSection() {
         style={{
           clipPath: "circle(200px at var(--x, 50%) var(--y, 50%))",
         }}
-        className="font-josefin-sans absolute top-0 left-0 flex min-h-screen w-full flex-col items-center justify-center gap-5 border-none py-20 text-red-500"
+        className="font-josefin-sans invisible absolute top-0 left-0 hidden min-h-screen w-full flex-col items-center justify-center gap-5 border-none py-20 text-red-500 lg:flex"
       >
         <MatrixRain className="z-[-1]" />
         <p
@@ -185,6 +197,6 @@ export default function HeroSection() {
           </p>
         </div>
       </section>
-    </Fragment>
+    </div>
   )
 }
