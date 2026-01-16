@@ -9,6 +9,7 @@ import { BASE_URL } from "@/lib/constants"
 import Lenis from "@/lib/lenis"
 import Footer from "@/components/footer"
 import Navbar from "@/components/navbar"
+import ScrollToTop from "@/components/scroll-to-top"
 
 import Providers from "./providers"
 
@@ -67,6 +68,8 @@ export default function RootLayout({
             <Footer />
           </Providers>
         </NextProvider>
+
+        <ScrollToTop />
       </body>
     </html>
   )

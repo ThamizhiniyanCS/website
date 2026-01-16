@@ -4,6 +4,7 @@ import getMetaJSON from "@/actions/get-meta-json"
 import { env } from "@/env"
 import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer"
 import MdxErrorComponent from "@/mdx/components/mdx-error-component"
+import MdxPreviousNextButtons from "@/mdx/components/mdx-previous-next-buttons"
 import MdxRenderer from "@/mdx/components/mdx-renderer"
 import MdxStructuredData from "@/mdx/components/mdx-structured-data"
 import MobileMdxToc from "@/mdx/components/mdx-toc/mobile"
@@ -12,7 +13,7 @@ import { cachedProcessMDX } from "@/mdx/utils/process-mdx"
 import getOgToken from "@/utils/get-og-token"
 import { TOCItemType } from "fumadocs-core/toc"
 
-import { BASE_URL, CDN_BASE_URL, DIRECTORIES, PROTOCOL } from "@/lib/constants"
+import { CDN_BASE_URL, DIRECTORIES, PROTOCOL } from "@/lib/constants"
 
 export const revalidate = 86400 // 24 hrs
 
@@ -218,20 +219,30 @@ export default async function Page({ params }: Props) {
 
   return (
     <div className="mt-10 w-full">
-      {metaJSON ? (
-        <DirectoryContentsRenderer
-          meta={metaJSON}
-          pathname={pathname}
-          root={null}
+      <article className="w-full">
+        {metaJSON ? (
+          <DirectoryContentsRenderer
+            meta={metaJSON}
+            pathname={pathname}
+            root={null}
+          />
+        ) : (
+          content &&
+          frontmatter && (
+            <>
+              <MdxStructuredData {...frontmatter} />
+              <MdxRenderer content={content} frontmatter={frontmatter} />
+            </>
+          )
+        )}
+      </article>
+
+      {!DIRECTORIES.has(baseRoute) && (
+        <MdxPreviousNextButtons
+          baseRoute={baseRoute}
+          previousPage={frontmatter?.previousPage}
+          nextPage={frontmatter?.nextPage}
         />
-      ) : (
-        content &&
-        frontmatter && (
-          <>
-            <MdxStructuredData {...frontmatter} />
-            <MdxRenderer content={content} frontmatter={frontmatter} />
-          </>
-        )
       )}
 
       <MobileMdxToc toc={toc} />

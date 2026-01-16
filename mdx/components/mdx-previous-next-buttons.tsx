@@ -1,13 +1,10 @@
 import Link from "next/link"
-import getMetaJSON from "@/actions/get-meta-json"
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
-import { MetaJSON, MetaJsonChild } from "@/types/meta-json.type"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
 const MdxPreviousNextButtons = async ({
-  baseRoute,
   nextPage,
   previousPage,
 }: {
@@ -26,7 +23,7 @@ const MdxPreviousNextButtons = async ({
     | undefined
 }) => {
   return (
-    <div className="mt-10 grid grid-cols-2 gap-5 px-10">
+    <div className="mt-10 flex flex-col gap-5 px-5 md:grid md:grid-cols-2 md:px-10">
       <Button variant="outline" asChild>
         <Link
           className={cn(
@@ -45,7 +42,7 @@ const MdxPreviousNextButtons = async ({
         >
           <ChevronLeftIcon
             className={cn(
-              "size-[1.5rem] flex-none",
+              "size-6 flex-none",
               previousPage === undefined && "text-primary/50"
             )}
           />
@@ -103,7 +100,7 @@ const MdxPreviousNextButtons = async ({
 
           <ChevronRightIcon
             className={cn(
-              "size-[1.5rem] flex-none",
+              "size-6 flex-none",
               nextPage === undefined && "text-primary/50"
             )}
           />
