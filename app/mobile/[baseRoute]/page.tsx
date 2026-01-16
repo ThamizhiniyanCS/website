@@ -83,7 +83,7 @@ export default async function Page({ params }: Props) {
   }
 
   return (
-    <div className="prose prose-invert mx-auto min-h-screen w-full max-w-7xl px-4 pt-20 md:px-8">
+    <div className="prose prose-invert mx-auto min-h-svh w-full max-w-7xl px-4 pt-20 md:px-8">
       <h1 className="">{response.title}</h1>
 
       <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">

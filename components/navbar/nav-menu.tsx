@@ -18,10 +18,12 @@ import Logo from "@/components/logo"
 export default function NavMenu({
   links,
   baseURL,
+  cdnURL,
   socials,
 }: {
   links: Links
   baseURL: string
+  cdnURL: string
   socials?: Socials
 }) {
   return (
@@ -30,7 +32,7 @@ export default function NavMenu({
         <NavigationMenuItem>
           <NavigationMenuTrigger>Home</NavigationMenuTrigger>
           <NavigationMenuContent>
-            <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+            <ul className="grid gap-2 md:w-100 lg:w-125 lg:grid-cols-[.75fr_1fr]">
               <li className="row-span-3">
                 <NavigationMenuLink asChild>
                   <Link
@@ -66,7 +68,7 @@ export default function NavMenu({
           <NavigationMenuItem key={`nav-link-${title}-${index}`}>
             <NavigationMenuTrigger>{title}</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+              <ul className="grid gap-2 md:w-100 lg:w-125 lg:grid-cols-[.75fr_1fr]">
                 <li className="row-span-3">
                   <NavigationMenuLink asChild>
                     <Link
@@ -97,7 +99,7 @@ export default function NavMenu({
           <NavigationMenuItem>
             <NavigationMenuTrigger>Socials</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <ul className="grid w-[200px] gap-4">
+              <ul className="grid w-50 gap-4">
                 <li>
                   {socials.map(({ title, href, logo }, index) => (
                     <NavigationMenuLink
@@ -119,6 +121,19 @@ export default function NavMenu({
             </NavigationMenuContent>
           </NavigationMenuItem>
         )}
+
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild>
+            <Link
+              href={`${cdnURL}my-resume.pdf`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold"
+            >
+              Resume
+            </Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   )

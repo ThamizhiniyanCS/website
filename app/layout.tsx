@@ -6,7 +6,7 @@ import "./globals.css"
 
 import { siteConfig } from "@/lib/config"
 import { BASE_URL } from "@/lib/constants"
-import { ReactLenis } from "@/lib/lenis"
+import Lenis from "@/lib/lenis"
 import Footer from "@/components/footer"
 import Navbar from "@/components/navbar"
 
@@ -56,29 +56,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${fontJosefinSans.variable} dark`}>
-      <ReactLenis
-        root
-        options={{
-          anchors: {
-            offset: -100,
-          },
-          allowNestedScroll: true,
-        }}
+      <Lenis />
+      <body
+        className={`${fontLavishlyYours.variable} grid min-h-svh w-full grid-rows-[auto-1fr-auto] scroll-smooth antialiased`}
       >
-        <body
-          className={`${fontLavishlyYours.variable} grid min-h-screen w-full grid-rows-[auto-1fr-auto] scroll-smooth antialiased`}
-        >
-          <NextProvider>
-            <Providers>
-              <Navbar />
-              <main className="bg-background z-10 min-h-screen">
-                {children}
-              </main>
-              <Footer />
-            </Providers>
-          </NextProvider>
-        </body>
-      </ReactLenis>
+        <NextProvider>
+          <Providers>
+            <Navbar />
+            <main className="bg-background z-10 min-h-svh">{children}</main>
+            <Footer />
+          </Providers>
+        </NextProvider>
+      </body>
     </html>
   )
 }

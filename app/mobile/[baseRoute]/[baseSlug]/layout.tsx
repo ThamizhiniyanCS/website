@@ -24,7 +24,7 @@ export default async function Layout({
   const pathnameArray = [baseSlug]
 
   return (
-    <div className="mt-20 min-h-screen w-full max-w-[calc(100vw-25px)]">
+    <div className="mt-20 min-h-svh w-full max-w-[calc(100vw-25px)]">
       <div className="bg-background sticky top-14 z-50 flex w-full items-center gap-3 px-4 py-2 md:px-8">
         <Sheet>
           <SheetTrigger>

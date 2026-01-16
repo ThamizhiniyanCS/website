@@ -17,7 +17,7 @@ export default async function Layout({ params, children }: Readonly<Props>) {
   return (
     <ResizablePanelGroup
       direction="horizontal"
-      className="min-h-screen w-full max-w-[calc(100vw-15px)]"
+      className="min-h-svh w-full max-w-[calc(100vw-15px)]"
       style={{ overflow: "visible" }}
     >
       <ResizablePanel

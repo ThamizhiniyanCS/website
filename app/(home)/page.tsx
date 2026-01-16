@@ -5,6 +5,8 @@ import { BASE_URL } from "@/lib/constants"
 
 import AboutSection from "./AboutSection"
 import HeroSection from "./HeroSection"
+import ProfessionalCertificationsSection from "./professional-certifications"
+import SkillsSection from "./SkillsSection"
 
 export const metadata: Metadata = {
   title: "Home",
@@ -18,6 +20,8 @@ export default function Page() {
     <Fragment>
       <HeroSection />
       <AboutSection />
+      <SkillsSection />
+      <ProfessionalCertificationsSection />
     </Fragment>
   )
 }

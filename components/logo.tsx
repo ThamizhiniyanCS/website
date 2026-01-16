@@ -7,15 +7,22 @@ interface Props {
   alt: string
   size: number
   className?: string
+  imageClassName?: string
 }
 
-export default function Logo({ src, alt, size, className = "" }: Props) {
+export default function Logo({
+  src,
+  alt,
+  size,
+  className = "",
+  imageClassName,
+}: Props) {
   const hasDistinctModes = src.light && src.dark && src.light !== src.dark
 
   if (hasDistinctModes) {
     return (
       <div
-        className={cn("relative", className)}
+        className={cn("relative flex items-center justify-center", className)}
         style={{ width: size, height: size }}
       >
         <Image
@@ -23,7 +30,7 @@ export default function Logo({ src, alt, size, className = "" }: Props) {
           alt={alt}
           width={size}
           height={size}
-          className="hidden dark:block"
+          className={cn("hidden dark:block", imageClassName)}
           priority
         />
         <Image
@@ -31,7 +38,7 @@ export default function Logo({ src, alt, size, className = "" }: Props) {
           alt={alt}
           width={size}
           height={size}
-          className="dark:hidden"
+          className={cn("dark:hidden", imageClassName)}
           priority
         />
       </div>
@@ -46,7 +53,7 @@ export default function Logo({ src, alt, size, className = "" }: Props) {
       alt={alt}
       width={size}
       height={size}
-      className={className}
+      className={cn(className, imageClassName)}
       priority
     />
   )

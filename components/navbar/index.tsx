@@ -5,7 +5,7 @@ import { MenuIcon } from "lucide-react"
 
 import type { Links } from "@/types/links.type"
 import type { Socials } from "@/types/socials.type"
-import { BASE_URL } from "@/lib/constants"
+import { BASE_URL, CDN_BASE_URL } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 import {
   Accordion,
@@ -22,6 +22,7 @@ import {
 import Logo from "@/components/logo"
 import { AnimatedThemeToggler } from "@/components/magic-ui/animated-theme-toggler"
 
+import { Separator } from "../ui/separator"
 import NavMenu from "./nav-menu"
 
 const Navbar = async () => {
@@ -51,7 +52,12 @@ const Navbar = async () => {
         <Link href="/" className="font-lavishly-yours text-3xl">
           Thamizhiniyan C S
         </Link>
-        <NavMenu links={links} baseURL={BASE_URL} socials={socials} />
+        <NavMenu
+          links={links}
+          baseURL={BASE_URL}
+          cdnURL={CDN_BASE_URL}
+          socials={socials}
+        />
       </div>
 
       <div className="flex items-center gap-2">
@@ -69,7 +75,7 @@ const Navbar = async () => {
             className="bg-background w-screen rounded-none px-4"
           >
             <Accordion
-              className=""
+              className="h-full"
               type="single"
               collapsible
               data-state="closed"
@@ -129,6 +135,17 @@ const Navbar = async () => {
                   </AccordionContent>
                 </AccordionItem>
               )}
+
+              <Separator />
+
+              <Link
+                href={`${CDN_BASE_URL}my-resume.pdf`}
+                className="text-foreground mt-2 text-base"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Resume
+              </Link>
             </Accordion>
           </DropdownMenuContent>
         </DropdownMenu>

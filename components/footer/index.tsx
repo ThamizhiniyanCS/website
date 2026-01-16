@@ -3,7 +3,7 @@ import Link from "next/link"
 import getLinks from "@/actions/get-links"
 import getSocials from "@/actions/get-socials"
 
-import { BASE_URL } from "@/lib/constants"
+import { BASE_URL, CDN_BASE_URL } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 import Logo from "@/components/logo"
 
@@ -20,7 +20,7 @@ const Footer = async () => {
   const date = new Date()
 
   return (
-    <footer className="isolate z-0 flex flex-col items-center overflow-clip py-10 lg:sticky lg:bottom-0 lg:left-0 lg:min-h-screen lg:justify-end">
+    <footer className="isolate z-0 flex flex-col items-center overflow-clip py-10 lg:sticky lg:bottom-0 lg:left-0 lg:min-h-svh lg:justify-end">
       <div className="z-10 mx-auto mb-[20vw] flex w-full max-w-7xl flex-col items-center gap-10 px-5">
         <div className="flex flex-col items-center gap-5">
           <p className="font-josefin-sans text-xs tracking-widest">
@@ -80,6 +80,15 @@ const Footer = async () => {
               ))}
             </div>
           )}
+
+          <Link
+            href={`${CDN_BASE_URL}my-resume.pdf`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(headingStyle)}
+          >
+            Resume
+          </Link>
         </div>
       </div>
 
