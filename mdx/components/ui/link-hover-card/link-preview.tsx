@@ -63,15 +63,15 @@ export default function LinkPreview({
             rel="noopener noreferrer"
             className="block w-full"
           >
-            <div className="bg-muted/20 group hover:bg-muted/30 relative flex aspect-video w-full flex-col items-center justify-center gap-2 p-6 text-center transition-colors">
+            <div className="bg-muted/20 group hover:bg-muted/30 relative flex aspect-video w-full flex-col items-center justify-start gap-2 p-6 text-center transition-colors">
               {linkMetadata.image ? (
                 <img
                   src={linkMetadata.image}
                   alt={linkMetadata.title}
-                  className="mb-2 h-16 w-16 rounded-md object-cover shadow-sm transition-transform group-hover:scale-105"
+                  className="mb-2 h-40 w-full flex-1 rounded-md object-cover shadow-sm transition-transform group-hover:scale-105"
                 />
               ) : (
-                <div className="bg-background mb-2 flex h-12 w-12 items-center justify-center rounded-md shadow-sm">
+                <div className="bg-background mb-2 flex w-full flex-1 items-center justify-center rounded-md shadow-sm">
                   <span className="text-muted-foreground/50 text-xl font-bold">
                     {linkMetadata.site.slice(0, 1).toUpperCase() || "🔗"}
                   </span>

@@ -1,8 +1,8 @@
 import * as React from "react"
+import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react"
 import { Slot } from "radix-ui"
 
 import { cn } from "@/lib/utils"
-import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react"
 
 function Breadcrumb({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -20,7 +20,7 @@ function BreadcrumbList({ className, ...props }: React.ComponentProps<"ol">) {
     <ol
       data-slot="breadcrumb-list"
       className={cn(
-        "text-muted-foreground gap-1.5 text-sm sm:gap-2.5 flex flex-wrap items-center break-words",
+        "text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm break-words sm:gap-2.5",
         className
       )}
       {...props}
@@ -32,7 +32,7 @@ function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
   return (
     <li
       data-slot="breadcrumb-item"
-      className={cn("gap-1.5 inline-flex items-center", className)}
+      className={cn("inline-flex items-center gap-1.5", className)}
       {...props}
     />
   )
@@ -82,10 +82,7 @@ function BreadcrumbSeparator({
       className={cn("[&>svg]:size-3.5", className)}
       {...props}
     >
-      {children ?? (
-        <ChevronRightIcon
-        />
-      )}
+      {children ?? <ChevronRightIcon />}
     </li>
   )
 }
@@ -100,13 +97,12 @@ function BreadcrumbEllipsis({
       role="presentation"
       aria-hidden="true"
       className={cn(
-        "size-5 [&>svg]:size-4 flex items-center justify-center",
+        "flex size-5 items-center justify-center [&>svg]:size-4",
         className
       )}
       {...props}
     >
-      <MoreHorizontalIcon
-      />
+      <MoreHorizontalIcon />
       <span className="sr-only">More</span>
     </span>
   )

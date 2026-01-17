@@ -1,11 +1,11 @@
-import { MdxBreadcrumbsSkeleton } from "@/mdx/components/mdx-breadcrumbs";
-import MdxTocSkeleton from "@/mdx/components/mdx-toc/skeleton";
+import { MdxBreadcrumbsSkeleton } from "@/mdx/components/mdx-breadcrumbs"
+import MdxTocSkeleton from "@/mdx/components/mdx-toc/skeleton"
 
-import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable";
+import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable"
 
 type Props = {
-  error: Error | string;
-};
+  error: Error | string
+}
 
 export default function MdxErrorComponent({ error }: Props) {
   return (
@@ -37,5 +37,5 @@ export default function MdxErrorComponent({ error }: Props) {
         </div>
       </ResizablePanel>
     </>
-  );
+  )
 }

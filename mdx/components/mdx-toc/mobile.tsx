@@ -15,6 +15,7 @@ import { useActiveItem } from "./hooks"
 const MobileMdxToc = ({ toc }: { toc: TOCItemType[] }) => {
   const [isOpen, setIsOpen] = useState(false)
   const cardRef = useRef<HTMLDivElement>(null)
+  const tocScrollAreaRef = useRef<HTMLDivElement>(null)
   const itemIds = useMemo(
     () => toc.map((item) => item.url.replace("#", "")),
     [toc]
@@ -47,7 +48,7 @@ const MobileMdxToc = ({ toc }: { toc: TOCItemType[] }) => {
           }
         )
         .fromTo(
-          "#mobile-toc-wrapper",
+          tocScrollAreaRef.current,
           {
             opacity: 0,
           },
@@ -95,13 +96,11 @@ const MobileMdxToc = ({ toc }: { toc: TOCItemType[] }) => {
       ref={cardRef}
     >
       {isOpen ? (
-        <div id="mobile-toc-wrapper" className="w-full">
-          <TOCProvider toc={toc}>
-            <TOCScrollArea>
-              <TocClerk.TOCItems />
-            </TOCScrollArea>
-          </TOCProvider>
-        </div>
+        <TOCProvider toc={toc}>
+          <TOCScrollArea ref={tocScrollAreaRef}>
+            <TocClerk.TOCItems />
+          </TOCScrollArea>
+        </TOCProvider>
       ) : (
         <div
           className={cn(

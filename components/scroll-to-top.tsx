@@ -112,7 +112,7 @@ export default function ScrollToTop() {
       <Button
         variant="ghost"
         onClick={scrollToTop}
-        className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full text-white shadow-md transition-all hover:scale-105 active:scale-95"
+        className="text-foreground flex h-12 w-12 cursor-pointer items-center justify-center rounded-full shadow-md transition-all hover:scale-105 active:scale-95"
         aria-label="Scroll to top"
       >
         <ArrowUpIcon className="size-full" />

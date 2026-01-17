@@ -1,8 +1,8 @@
-"use client";
+"use client"
 
-import { RefObject, useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react"
 
-type AnyEvent = MouseEvent | TouchEvent;
+type AnyEvent = MouseEvent | TouchEvent
 
 /**
  * A custom React hook that triggers a callback when a click or touch occurs
@@ -15,65 +15,65 @@ type AnyEvent = MouseEvent | TouchEvent;
  */
 export function useOnClickOutside(
   ref: RefObject<HTMLElement | null>,
-  handler: (event: AnyEvent) => void,
+  handler: (event: AnyEvent) => void
 ): void {
   useEffect(() => {
     const listener = (event: AnyEvent) => {
       // Get the element from the ref
-      const el = ref.current;
+      const el = ref.current
 
       // Do nothing if clicking ref's element or descendent elements
       if (!el || el.contains(event.target as Node)) {
-        return;
+        return
       }
 
-      handler(event);
-    };
+      handler(event)
+    }
 
-    document.addEventListener("mousedown", listener);
-    document.addEventListener("touchstart", listener);
+    document.addEventListener("mousedown", listener)
+    document.addEventListener("touchstart", listener)
 
     return () => {
-      document.removeEventListener("mousedown", listener);
-      document.removeEventListener("touchstart", listener);
-    };
+      document.removeEventListener("mousedown", listener)
+      document.removeEventListener("touchstart", listener)
+    }
     // We've removed the generic <T> so the dependency array is simpler
-  }, [ref, handler]);
+  }, [ref, handler])
 }
 
 export function useActiveItem(itemIds: string[]) {
-  const [activeId, setActiveId] = useState<string | null>(null);
+  const [activeId, setActiveId] = useState<string | null>(null)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
+            setActiveId(entry.target.id)
           }
         }
       },
-      { rootMargin: "0% 0% -80% 0%" },
-    );
+      { rootMargin: "0% 0% -80% 0%" }
+    )
 
     for (const id of itemIds ?? []) {
-      const element = document.getElementById(id);
+      const element = document.getElementById(id)
 
       if (element) {
-        observer.observe(element);
+        observer.observe(element)
       }
     }
 
     return () => {
       for (const id of itemIds ?? []) {
-        const element = document.getElementById(id);
+        const element = document.getElementById(id)
 
         if (element) {
-          observer.unobserve(element);
+          observer.unobserve(element)
         }
       }
-    };
-  }, [itemIds]);
+    }
+  }, [itemIds])
 
-  return activeId;
+  return activeId
 }
