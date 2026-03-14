@@ -26,7 +26,7 @@ export default async function proxy(request: NextRequest) {
 
   if (url.pathname === "/favicon.ico") return NextResponse.next()
 
-  // NOTE: Extract the hostname (e.g., "labs.thamizhiniyancs.me" or "labs.localhost:3000")
+  // NOTE: Extract the hostname (e.g., "labs.thamizhiniyancs.com" or "labs.localhost:3000")
   const hostname = request.headers.get("host")
 
   const { device } = userAgent(request)
