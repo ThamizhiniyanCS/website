@@ -22,6 +22,7 @@ Browser Request
 ## Routing Model
 
 ### Subdomain Proxy (`proxy.ts`)
+
 - Middleware intercepts subdomain requests before they hit the App Router
 - Rewrites `labs.domain.com/path` → `/labs/path` internally
 - Detects mobile/tablet via `userAgent()` and routes to `/mobile/` prefix
@@ -29,6 +30,7 @@ Browser Request
 - Allowed subdomains defined in `lib/constants.ts` → `ALLOWED_SUBDOMAINS` Set
 
 ### Dynamic Route Hierarchy
+
 ```
 [baseRoute]          → "labs" | "workshops" | "writeups"
   [baseSlug]         → First-level category (e.g., "tryhackme")
@@ -38,12 +40,14 @@ Browser Request
 ## Data Flow
 
 ### Content Resolution
+
 1. Server action `getMetaJSON(cdnPathname)` fetches `meta.json` from CDN
 2. If `meta.json` exists → Page is a **directory** → render directory listing
 3. If `meta.json` doesn't exist → Page is **content** → fetch `.mdx` file
 4. MDX suffix convention: `DIRECTORIES` set routes use `/index.mdx`, others use `.mdx`
 
 ### MDX Processing Pipeline
+
 ```
 CDN (.mdx file)
     → fetch with 24hr cache
@@ -55,6 +59,7 @@ CDN (.mdx file)
 ```
 
 ### Navigation Data
+
 - `getLinks()` server action fetches meta.json for all 3 content types (labs, workshops, writeups)
 - Builds navigation links with `generateURL()` helper
 - Used by both Navbar and Footer (async Server Components)
@@ -62,14 +67,16 @@ CDN (.mdx file)
 ## Component Patterns
 
 ### Server vs Client Boundary
-| Server Components | Client Components |
-|---|---|
-| Navbar, Footer | HeroSection, AboutSection, SkillsSection, CertificationsSection |
-| All page.tsx files | Sidebar (React Query) |
-| MdxRenderer, MdxBreadcrumbs | ScrollToTop, AnimatedThemeToggler |
-| DirectoryContentsRenderer | MatrixRain |
+
+| Server Components           | Client Components                                               |
+| --------------------------- | --------------------------------------------------------------- |
+| Navbar, Footer              | HeroSection, AboutSection, SkillsSection, CertificationsSection |
+| All page.tsx files          | Sidebar (React Query)                                           |
+| MdxRenderer, MdxBreadcrumbs | ScrollToTop, AnimatedThemeToggler                               |
+| DirectoryContentsRenderer   | MatrixRain                                                      |
 
 ### 3-Panel Layout (`react-resizable-panels`)
+
 - Layout defined in `[baseSlug]/layout.tsx`
 - Left panel: Sidebar (order 1, 20%, min 10%)
 - Center panel: Content (order 2, 60%, min 40%) — rendered by page.tsx
@@ -77,6 +84,7 @@ CDN (.mdx file)
 - Panels use `style={{ overflow: "visible" }}` for sticky positioning
 
 ### Sidebar Architecture
+
 - Client component with React Query
 - `SidebarContext` provides `baseRoute`, `baseSlug`, `pathnameArray`
 - Two queries: base route meta (for slug selector) + root slug meta (for directory tree)

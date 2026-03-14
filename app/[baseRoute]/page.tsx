@@ -2,12 +2,21 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import getMetaJSON from "@/actions/get-meta-json"
-import { env } from "@/env"
 import MdxErrorComponent from "@/mdx/components/mdx-error-component"
-import getOgToken from "@/utils/get-og-token"
+import buildOgMetadata from "@/utils/build-og-metadata"
 
-import { ALLOWED_SUBDOMAINS, PROTOCOL } from "@/lib/constants"
+import { ALLOWED_SUBDOMAINS } from "@/lib/constants"
 import { Card, CardContent } from "@/components/ui/card"
+
+export const revalidate = 86400 // 24 hrs
+
+export async function generateStaticParams() {
+  return [
+    { baseRoute: "labs" },
+    { baseRoute: "workshops" },
+    { baseRoute: "writeups" },
+  ]
+}
 
 interface Props {
   params: Promise<{ baseRoute: string }>
@@ -29,44 +38,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
-  const ogToken = getOgToken(
-    response.title,
-    response.description || "",
-    baseRoute,
-    ""
-  )
-
-  const url = `${PROTOCOL}og.${env.DOMAIN}/?title=${encodeURIComponent(response.title)}&description=${encodeURIComponent(response.description || "")}&subdomain=${encodeURIComponent(baseRoute)}&route=${encodeURIComponent("")}&token=${encodeURIComponent(ogToken)}`
-
-  const canonicalUrl = `${PROTOCOL}${baseRoute}.${env.DOMAIN}/`
-
-  return {
+  return buildOgMetadata({
     title: response.title,
-    description: response.description,
-    openGraph: {
-      title: response.title,
-      description: response.description,
-      url: canonicalUrl,
-      images: [
-        {
-          url,
-          width: 1200,
-          height: 630,
-          alt: `${response.title} - ${response.description} opengraph image`,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: response.title,
-      description: response.description,
-      creator: "@ThamizhiniyanCS",
-      images: [url],
-    },
-    alternates: {
-      canonical: canonicalUrl,
-    },
-  }
+    description: response.description || "",
+    baseRoute,
+    route: "",
+  })
 }
 
 export default async function Page({ params }: Props) {

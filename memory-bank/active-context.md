@@ -13,15 +13,16 @@
 - Updated `README.md` with actual project details
 - Established Memory Bank documentation system
 
+- Implemented route-level caching revalidation (`export const revalidate = 86400`)
+- Extracted shared `buildOgMetadata()` utility to deduplicate metadata logic
+- Fixed sitemap priorities, `globals.css` duplicates, and GSAP plugin registration
+- Added `generateStaticParams` for known routes and created route-level `error.tsx` boundaries
+- Fixed responsive Breadcrumbs collapse logic and a severe React hydration error caused by invalid HTML nesting (`<ol>` > `<span>`)
+
 ## Next Steps
 
-- [ ] Address architecture optimizations identified during project review:
-  - Extract shared `buildOgMetadata()` utility to deduplicate metadata generation
-  - Fix sitemap priorities (`9.9` → `0.9`)
-  - Merge duplicate `@layer base` blocks in `globals.css`
-  - Move GSAP `registerPlugin` to module level in `HeroSection.tsx`
-  - Add `generateStaticParams` for known routes
-  - Add route-level `error.tsx` boundaries
+- [ ] Implement mobile-specific layouts under `app/mobile/`
+- [ ] Conduct performance audit (Lighthouse, Core Web Vitals)
 
 ## Active Decisions
 

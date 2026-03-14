@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import getMetaJSON from "@/actions/get-meta-json"
-import { env } from "@/env"
 import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer"
 import MdxErrorComponent from "@/mdx/components/mdx-error-component"
 import MdxPreviousNextButtons from "@/mdx/components/mdx-previous-next-buttons"
@@ -10,10 +9,10 @@ import MdxStructuredData from "@/mdx/components/mdx-structured-data"
 import MobileMdxToc from "@/mdx/components/mdx-toc/mobile"
 import Frontmatter from "@/mdx/types/frontmatter.type"
 import { cachedProcessMDX } from "@/mdx/utils/process-mdx"
-import getOgToken from "@/utils/get-og-token"
+import buildOgMetadata from "@/utils/build-og-metadata"
 import { TOCItemType } from "fumadocs-core/toc"
 
-import { CDN_BASE_URL, DIRECTORIES, PROTOCOL } from "@/lib/constants"
+import { CDN_BASE_URL, DIRECTORIES } from "@/lib/constants"
 
 export const revalidate = 86400 // 24 hrs
 
@@ -27,47 +26,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pathname = baseSlug + "/" + nestedSlug.join("/")
   const cdnPathname = baseRoute + "/" + pathname
   const absoultePathname = `${CDN_BASE_URL}${cdnPathname}`
-  const canonicalUrl = `${PROTOCOL}${baseRoute}.${env.DOMAIN}/${pathname}`
 
   const metaJSON = await getMetaJSON(cdnPathname)
 
   if (metaJSON) {
-    const ogToken = getOgToken(
-      metaJSON.title,
-      metaJSON.description || "",
-      baseRoute,
-      baseSlug
-    )
-
-    const url = `${PROTOCOL}og.${env.DOMAIN}/?title=${encodeURIComponent(metaJSON.title)}&description=${encodeURIComponent(metaJSON.description || "")}&subdomain=${encodeURIComponent(baseRoute)}&route=${encodeURIComponent(baseSlug)}&token=${encodeURIComponent(ogToken)}`
-
-    return {
+    return buildOgMetadata({
       title: metaJSON.title,
-      description: metaJSON.description,
-      openGraph: {
-        title: metaJSON.title,
-        description: metaJSON.description,
-        url: canonicalUrl,
-        images: [
-          {
-            url,
-            width: 1200,
-            height: 630,
-            alt: `${metaJSON.title} - ${metaJSON.description} opengraph image`,
-          },
-        ],
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: metaJSON.title,
-        description: metaJSON.description,
-        creator: "@ThamizhiniyanCS",
-        images: [url],
-      },
-      alternates: {
-        canonical: canonicalUrl,
-      },
-    }
+      description: metaJSON.description || "",
+      baseRoute,
+      route: pathname,
+    })
   }
 
   const response = await fetch(
@@ -105,42 +73,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const { frontmatter } = result
-  const ogToken = getOgToken(
-    frontmatter.title,
-    frontmatter.description || "",
-    baseRoute,
-    baseSlug
-  )
 
-  const url = `${PROTOCOL}og.${env.DOMAIN}/?title=${encodeURIComponent(frontmatter.title)}&description=${encodeURIComponent(frontmatter.description || "")}&subdomain=${encodeURIComponent(baseRoute)}&route=${encodeURIComponent(baseSlug)}&token=${encodeURIComponent(ogToken)}`
-
-  return {
+  return buildOgMetadata({
     title: frontmatter.title,
-    description: frontmatter.description,
-    openGraph: {
-      title: frontmatter.title,
-      description: frontmatter.description,
-      url: canonicalUrl,
-      images: [
-        {
-          url,
-          width: 1200,
-          height: 630,
-          alt: `${frontmatter.title} - ${frontmatter.description} opengraph image`,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: frontmatter.title,
-      description: frontmatter.description,
-      creator: "@ThamizhiniyanCS",
-      images: [url],
-    },
-    alternates: {
-      canonical: canonicalUrl,
-    },
-  }
+    description: frontmatter.description || "",
+    baseRoute,
+    route: pathname,
+  })
 }
 
 export default async function Page({ params }: Props) {

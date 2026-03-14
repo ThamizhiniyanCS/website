@@ -13,6 +13,8 @@ import ScrollToTop from "@/components/scroll-to-top"
 
 import Providers from "./providers"
 
+export const revalidate = 86400 // 24 hrs
+
 const fontJosefinSans = Josefin_Sans({
   variable: "--var-font-josefin-sans",
   weight: "400",

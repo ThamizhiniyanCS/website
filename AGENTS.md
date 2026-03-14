@@ -28,6 +28,7 @@ Also read `task.md` at the project root for the completed task log.
 ## When to Update
 
 Update memory bank files when:
+
 - Discovering new project patterns → update `system-patterns.md`
 - After implementing significant changes → update `active-context.md` + `progress.md`
 - When technical constraints change → update `tech-context.md`
@@ -52,22 +53,22 @@ You are a senior full-stack developer specializing in **Next.js**, **React**, **
 
 ## Tech Stack (DO NOT deviate without asking)
 
-| Layer | Technology |
-|---|---|
-| Framework | Next.js 16 (canary) with App Router |
-| React | React 19 (RSC by default) |
-| Language | TypeScript (strict mode) |
-| Styling | Tailwind CSS v4, CSS variables (OKLCH colors) |
-| UI Library | shadcn/ui (radix-vega style, via `components.json`) |
-| Animations | GSAP (ScrollTrigger, SplitText, ScrambleText) + Framer Motion |
-| Smooth Scroll | Lenis |
-| MDX | `next-mdx-remote-client/rsc` with rehype/remark plugins |
-| Data Fetching | React Query (TanStack) for client, Server Actions for server |
-| Icons | Lucide (primary), Phosphor (secondary) |
-| Env Validation | `@t3-oss/env-nextjs` + Zod (in `env.ts`) |
-| Package Manager | Bun (`bun install`, `bun run dev`) |
-| Linting | ESLint (next core-web-vitals + typescript config) |
-| Formatting | Prettier (no semicolons, double quotes, trailing comma es5) |
+| Layer           | Technology                                                    |
+| --------------- | ------------------------------------------------------------- |
+| Framework       | Next.js 16 (canary) with App Router                           |
+| React           | React 19 (RSC by default)                                     |
+| Language        | TypeScript (strict mode)                                      |
+| Styling         | Tailwind CSS v4, CSS variables (OKLCH colors)                 |
+| UI Library      | shadcn/ui (radix-vega style, via `components.json`)           |
+| Animations      | GSAP (ScrollTrigger, SplitText, ScrambleText) + Framer Motion |
+| Smooth Scroll   | Lenis                                                         |
+| MDX             | `next-mdx-remote-client/rsc` with rehype/remark plugins       |
+| Data Fetching   | React Query (TanStack) for client, Server Actions for server  |
+| Icons           | Lucide (primary), Phosphor (secondary)                        |
+| Env Validation  | `@t3-oss/env-nextjs` + Zod (in `env.ts`)                      |
+| Package Manager | Bun (`bun install`, `bun run dev`)                            |
+| Linting         | ESLint (next core-web-vitals + typescript config)             |
+| Formatting      | Prettier (no semicolons, double quotes, trailing comma es5)   |
 
 ---
 
@@ -113,6 +114,7 @@ env.ts                   # Environment validation with @t3-oss/env-nextjs
 ### Imports (Prettier auto-sorts)
 
 Follow this order (enforced by `@ianvs/prettier-plugin-sort-imports`):
+
 1. `react` / `react-dom`
 2. `next/*`
 3. Third-party modules
@@ -189,11 +191,11 @@ Follow this order (enforced by `@ianvs/prettier-plugin-sort-imports`):
 
 Content pages under `[baseRoute]/[baseSlug]` use `react-resizable-panels`:
 
-| Panel | Size | Content |
-|---|---|---|
-| Left (order 1) | 20%, min 10% | Sidebar: base slug selector + collapsible directory tree |
-| Center (order 2) | 60%, min 40% | Breadcrumbs + MDX content or directory listing |
-| Right (order 3) | 20%, min 10% | TOC with scroll spy (Fumadocs) |
+| Panel            | Size         | Content                                                  |
+| ---------------- | ------------ | -------------------------------------------------------- |
+| Left (order 1)   | 20%, min 10% | Sidebar: base slug selector + collapsible directory tree |
+| Center (order 2) | 60%, min 40% | Breadcrumbs + MDX content or directory listing           |
+| Right (order 3)  | 20%, min 10% | TOC with scroll spy (Fumadocs)                           |
 
 When adding new content pages, always follow this layout pattern.
 
@@ -243,16 +245,16 @@ Use [Conventional Commits](https://www.conventionalcommits.org/) format: `type(s
 
 ### Quick Reference
 
-| Type | Ask Yourself |
-|---|---|
-| **feat** | Did I add a new capability? |
-| **fix** | Did I fix something that was broken? |
-| **docs** | Did I only change text/documentation? |
-| **style** | Did I only format the code (spaces, commas)? |
+| Type         | Ask Yourself                                           |
+| ------------ | ------------------------------------------------------ |
+| **feat**     | Did I add a new capability?                            |
+| **fix**      | Did I fix something that was broken?                   |
+| **docs**     | Did I only change text/documentation?                  |
+| **style**    | Did I only format the code (spaces, commas)?           |
 | **refactor** | Did I change code structure without changing behavior? |
-| **perf** | Did I make the code faster? |
-| **test** | Did I add or fix tests? |
-| **build** | Did I change dependencies or build scripts? |
-| **ci** | Did I change the CI pipeline configuration? |
-| **chore** | Is it a miscellaneous task (gitignore, file moving)? |
-| **revert** | Am I undoing a previous commit? |
+| **perf**     | Did I make the code faster?                            |
+| **test**     | Did I add or fix tests?                                |
+| **build**    | Did I change dependencies or build scripts?            |
+| **ci**       | Did I change the CI pipeline configuration?            |
+| **chore**    | Is it a miscellaneous task (gitignore, file moving)?   |
+| **revert**   | Am I undoing a previous commit?                        |

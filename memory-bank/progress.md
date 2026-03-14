@@ -15,32 +15,31 @@
 - [x] Lenis smooth scrolling
 - [x] Mobile/tablet device detection and route rewriting
 - [x] SEO: metadata, canonical URLs, sitemap, robots.txt, structured data
-- [x] Custom MDX components: callouts, tabs, steps, link hover previews, image zoom, video player
+- [x] Shared `buildOgMetadata` utility to deduplicate OG generation
+- [x] Corrected sitemap priorities (`0.9` scale)
+- [x] Cleaned up `globals.css` duplicate layers
+- [x] GSAP plugin registration optimized in `HeroSection.tsx`
+- [x] Data caching and revalidation fixed across layout/route boundaries
+- [x] `generateStaticParams` for known base routes and slugs
+- [x] Route-level `error.tsx` boundaries implemented
+- [x] Fixed Breadcrumbs responsive collapse logic and `DropdownMenu` hydration mismatch
 
 ## Known Issues
 
-- Sitemap priorities set to `9.9` (should be `0.0`–`1.0` scale)
-- Duplicate `@layer base` blocks in `globals.css`
-- GSAP `registerPlugin` called inside component body in `HeroSection.tsx`
-- OG metadata logic duplicated across 3 route files
-- No `generateStaticParams` — all content pages are dynamically rendered
 - `mobile/` route directory exists but mobile-specific pages not yet implemented
 
 ## What's Left to Build
 
 - [ ] Mobile-specific layouts under `app/mobile/`
-- [ ] `generateStaticParams` for known base routes and slugs
-- [ ] Route-level `error.tsx` boundaries
-- [ ] Shared metadata utility to deduplicate OG generation
 - [ ] Performance audit (Lighthouse, Core Web Vitals)
 
 ## Decision History
 
-| Date | Decision | Rationale |
-|---|---|---|
-| — | CDN over database for content | Static MDX doesn't need a DB; CDN provides edge caching |
-| — | Subdomain routing via middleware | Clean URL separation for content types |
-| — | React Query for sidebar only | Server components handle all other data; sidebar needs client-side reactivity |
-| — | GSAP over CSS animations | Complex scroll-driven timelines not achievable with CSS alone |
-| — | Fumadocs integration | Reuse battle-tested TOC and file tree components |
-| 2026-03-14 | Memory Bank system adopted | Cross-agent context persistence for all AI coding assistants |
+| Date       | Decision                         | Rationale                                                                     |
+| ---------- | -------------------------------- | ----------------------------------------------------------------------------- |
+| —          | CDN over database for content    | Static MDX doesn't need a DB; CDN provides edge caching                       |
+| —          | Subdomain routing via middleware | Clean URL separation for content types                                        |
+| —          | React Query for sidebar only     | Server components handle all other data; sidebar needs client-side reactivity |
+| —          | GSAP over CSS animations         | Complex scroll-driven timelines not achievable with CSS alone                 |
+| —          | Fumadocs integration             | Reuse battle-tested TOC and file tree components                              |
+| 2026-03-14 | Memory Bank system adopted       | Cross-agent context persistence for all AI coding assistants                  |

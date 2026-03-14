@@ -6,6 +6,8 @@ import {
 } from "@/components/ui/resizable"
 import Sidebar from "@/components/sidebar"
 
+export const revalidate = 86400 // 24 hrs
+
 interface Props {
   children: React.ReactNode
   params: Promise<{ baseRoute: string; baseSlug: string }>

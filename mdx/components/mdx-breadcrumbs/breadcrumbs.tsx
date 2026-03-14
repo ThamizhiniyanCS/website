@@ -1,6 +1,6 @@
 "use client"
 
-import { Fragment, useEffect, useRef, useState } from "react"
+import { Fragment, useCallback, useEffect, useRef, useState } from "react"
 import Link from "next/link"
 
 import { cn } from "@/lib/utils"
@@ -20,88 +20,152 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+type BreadcrumbLinkItem = { title: string; href: string }
+
+const SEPARATOR_WIDTH = 24 // approx width of " / " separator
+const ELLIPSIS_WIDTH = 48 // approx width of the "..." dropdown trigger + separator
+const PAGE_PADDING = 20 // extra breathing room
+
 const Breadcrumbs = ({
-  breadcrumbLinks: defaultBreadcrumbLinks,
+  breadcrumbLinks: allLinks,
   breadcrumbPage,
 }: {
-  breadcrumbLinks: { title: string; href: string }[]
+  breadcrumbLinks: BreadcrumbLinkItem[]
   breadcrumbPage: string
 }) => {
-  const breadcrumbsRef = useRef<HTMLOListElement>(null)
-  const [width, setWidth] = useState<number | null>(null)
-  const itemsWidths = useRef<number[]>([])
-  const [breadcrumbLinks, setBreadcrumbsLinks] = useState<
-    { title: string; href: string }[]
-  >(defaultBreadcrumbLinks)
-  const [dropdownMenuLinks, setDropdownMenuLinks] = useState<
-    { title: string; href: string }[]
-  >([])
+  const containerRef = useRef<HTMLOListElement>(null)
+  const itemWidthsRef = useRef<number[]>([])
+  const pageWidthRef = useRef<number>(0)
+  const hasInitialized = useRef(false)
 
-  // NOTE: Effect to observe the width of the breadcrumbs
+  const [visibleLinks, setVisibleLinks] =
+    useState<BreadcrumbLinkItem[]>(allLinks)
+  const [hiddenLinks, setHiddenLinks] = useState<BreadcrumbLinkItem[]>([])
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const handleMouseEnter = useCallback(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    setIsDropdownOpen(true)
+  }, [])
+
+  const handleMouseLeave = useCallback(() => {
+    timeoutRef.current = setTimeout(() => {
+      setIsDropdownOpen(false)
+    }, 200)
+  }, [])
+
+  // Measure all items at full width on first render
+  const measureItems = useCallback(() => {
+    if (!containerRef.current || hasInitialized.current) return
+
+    const items = Array.from(
+      containerRef.current.querySelectorAll<HTMLLIElement>(
+        "[data-breadcrumb-item]"
+      )
+    )
+
+    if (items.length === 0) return
+
+    itemWidthsRef.current = items.map(
+      (item) => item.getBoundingClientRect().width
+    )
+
+    const page = containerRef.current.querySelector<HTMLSpanElement>(
+      "[data-breadcrumb-page]"
+    )
+    if (page) {
+      pageWidthRef.current = page.getBoundingClientRect().width
+    }
+
+    hasInitialized.current = true
+  }, [])
+
+  // Calculate which items should be visible/hidden for a given width
+  const recalculate = useCallback(
+    (containerWidth: number) => {
+      if (!hasInitialized.current || itemWidthsRef.current.length === 0) return
+
+      const totalLinks = allLinks.length
+
+      // Start with the leading separator width + page width
+      let usedWidth = SEPARATOR_WIDTH + pageWidthRef.current + PAGE_PADDING
+
+      // Always try to show all items first
+      let visibleCount = 0
+
+      for (let i = 0; i < totalLinks; i++) {
+        const itemWidth = (itemWidthsRef.current[i] ?? 80) + SEPARATOR_WIDTH
+        usedWidth += itemWidth
+        if (usedWidth <= containerWidth) {
+          visibleCount++
+        } else {
+          break
+        }
+      }
+
+      // If not all fit and we need a dropdown, account for ellipsis width
+      if (visibleCount < totalLinks) {
+        usedWidth =
+          SEPARATOR_WIDTH + pageWidthRef.current + ELLIPSIS_WIDTH + PAGE_PADDING
+
+        visibleCount = 0
+        for (let i = 0; i < totalLinks; i++) {
+          const itemWidth = (itemWidthsRef.current[i] ?? 80) + SEPARATOR_WIDTH
+          usedWidth += itemWidth
+          if (usedWidth <= containerWidth) {
+            visibleCount++
+          } else {
+            break
+          }
+        }
+      }
+
+      const newVisible = allLinks.slice(0, visibleCount)
+      const newHidden = allLinks.slice(visibleCount)
+
+      setVisibleLinks(newVisible)
+      setHiddenLinks(newHidden)
+    },
+    [allLinks]
+  )
+
+  // Measure once on mount
   useEffect(() => {
-    if (!breadcrumbsRef.current) return
+    // Use requestAnimationFrame to ensure DOM is painted
+    const raf = requestAnimationFrame(() => {
+      measureItems()
+      if (containerRef.current) {
+        recalculate(containerRef.current.getBoundingClientRect().width)
+      }
+    })
+    return () => cancelAnimationFrame(raf)
+  }, [measureItems, recalculate])
+
+  // Observe container width changes
+  useEffect(() => {
+    if (!containerRef.current) return
 
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
-        const newWidth = entry.contentRect.width
-        setWidth(newWidth)
+        recalculate(entry.contentRect.width)
       }
     })
 
-    observer.observe(breadcrumbsRef.current)
+    observer.observe(containerRef.current)
 
     return () => observer.disconnect()
-  }, [])
-
-  // NOTE: Effect to calculate widths of breadcrumb items
-  useEffect(() => {
-    if (!breadcrumbsRef.current) return
-
-    const items: HTMLLIElement[] = Array.from(
-      breadcrumbsRef.current.getElementsByTagName("li")
-    )
-    itemsWidths.current = items.map(
-      (item) => item.getBoundingClientRect().width
-    ) // Reset and calculate widths
-
-    const page: HTMLSpanElement | null =
-      breadcrumbsRef.current.querySelector("span")
-    if (page) {
-      itemsWidths.current.push(page.getBoundingClientRect().width)
-    }
-  }, [breadcrumbLinks])
-
-  // NOTE: Effect to manage dropdown menu links based on width
-  useEffect(() => {
-    if (width == null) return
-
-    const itemsWidthsSum =
-      itemsWidths.current.reduce(
-        (accumulator, currentValue) => accumulator + currentValue,
-        0
-      ) +
-      itemsWidths.current.length * 10
-
-    if (width < itemsWidthsSum && breadcrumbLinks.length > 0) {
-      const link = breadcrumbLinks[breadcrumbLinks.length - 1]
-
-      if (link !== undefined) {
-        setTimeout(() => {
-          setDropdownMenuLinks((state) => [link, ...state])
-          setBreadcrumbsLinks((state) => state.slice(0, -1)) // Use slice with -1 for clarity
-        }, 0)
-      }
-    }
-  }, [width, breadcrumbLinks])
+  }, [recalculate])
 
   return (
     <Breadcrumb className={cn("border-border lg:px-10 lg:pb-5")}>
-      <BreadcrumbList ref={breadcrumbsRef}>
+      <BreadcrumbList ref={containerRef}>
         <BreadcrumbSeparator>/</BreadcrumbSeparator>
 
-        {breadcrumbLinks.map(({ title, href }, index) => (
-          <Fragment key={index}>
-            <BreadcrumbItem>
+        {visibleLinks.map(({ title, href }, index) => (
+          <Fragment key={`${href}-${index}`}>
+            <BreadcrumbItem data-breadcrumb-item>
               <BreadcrumbLink asChild>
                 <Link className="capitalize" href={href}>
                   {title}
@@ -113,24 +177,35 @@ const Breadcrumbs = ({
           </Fragment>
         ))}
 
-        {dropdownMenuLinks.length > 0 && (
+        {hiddenLinks.length > 0 && (
           <Fragment>
             <BreadcrumbItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-1">
+              <DropdownMenu
+                open={isDropdownOpen}
+                onOpenChange={setIsDropdownOpen}
+                modal={false}
+              >
+                <DropdownMenuTrigger
+                  className="flex items-center gap-1"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
                   <BreadcrumbEllipsis className="size-4" />
                   <span className="sr-only">Toggle menu</span>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start">
-                  {dropdownMenuLinks
-                    .filter(Boolean)
-                    .map(({ title, href }, index) => (
-                      <DropdownMenuItem key={index} asChild>
-                        <Link className="cursor-pointer capitalize" href={href}>
-                          {title}
-                        </Link>
-                      </DropdownMenuItem>
-                    ))}
+                <DropdownMenuContent
+                  align="start"
+                  className="w-max max-w-[calc(100vw-2rem)]"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  {hiddenLinks.map(({ title, href }, index) => (
+                    <DropdownMenuItem key={`${href}-${index}`} asChild>
+                      <Link className="cursor-pointer capitalize" href={href}>
+                        {title}
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
                 </DropdownMenuContent>
               </DropdownMenu>
             </BreadcrumbItem>
@@ -139,7 +214,11 @@ const Breadcrumbs = ({
           </Fragment>
         )}
 
-        <BreadcrumbPage className="capitalize">{breadcrumbPage}</BreadcrumbPage>
+        <BreadcrumbItem>
+          <BreadcrumbPage data-breadcrumb-page className="capitalize">
+            {breadcrumbPage}
+          </BreadcrumbPage>
+        </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
   )

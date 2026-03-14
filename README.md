@@ -4,19 +4,19 @@ A personal portfolio and content platform built with **Next.js 16**, **React 19*
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | Next.js 16 (canary) with App Router |
-| React | React 19 (RSC by default) |
-| Language | TypeScript (strict mode) |
-| Styling | Tailwind CSS v4, OKLCH color variables |
-| UI Library | shadcn/ui (radix-vega) |
-| Animations | GSAP (ScrollTrigger, SplitText, ScrambleText) + Framer Motion |
-| Smooth Scroll | Lenis |
-| MDX | next-mdx-remote-client/rsc with rehype/remark plugins |
-| Data Fetching | React Query (TanStack) + Server Actions |
-| Env Validation | @t3-oss/env-nextjs + Zod |
-| Package Manager | Bun |
+| Layer           | Technology                                                    |
+| --------------- | ------------------------------------------------------------- |
+| Framework       | Next.js 16 (canary) with App Router                           |
+| React           | React 19 (RSC by default)                                     |
+| Language        | TypeScript (strict mode)                                      |
+| Styling         | Tailwind CSS v4, OKLCH color variables                        |
+| UI Library      | shadcn/ui (radix-vega)                                        |
+| Animations      | GSAP (ScrollTrigger, SplitText, ScrambleText) + Framer Motion |
+| Smooth Scroll   | Lenis                                                         |
+| MDX             | next-mdx-remote-client/rsc with rehype/remark plugins         |
+| Data Fetching   | React Query (TanStack) + Server Actions                       |
+| Env Validation  | @t3-oss/env-nextjs + Zod                                      |
+| Package Manager | Bun                                                           |
 
 ## Features
 
@@ -24,9 +24,11 @@ A personal portfolio and content platform built with **Next.js 16**, **React 19*
 - **CDN-based Content System** — MDX content fetched from an external CDN with 24hr cache revalidation
 - **Subdomain Routing** — `labs.*`, `workshops.*`, `writeups.*` subdomains routed via middleware with mobile detection
 - **3-Panel Resizable Layout** — Sidebar, MDX content, and TOC with scroll spy for content pages
-- **Dynamic OG Images** — HMAC-signed token-based OpenGraph image generation via `og.*` subdomain
+- **Dynamic OG Images** — HMAC-signed token-based OpenGraph image generation via `og.*` subdomain with unified metadata utilities
+- **Performance Optimized** — `generateStaticParams` for known routes, route-level caching revalidation, and isolated GSAP plugin registration
+- **Robust Error Handling** — Route-level `error.tsx` boundaries for graceful failure on CDN/content missing
+- **Rich MDX Components** — Expressive Code syntax highlighting, KaTeX math, callouts, tabs, link hover previews, image zoom, video player, and responsive breadcrumbs
 - **Dark Mode First** — OKLCH color system with animated theme toggler
-- **Rich MDX Components** — Expressive Code syntax highlighting, KaTeX math, callouts, tabs, link hover previews, image zoom, video player
 
 ## Project Structure
 

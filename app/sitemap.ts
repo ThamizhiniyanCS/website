@@ -15,19 +15,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${PROTOCOL}labs.${env.DOMAIN}/`,
       lastModified: new Date(),
       changeFrequency: "weekly",
-      priority: 9.9,
+      priority: 0.9,
     },
     {
       url: `${PROTOCOL}workshops.${env.DOMAIN}/`,
       lastModified: new Date(),
       changeFrequency: "weekly",
-      priority: 9.9,
+      priority: 0.9,
     },
     {
       url: `${PROTOCOL}writeups.${env.DOMAIN}/`,
       lastModified: new Date(),
       changeFrequency: "monthly",
-      priority: 9.9,
+      priority: 0.9,
     },
   ]
 }

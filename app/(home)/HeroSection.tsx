@@ -7,10 +7,10 @@ import { ScrambleTextPlugin } from "gsap/all"
 
 import MatrixRain from "@/components/matrix-rain"
 
+gsap.registerPlugin(useGSAP, ScrambleTextPlugin)
+
 export default function HeroSection() {
   const gsapContainerRef = useRef(null)
-
-  gsap.registerPlugin(useGSAP, ScrambleTextPlugin)
 
   useGSAP(
     () => {

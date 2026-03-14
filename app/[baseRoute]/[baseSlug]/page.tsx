@@ -1,15 +1,15 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import getMetaJSON from "@/actions/get-meta-json"
-import { env } from "@/env"
 import MdxBreadcrumbs from "@/mdx/components/mdx-breadcrumbs"
 import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer"
 import { TOCProvider, TOCScrollArea } from "@/mdx/components/mdx-toc"
 import * as TocClerk from "@/mdx/components/mdx-toc/clerk"
-import getOgToken from "@/utils/get-og-token"
+import buildOgMetadata from "@/utils/build-og-metadata"
 
-import { BASE_URL, PROTOCOL } from "@/lib/constants"
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable"
+
+export const revalidate = 86400 // 24 hrs
 
 interface Props {
   params: Promise<{ baseRoute: string; baseSlug: string }>
@@ -29,44 +29,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
-  const ogToken = getOgToken(
-    response.title,
-    response.description || "",
-    baseRoute,
-    baseSlug
-  )
-
-  const url = `${PROTOCOL}og.${env.DOMAIN}/?title=${encodeURIComponent(response.title)}&description=${encodeURIComponent(response.description || "")}&subdomain=${encodeURIComponent(baseRoute)}&route=${encodeURIComponent(baseSlug)}&token=${encodeURIComponent(ogToken)}`
-
-  const canonicalUrl = `${PROTOCOL}${baseRoute}.${env.DOMAIN}/${baseSlug}`
-
-  return {
+  return buildOgMetadata({
     title: response.title,
-    description: response.description,
-    openGraph: {
-      title: response.title,
-      description: response.description,
-      url: canonicalUrl,
-      images: [
-        {
-          url,
-          width: 1200,
-          height: 630,
-          alt: `${response.title} - ${response.description} opengraph image`,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: response.title,
-      description: response.description,
-      creator: "@ThamizhiniyanCS",
-      images: [url],
-    },
-    alternates: {
-      canonical: canonicalUrl,
-    },
-  }
+    description: response.description || "",
+    baseRoute,
+    route: baseSlug,
+  })
 }
 
 export default async function Page({ params }: Props) {
