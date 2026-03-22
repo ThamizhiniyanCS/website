@@ -6,6 +6,7 @@ import { CDN_BASE_URL } from "@/lib/constants"
 export default async function getMetaJSON(
   pathname: string
 ): Promise<MetaJSON | undefined> {
+  // FIX: Update the return type to a JSON message instead of undefined and handle the error
   try {
     const url = `${CDN_BASE_URL}${pathname}/meta.json`
 

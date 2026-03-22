@@ -1,3 +1,5 @@
+import Script from "next/script"
+
 import {
   Accordion,
   AccordionContent,
@@ -13,6 +15,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 import {
   Table,
   TableBody,
@@ -78,16 +87,28 @@ export default function MdxComponents(
     CardHeader,
     CardTitle,
 
+    // NOTE: Carousel - Embla Carousel
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+
     // NOTE: External Link
     ExternalLink,
 
-    // NOTE: Fumadocs File Structure Renderer
+    // NOTE: Fumadocs Directory Structure Renderer
     File,
     Files,
     Folder,
 
     // NOTE: Internal Link
     InternalLink,
+
+    // NOTE: Script tag fix
+    script: (props: React.ScriptHTMLAttributes<HTMLScriptElement>) => (
+      <Script {...props} strategy="lazyOnload" />
+    ),
 
     // NOTE: Steps
     Step,
