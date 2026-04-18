@@ -6,11 +6,26 @@ import generateURL from "@/utils/generate-url"
 import type { Links } from "@/types/links.type"
 
 export default async function getLinks(): Promise<Links | undefined> {
-  const [labsMetadata, workshopsMetadata, writeupsMetadata] = await Promise.all(
-    [getMetaJSON("labs"), getMetaJSON("workshops"), getMetaJSON("writeups")]
-  )
+  const [docsMetadata, labsMetadata, workshopsMetadata, writeupsMetadata] =
+    await Promise.all([
+      getMetaJSON("docs"),
+      getMetaJSON("labs"),
+      getMetaJSON("workshops"),
+      getMetaJSON("writeups"),
+    ])
 
-  if (!labsMetadata || !workshopsMetadata || !writeupsMetadata) return undefined
+  if (!docsMetadata || !labsMetadata || !workshopsMetadata || !writeupsMetadata)
+    return undefined
+
+  const docsLinks = {
+    title: docsMetadata.title,
+    description: docsMetadata.description,
+    href: generateURL("docs"),
+    children: docsMetadata.children.map(({ slug, title }) => ({
+      title,
+      href: generateURL("docs", "/" + slug),
+    })),
+  }
 
   const labsLinks = {
     title: labsMetadata.title,
@@ -42,5 +57,5 @@ export default async function getLinks(): Promise<Links | undefined> {
     })),
   }
 
-  return [labsLinks, workshopsLinks, writeupsLinks]
+  return [docsLinks, labsLinks, workshopsLinks, writeupsLinks]
 }

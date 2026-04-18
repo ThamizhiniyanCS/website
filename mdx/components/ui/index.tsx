@@ -1,4 +1,42 @@
 import Script from "next/script"
+import {
+  AirVent,
+  AlertCircle,
+  AlertTriangle,
+  Ambulance,
+  AppWindowIcon,
+  ArrowRight,
+  ArrowUpRightIcon,
+  BadgeCheck,
+  BadgeEuro,
+  Bell,
+  BookmarkIcon,
+  Check,
+  CheckCircle2,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  CodeIcon,
+  Copy,
+  Download,
+  Edit,
+  Home,
+  Info,
+  Mail,
+  Menu,
+  MessageSquare,
+  MoreHorizontal,
+  MoreVertical,
+  Plus,
+  Search,
+  Settings,
+  Share2,
+  Trash2,
+  Upload,
+  User,
+  X,
+} from "lucide-react"
 
 import {
   Accordion,
@@ -6,6 +44,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardAction,
@@ -72,6 +112,12 @@ export default function MdxComponents(
     AccordionItem,
     AccordionTrigger,
 
+    // NOTE: Badge
+    Badge,
+
+    // NOTE: Button
+    Button,
+
     // NOTE: Callout
     Callout,
     CalloutTitle,
@@ -114,12 +160,6 @@ export default function MdxComponents(
     Step,
     Steps,
 
-    // NOTE: Tabs
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-
     // NOTE: Table
     table: Table,
     thead: TableHeader,
@@ -138,6 +178,12 @@ export default function MdxComponents(
     TableRow,
     TableFooter,
 
+    // NOTE: Tabs
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+
     // NOTE: VideoPlayer
     Video: (props: { src: string }) => (
       <Video
@@ -147,5 +193,43 @@ export default function MdxComponents(
         pathname={pathname}
       />
     ),
+
+    // NOTE: Lucide React Icons
+    AirVent,
+    AlertCircle,
+    AlertTriangle,
+    Ambulance,
+    AppWindowIcon,
+    ArrowRight,
+    ArrowUpRightIcon,
+    BadgeCheck,
+    BadgeEuro,
+    Bell,
+    BookmarkIcon,
+    Check,
+    CheckCircle2,
+    ChevronDown,
+    ChevronLeft,
+    ChevronRight,
+    ChevronUp,
+    CodeIcon,
+    Copy,
+    Download,
+    Edit,
+    Home,
+    Info,
+    Mail,
+    Menu,
+    MessageSquare,
+    MoreHorizontal,
+    MoreVertical,
+    Plus,
+    Search,
+    Settings,
+    Share2,
+    Trash2,
+    Upload,
+    User,
+    X,
   }
 }

@@ -153,6 +153,10 @@
   @apply my-0;
 }
 
+.prose div[data-slot="tabs-content"] {
+  @apply my-2;
+}
+
 .prose div[data-slot="tabs"] {
   @apply rounded-2xl border p-4;
 }
@@ -161,8 +165,12 @@
   @apply my-4;
 }
 
-.prose table tr {
+.prose table th {
   @apply border-border;
+}
+
+.prose table :is(tr, td) {
+  @apply whitespace-normal;
 }
 
 /* Remove backticks around code text => `something` => something */
@@ -206,7 +214,7 @@ div[data-slot="tabs-content"] .expressive-code {
     font-size: 1rem;
     line-height: 1.25rem;
     position: absolute;
-    @apply border-primary text-foreground bg-background -start-4 flex size-8 items-center justify-center rounded-full border;
+    @apply border-primary text-foreground bg-background -inset-s-4 flex size-8 items-center justify-center rounded-full border;
   }
 }
 
