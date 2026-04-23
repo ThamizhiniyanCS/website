@@ -19,10 +19,11 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Separator } from "@/components/ui/separator"
 import Logo from "@/components/logo"
 import { AnimatedThemeToggler } from "@/components/magic-ui/animated-theme-toggler"
+import SearchDialog from "@/components/search-dialog"
 
-import { Separator } from "../ui/separator"
 import NavMenu from "./nav-menu"
 
 const Navbar = async () => {
@@ -61,6 +62,8 @@ const Navbar = async () => {
       </div>
 
       <div className="flex items-center gap-2">
+        <SearchDialog />
+
         <AnimatedThemeToggler />
 
         <DropdownMenu>
