@@ -85,6 +85,7 @@ import ExternalLink from "./external-link"
 import MdxImage from "./image"
 import InternalLink from "./internal-link"
 import LinkHoverCard from "./link-hover-card"
+import { Mermaid } from "./mermaid"
 import { Step, Steps } from "./steps"
 import Video from "./video"
 
@@ -150,6 +151,9 @@ export default function MdxComponents(
 
     // NOTE: Internal Link
     InternalLink,
+
+    // NOTE: Mermaid Diagrams Support
+    Mermaid,
 
     // NOTE: Script tag fix
     script: (props: React.ScriptHTMLAttributes<HTMLScriptElement>) => (

@@ -137,6 +137,20 @@
   mix-blend-mode: normal;
 }
 
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+.dark::view-transition-old(root) {
+  z-index: 9999;
+}
+.dark::view-transition-new(root) {
+  z-index: 1;
+}
+
 .prose :is(h1, h2, h3, h4, h5, h6) {
   @apply flex items-center gap-3;
 }
