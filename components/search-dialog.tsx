@@ -10,6 +10,7 @@ import {
   SearchIcon,
 } from "lucide-react"
 
+import { BASE_ROUTES } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 import { useSearch } from "@/hooks/use-search"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -25,8 +26,6 @@ import {
 } from "@/components/ui/command"
 
 import { Button } from "./ui/button"
-
-const BASE_ROUTES = ["blogs", "docs", "labs", "workshops", "writeups"]
 
 export default function SearchDialog() {
   const [open, setOpen] = useState(false)

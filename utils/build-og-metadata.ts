@@ -19,9 +19,9 @@ export default function buildOgMetadata({
 }: OgMetadataInput): Metadata {
   const ogToken = getOgToken(title, description, baseRoute, route)
 
-  const ogImageUrl = `${PROTOCOL}og.${env.DOMAIN}/?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&subdomain=${encodeURIComponent(baseRoute)}&route=${encodeURIComponent(route)}&token=${encodeURIComponent(ogToken)}`
+  const ogImageUrl = `${PROTOCOL}og.${env.NEXT_PUBLIC_DOMAIN}/?title=${encodeURIComponent(title)}&description=${encodeURIComponent(description)}&subdomain=${encodeURIComponent(baseRoute)}&route=${encodeURIComponent(route)}&token=${encodeURIComponent(ogToken)}`
 
-  const canonicalUrl = `${PROTOCOL}${baseRoute}.${env.DOMAIN}/${route}`
+  const canonicalUrl = `${PROTOCOL}${baseRoute}.${env.NEXT_PUBLIC_DOMAIN}/${route}`
 
   return {
     title,

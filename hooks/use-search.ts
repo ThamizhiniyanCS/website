@@ -4,6 +4,7 @@ import { useCallback, useRef, useState } from "react"
 import { env } from "@/env"
 
 import { Pagefind, PageSearchResult } from "@/types/pagefind.type"
+import { CDN_BASE_URL, PROTOCOL } from "@/lib/constants"
 
 export function useSearch() {
   const pagefindRef = useRef<Pagefind | null>(null)
@@ -11,15 +12,12 @@ export function useSearch() {
   const [isLoading, setIsLoading] = useState(false)
   const [isInitialized, setIsInitialized] = useState(false)
 
-  const PROTOCOL =
-    process.env.NODE_ENV === "development" ? "http://" : "https://"
-
   const initPagefind = useCallback(async () => {
     if (pagefindRef.current) return
 
     const pagefind = (await import(
       /* webpackIgnore: true */
-      `${env.NEXT_PUBLIC_CDN_BASE_URL}/pagefind/pagefind.js`
+      `${CDN_BASE_URL}/pagefind/pagefind.js`
     )) as Pagefind
 
     await pagefind.options({

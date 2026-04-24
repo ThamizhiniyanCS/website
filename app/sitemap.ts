@@ -12,19 +12,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${PROTOCOL}labs.${env.DOMAIN}/`,
+      url: `${PROTOCOL}labs.${env.NEXT_PUBLIC_DOMAIN}/`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: `${PROTOCOL}workshops.${env.DOMAIN}/`,
+      url: `${PROTOCOL}workshops.${env.NEXT_PUBLIC_DOMAIN}/`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: `${PROTOCOL}writeups.${env.DOMAIN}/`,
+      url: `${PROTOCOL}writeups.${env.NEXT_PUBLIC_DOMAIN}/`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.9,

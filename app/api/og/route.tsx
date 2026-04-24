@@ -47,7 +47,7 @@ export async function GET(request: Request) {
   }
 
   if (route) {
-    route = route.replaceAll("-", " ")
+    route = route.replaceAll("-", " ").replaceAll("/", " | ")
   }
 
   return new ImageResponse(

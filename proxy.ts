@@ -6,7 +6,7 @@ import { ALLOWED_SUBDOMAINS, BASE_URL } from "@/lib/constants"
 
 import { env } from "./env"
 
-const BASE_DOMAIN = `.${env.DOMAIN}`
+const BASE_DOMAIN = `.${env.NEXT_PUBLIC_DOMAIN}`
 
 export const config = {
   matcher: [

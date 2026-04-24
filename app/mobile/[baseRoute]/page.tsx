@@ -36,9 +36,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ""
   )
 
-  const url = `${PROTOCOL}og.${env.DOMAIN}/?title=${encodeURIComponent(response.title)}&description=${encodeURIComponent(response.description || "")}&subdomain=${encodeURIComponent(baseRoute)}&route=${encodeURIComponent("")}&token=${encodeURIComponent(ogToken)}`
+  const url = `${PROTOCOL}og.${env.NEXT_PUBLIC_DOMAIN}/?title=${encodeURIComponent(response.title)}&description=${encodeURIComponent(response.description || "")}&subdomain=${encodeURIComponent(baseRoute)}&route=${encodeURIComponent("")}&token=${encodeURIComponent(ogToken)}`
 
-  const canonicalUrl = `${PROTOCOL}${baseRoute}.${env.DOMAIN}/`
+  const canonicalUrl = `${PROTOCOL}${baseRoute}.${env.NEXT_PUBLIC_DOMAIN}/`
 
   return {
     title: response.title,

@@ -4,7 +4,7 @@ import { env } from "@/env"
 
 export default async function isExternalLink(
   href: string,
-  domain: string = env.DOMAIN
+  domain: string = env.NEXT_PUBLIC_DOMAIN
 ): Promise<boolean> {
   if (
     (href.startsWith("/") && !href.startsWith("//")) ||
