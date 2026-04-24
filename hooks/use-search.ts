@@ -17,7 +17,7 @@ export function useSearch() {
 
     const pagefind = (await import(
       /* webpackIgnore: true */
-      `${CDN_BASE_URL}/pagefind/pagefind.js`
+      `${CDN_BASE_URL}pagefind/pagefind.js`
     )) as Pagefind
 
     await pagefind.options({
