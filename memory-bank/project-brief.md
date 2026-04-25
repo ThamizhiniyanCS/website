@@ -7,8 +7,9 @@
 ## Goals
 
 1. **Showcase expertise** — Present skills, certifications, and professional identity through an animated, cybersecurity-themed portfolio
-2. **Publish content** — Serve cybersecurity labs, workshops, and CTF writeups via a structured MDX content system
+2. **Publish content** — Serve cybersecurity labs, workshops, CTF writeups, docs, and blogs via a structured MDX content system
 3. **Professional presence** — SEO-optimized, OpenGraph-ready, subdomain-routed platform that demonstrates web development mastery
+4. **Site-wide search** — Pagefind-powered search across all content types, with category filtering and grouped results
 
 ## Target Audience
 
@@ -18,7 +19,7 @@
 
 ## Scope Boundaries
 
-- **In scope**: Portfolio homepage, CDN-hosted MDX content, subdomain routing, OG image generation, responsive layout, dark/light themes
+- **In scope**: Portfolio homepage, CDN-hosted MDX content, subdomain routing (labs, workshops, writeups, docs, blogs), OG image generation, responsive layout, dark/light themes, site-wide search
 - **Out of scope**: User authentication, comments, CMS backend, e-commerce, database-driven features
 - Content is managed externally on CDN — this project is the rendering frontend only
 
@@ -27,3 +28,4 @@
 - Fast page loads (SSG where possible, server-first rendering)
 - Clean, accessible, animated UI that reflects cybersecurity aesthetics
 - Zero-downtime content updates via CDN revalidation
+- Comprehensive, instant site-wide search with Pagefind

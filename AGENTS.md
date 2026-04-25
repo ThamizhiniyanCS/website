@@ -225,6 +225,84 @@ bun run format     # Prettier format all files
 
 ---
 
+## Project Documentation (`docs/`)
+
+This project maintains **in-repo documentation** in the `docs/` folder at the project root. These are Markdown files committed to the repo — the single source of truth for how the project works.
+
+### MANDATORY: Keep Docs in Sync
+
+Documentation **MUST** be updated whenever you make changes that affect the documented systems. This is not optional — stale docs are worse than no docs.
+
+**Update docs when:**
+
+- Adding/removing/renaming routes or pages → update `02-architecture.md`, `04-routing-and-middleware.md`
+- Adding/modifying/removing components → update `05-components.md`
+- Changing the MDX pipeline or adding MDX components → update `06-mdx-system.md`
+- Modifying the search system → update `07-search-system.md`
+- Adding/changing server actions or data flow → update `08-data-flow.md`
+- Changing theme, colors, or styling approach → update `09-styling-and-theming.md`
+- Adding/modifying SEO patterns → update `10-seo-and-metadata.md`
+- Changing animations → update `11-animation-system.md`
+- Changing env variables, config, or build scripts → update `12-environment-and-config.md`
+- Any change that affects how a developer would work with the project → update `13-development-guide.md`
+
+**Do NOT** let docs drift from reality. If you change code, update the corresponding doc in the same session.
+
+### Docs Folder Structure
+
+```
+docs/
+├── 01-introduction.md              # Project overview, tech stack, quick-start
+├── 02-architecture.md               # System architecture, high-level diagrams
+├── 03-content-system.md             # CDN content model, meta.json, DIRECTORIES convention
+├── 04-routing-and-middleware.md      # Subdomain routing, proxy.ts, device detection
+├── 05-components.md                 # Component documentation (homepage, layout, navbar, sidebar, etc.)
+├── 06-mdx-system.md                 # MDX pipeline, plugins, custom components, MdxComponents factory
+├── 07-search-system.md              # Pagefind build pipeline, useSearch hook, SearchDialog
+├── 08-data-flow.md                  # Server actions, caching strategy, navigation data
+├── 09-styling-and-theming.md        # Tailwind v4, OKLCH colors, dark-mode-first, fonts, Zustand theme
+├── 10-seo-and-metadata.md           # Metadata patterns, OG images, sitemap, structured data
+├── 11-animation-system.md           # GSAP patterns, Framer Motion, Lenis smooth scroll
+├── 12-environment-and-config.md     # Env variables, next.config, build scripts, tooling
+└── 13-development-guide.md          # Local setup, how-to guides, coding conventions summary
+```
+
+### Documentation Standards
+
+- **AI-generated disclaimer** — Every doc file **MUST** include the following note at the top, right after the title and "Last Updated" date:
+  ```
+  > **Note**: This documentation was generated with the assistance of AI and has been reviewed for accuracy.
+  > However, mistakes may exist. If you find any errors or inconsistencies, please [raise an issue](https://github.com/ThamizhiniyanCS/website/issues).
+  ```
+- **Use Mermaid diagrams** for architecture, data flow, routing, and component relationships. Embed them as fenced code blocks with ` ```mermaid `.
+- **Keep each doc self-contained** — a developer should be able to read a single doc and understand that system without reading all others.
+- **Use tables** for structured data (env vars, component lists, route mappings, action inventories).
+- **Link between docs** using relative paths (e.g., `[see Architecture](./02-architecture.md)`).
+- **Include "Last Updated" dates** at the top of each doc file.
+- **Number-prefixed filenames** keep the reading order clear.
+- **Diagrams to include** (at minimum):
+  - System architecture overview (flowchart)
+  - Subdomain routing flow (flowchart)
+  - Dynamic route hierarchy (graph)
+  - MDX processing pipeline (sequence diagram)
+  - Content resolution logic (flowchart)
+  - Search system — build-time + runtime (flowchart)
+  - Server/client component boundary (graph)
+  - 3-panel layout structure (block diagram)
+
+### Commit Convention for Docs
+
+Use `docs(section): description` format for documentation-only changes:
+
+```
+docs(architecture): add mermaid diagram for subdomain routing
+docs(search): document Pagefind build pipeline
+docs(components): add sidebar component documentation
+docs(dev-guide): update local setup instructions
+```
+
+---
+
 ## Commit Conventions
 
 Use [Conventional Commits](https://www.conventionalcommits.org/) format: `type(scope): description`
