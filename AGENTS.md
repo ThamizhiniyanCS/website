@@ -148,7 +148,7 @@ Follow this order (enforced by `@ianvs/prettier-plugin-sort-imports`):
 - **Dark mode first** — the `<html>` has `className="dark"` by default. Design for dark, adjust for light.
 - **OKLCH colors** — all theme colors use OKLCH color space in CSS variables
 - **`cn()` utility** — always use `cn()` from `@/lib/utils` for conditional class merging
-- **shadcn/ui components** — install via `npx shadcn@latest add <component>`. Components live in `components/ui/`.
+- **shadcn/ui components** — install via `bun shadcn add <component>`. Components live in `components/ui/`.
 - **Custom fonts**: `--var-font-josefin-sans` (primary), `--var-font-lavishly-yours` (decorative/signature)
 
 ### Animations

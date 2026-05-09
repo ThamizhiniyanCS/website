@@ -43,7 +43,7 @@
 
 ## What's Left to Build
 
-- [ ] **Generate project documentation** — Create all 13 doc files in `docs/` per `AGENTS.md` structure
+- [x] **Generate project documentation** — Created all 13 doc files in `docs/` per `AGENTS.md` structure
 - [ ] Full blogs section with MDX support
 - [ ] Mobile-specific layouts under `app/mobile/`
 - [ ] Performance audit (Lighthouse, Core Web Vitals)

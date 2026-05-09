@@ -170,7 +170,7 @@ async function main() {
 
   const { index } = await pagefind.createIndex({
     forceLanguage: "en",
-    writePlayground: true,
+    writePlayground: false,
   })
 
   if (!index) {
