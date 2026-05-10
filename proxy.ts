@@ -40,7 +40,9 @@ export default async function proxy(request: NextRequest) {
       }
 
       if (subdomain === "blogs") {
-        return rewriteWithCustomHeaders(new URL(`/blogs`, request.url))
+        return rewriteWithCustomHeaders(
+          new URL(`/blogs${url.pathname}`, request.url)
+        )
       }
 
       switch (device.type) {

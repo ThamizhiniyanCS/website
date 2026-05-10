@@ -1,7 +1,6 @@
 import * as pagefind from "pagefind"
 import rehypeSlug from "rehype-slug"
 import rehypeStringify from "rehype-stringify"
-import { remark } from "remark"
 import remarkFrontmatter from "remark-frontmatter"
 import remarkGfm from "remark-gfm"
 import remarkMdx from "remark-mdx"
@@ -86,19 +85,6 @@ async function fetchMDX(
   } catch {
     return null
   }
-}
-
-function extractMdxHeadings(mdxSource: string): string[] {
-  const headingRegex = /^#{1,6}\s+(.+)$/gm
-  const headings: string[] = []
-
-  let match
-
-  while ((match = headingRegex.exec(mdxSource)) !== null) {
-    headings.push(match[1].trim())
-  }
-
-  return headings
 }
 
 type IndexEntry = {

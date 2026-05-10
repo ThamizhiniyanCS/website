@@ -89,7 +89,7 @@ const MobileMdxToc = ({ toc }: { toc: TOCItemType[] }) => {
   return (
     <Card
       className={cn(
-        "bg-card/10 fixed top-1/2 right-2 z-50 h-[60vh] -translate-y-1/2 overflow-clip rounded-sm border-none py-2",
+        "bg-card/10 fixed top-1/2 right-2 z-50 h-[60vh] -translate-y-1/2 overflow-clip rounded-sm border-none py-2 xl:hidden",
         isOpen && "bg-card rounded-xl border"
       )}
       onClick={() => setIsOpen(true)}

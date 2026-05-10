@@ -29,9 +29,11 @@ const PAGE_PADDING = 20 // extra breathing room
 const Breadcrumbs = ({
   breadcrumbLinks: allLinks,
   breadcrumbPage,
+  className,
 }: {
   breadcrumbLinks: BreadcrumbLinkItem[]
   breadcrumbPage: string
+  className?: string
 }) => {
   const containerRef = useRef<HTMLOListElement>(null)
   const itemWidthsRef = useRef<number[]>([])
@@ -159,7 +161,7 @@ const Breadcrumbs = ({
   }, [recalculate])
 
   return (
-    <Breadcrumb className={cn("border-border lg:px-10 lg:pb-5")}>
+    <Breadcrumb className={cn("border-border lg:px-10 lg:pb-5", className)}>
       <BreadcrumbList ref={containerRef}>
         <BreadcrumbSeparator>/</BreadcrumbSeparator>
 
@@ -215,7 +217,10 @@ const Breadcrumbs = ({
         )}
 
         <BreadcrumbItem>
-          <BreadcrumbPage data-breadcrumb-page className="capitalize">
+          <BreadcrumbPage
+            data-breadcrumb-page
+            className="line-clamp-1 capitalize"
+          >
             {breadcrumbPage}
           </BreadcrumbPage>
         </BreadcrumbItem>

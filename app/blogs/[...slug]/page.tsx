@@ -2,33 +2,34 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import getMetaJSON from "@/actions/get-meta-json"
 import MdxBreadcrumbs from "@/mdx/components/mdx-breadcrumbs"
-import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer"
 import MdxErrorComponent from "@/mdx/components/mdx-error-component"
-import MdxPreviousNextButtons from "@/mdx/components/mdx-previous-next-buttons"
 import MdxRenderer from "@/mdx/components/mdx-renderer"
 import MdxStructuredData from "@/mdx/components/mdx-structured-data"
 import { TOCProvider, TOCScrollArea } from "@/mdx/components/mdx-toc"
 import * as TocClerk from "@/mdx/components/mdx-toc/clerk"
+import MobileMdxToc from "@/mdx/components/mdx-toc/mobile"
 import type Frontmatter from "@/mdx/types/frontmatter.type"
 import { cachedProcessMDX } from "@/mdx/utils/process-mdx"
 import buildOgMetadata from "@/utils/build-og-metadata"
 import generateShortLocaleDate from "@/utils/generate-short-locate-date"
 import { TOCItemType } from "fumadocs-core/toc"
 
+import type { BlogCardInput } from "@/types/blogs.type"
 import { CDN_BASE_URL, DIRECTORIES } from "@/lib/constants"
-import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable"
 import { Separator } from "@/components/ui/separator"
+import BlogCards from "@/components/blog-cards"
 
 export const revalidate = 86400 // 24 hrs
 
 interface Props {
-  params: Promise<{ baseRoute: string; baseSlug: string; nestedSlug: string[] }>
+  params: Promise<{ slug: string[] }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { baseRoute, baseSlug, nestedSlug } = await params
+  const { slug } = await params
+  const baseRoute = "blogs"
 
-  const pathname = baseSlug + "/" + nestedSlug.join("/")
+  const pathname = slug.join("/")
   const cdnPathname = baseRoute + "/" + pathname
   const absoultePathname = `${CDN_BASE_URL}${cdnPathname}`
 
@@ -63,12 +64,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const source = await response.text()
-  const result = await cachedProcessMDX(
-    source,
-    baseRoute,
-    baseSlug,
-    cdnPathname
-  )
+  const result = await cachedProcessMDX(source, baseRoute, "", cdnPathname)
 
   if (result.status === "failed") {
     return {
@@ -88,14 +84,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
-  const { baseRoute, baseSlug, nestedSlug } = await params
+  const { slug } = await params
 
-  const pathname = baseSlug + "/" + nestedSlug.join("/")
+  const baseRoute = "blogs"
+
+  const pathname = slug.join("/")
   const cdnPathname = baseRoute + "/" + pathname
-  const pathnameArray = [baseSlug, ...nestedSlug]
   const absoultePathname = `${CDN_BASE_URL}${cdnPathname}`
 
   const metaJSON = await getMetaJSON(cdnPathname)
+
+  let blogCards: BlogCardInput[] = []
 
   let toc: TOCItemType[] = []
   let content: React.ReactNode = null
@@ -121,12 +120,7 @@ export default async function Page({ params }: Props) {
     }
 
     const source = await response.text()
-    const result = await cachedProcessMDX(
-      source,
-      baseRoute,
-      baseSlug,
-      cdnPathname
-    )
+    const result = await cachedProcessMDX(source, baseRoute, "", cdnPathname)
 
     if (result.status === "failed") {
       console.error("Failed")
@@ -143,86 +137,82 @@ export default async function Page({ params }: Props) {
     frontmatter = result.frontmatter
     content = result.content
   } else {
-    toc = [
-      {
-        title: metaJSON.title,
-        url: "#" + metaJSON.slug,
-        depth: 1,
-      },
-      {
-        title: "Directories",
-        url: "#directories",
-        depth: 2,
-      },
-      {
-        title: "Files",
-        url: "#files",
-        depth: 2,
-      },
-    ]
+    blogCards = metaJSON.children
+      .filter(
+        (
+          child
+        ): child is Extract<
+          (typeof metaJSON.children)[number],
+          { type: "file" }
+        > => child.type === "file"
+      )
+      .map((data) => ({
+        title: data.title,
+        description: data.description,
+        path: slug + "/" + data.slug,
+        date: data.date,
+      }))
   }
 
   return (
-    <>
-      <ResizablePanel defaultSize={60} minSize={40} order={2} className="pt-16">
-        <MdxBreadcrumbs
-          pathnameArray={pathnameArray}
-          frontmatterTitle={frontmatter?.title}
-        />
+    <div className="mx-auto mt-20 flex min-h-svh w-full max-w-[calc(100vw-25px)] justify-center">
+      {metaJSON ? (
+        <div className="flex w-full max-w-6xl flex-col gap-5">
+          <MdxBreadcrumbs
+            pathnameArray={slug}
+            frontmatterTitle={frontmatter?.title}
+            className="lg:px-0"
+          />
 
-        <article className="w-full">
-          {metaJSON ? (
-            <DirectoryContentsRenderer
-              meta={metaJSON}
-              pathname={pathname}
-              root={null}
-            />
-          ) : (
-            content &&
-            frontmatter && (
+          <span className="prose prose-invert">
+            <h1 className="">{slug}</h1>
+          </span>
+
+          <article className="w-full">
+            <BlogCards data={blogCards} className="" />
+          </article>
+        </div>
+      ) : (
+        <div className="flex w-full max-w-4xl flex-col gap-5">
+          <MdxBreadcrumbs
+            pathnameArray={slug}
+            frontmatterTitle={frontmatter?.title}
+            className="px-4 md:px-8 lg:px-10"
+          />
+
+          <article className="w-full">
+            {content && frontmatter && (
               <>
                 <MdxStructuredData {...frontmatter} />
                 <MdxRenderer content={content} frontmatter={frontmatter} />
               </>
-            )
-          )}
-        </article>
-
-        {!DIRECTORIES.has(baseRoute) && (
-          <MdxPreviousNextButtons
-            baseRoute={baseRoute}
-            previousPage={frontmatter?.previousPage}
-            nextPage={frontmatter?.nextPage}
-          />
-        )}
-      </ResizablePanel>
-
-      <ResizableHandle withHandle />
-
-      <ResizablePanel
-        defaultSize={20}
-        minSize={10}
-        order={3}
-        style={{ overflow: "visible" }}
-      >
-        <div className="sticky top-0 h-screen w-full pt-16">
-          {frontmatter?.lastmod && (
-            <>
-              <p className="p-2 font-mono text-sm">
-                <span className="text-muted-foreground">Last Updated:</span>{" "}
-                {generateShortLocaleDate(frontmatter.lastmod)}
-              </p>
-              <Separator className="mb-2 ml-2 max-w-[90%]" />
-            </>
-          )}
-
-          <TOCProvider toc={toc}>
-            <TOCScrollArea>
-              <TocClerk.TOCItems />
-            </TOCScrollArea>
-          </TOCProvider>
+            )}
+          </article>
         </div>
-      </ResizablePanel>
-    </>
+      )}
+
+      {!metaJSON && (
+        <>
+          <div className="sticky top-0 hidden h-screen w-fit flex-none px-4 pt-16 xl:block">
+            {frontmatter?.lastmod && (
+              <>
+                <p className="p-2 font-mono text-sm">
+                  <span className="text-muted-foreground">Published on:</span>{" "}
+                  {generateShortLocaleDate(frontmatter.lastmod)}
+                </p>
+                <Separator className="mb-2 ml-2 max-w-[90%]" />
+              </>
+            )}
+
+            <TOCProvider toc={toc}>
+              <TOCScrollArea>
+                <TocClerk.TOCItems />
+              </TOCScrollArea>
+            </TOCProvider>
+          </div>
+          <MobileMdxToc toc={toc} />
+        </>
+      )}
+    </div>
   )
 }

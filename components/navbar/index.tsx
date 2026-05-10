@@ -27,25 +27,11 @@ import SearchDialog from "@/components/search-dialog"
 import NavMenu from "./nav-menu"
 
 const Navbar = async () => {
-  const links: Links | undefined = await getLinks()
+  const links: Links = await getLinks()
   const socials: Socials | undefined = await getSocials()
 
   const commonClass =
     "bg-background fixed z-50 flex h-16 w-full items-center justify-between px-4 md:px-8"
-
-  if (!links) {
-    return (
-      <nav className={cn(commonClass)}>
-        <div className="flex items-center gap-6">
-          <Link href="/" className="font-lavishly-yours text-3xl">
-            Thamizhiniyan C S
-          </Link>
-        </div>
-
-        <AnimatedThemeToggler className="cursor-pointer" />
-      </nav>
-    )
-  }
 
   return (
     <nav className={cn(commonClass)}>
@@ -68,7 +54,7 @@ const Navbar = async () => {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button size="icon" variant="ghost" className="lg:hidden">
+            <Button size="icon" variant="ghost" className="xl:hidden">
               <MenuIcon className="size-6" />
             </Button>
           </DropdownMenuTrigger>

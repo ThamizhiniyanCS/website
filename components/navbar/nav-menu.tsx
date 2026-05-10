@@ -27,7 +27,7 @@ export default function NavMenu({
   socials?: Socials
 }) {
   return (
-    <NavigationMenu viewport={false} className="hidden lg:flex">
+    <NavigationMenu viewport={false} className="hidden xl:flex">
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger>Home</NavigationMenuTrigger>

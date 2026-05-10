@@ -65,7 +65,12 @@ export default async function Page({ params }: Props) {
 
       <div className="grid w-full grid-cols-3 gap-4">
         {response.children.map((child, index) => (
-          <Link key={index} href={"/" + child.slug} className="no-underline">
+          <Link
+            key={index}
+            href={"/" + child.slug}
+            className="no-underline"
+            prefetch={true}
+          >
             <Card
               style={{
                 marginBlock: 0,

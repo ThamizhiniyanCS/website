@@ -1,5 +1,78 @@
-const Page = () => {
-  return <div>Under Construction</div>
+import type { Metadata } from "next"
+import Link from "next/link"
+import getLatestBlogs from "@/actions/get-latest-blogs"
+import getMetaJSON from "@/actions/get-meta-json"
+import MdxErrorComponent from "@/mdx/components/mdx-error-component"
+import buildOgMetadata from "@/utils/build-og-metadata"
+
+import type { BlogCardInput } from "@/types/blogs.type"
+import { Card, CardContent } from "@/components/ui/card"
+import BlogCards from "@/components/blog-cards"
+
+export async function generateMetadata(): Promise<Metadata> {
+  const baseRoute = "blogs"
+  const response = await getMetaJSON(baseRoute)
+
+  if (!response) {
+    return {
+      title: "Page Not Found",
+      description: "The page you are looking for is not available",
+    }
+  }
+
+  return buildOgMetadata({
+    title: response.title,
+    description: response.description || "",
+    baseRoute,
+    route: "",
+  })
+}
+
+const Page = async () => {
+  const response = await getMetaJSON("blogs")
+
+  if (!response) {
+    return <MdxErrorComponent error="Failed to fetch meta.json" />
+  }
+
+  const latestBlogs: BlogCardInput[] | undefined = await getLatestBlogs()
+
+  return (
+    <div className="prose prose-invert mx-auto flex min-h-svh w-full max-w-6xl flex-col gap-10 pt-20">
+      {latestBlogs && (
+        <section>
+          <h1>Latest Blogs</h1>
+
+          <BlogCards data={latestBlogs} />
+        </section>
+      )}
+
+      <section>
+        <h1>Archive</h1>
+
+        <div className="grid w-full grid-cols-3 gap-4">
+          {response.children.map((child, index) => (
+            <Link
+              key={index}
+              href={"/" + child.slug}
+              className="no-underline"
+              prefetch={true}
+            >
+              <Card
+                style={{
+                  marginBlock: 0,
+                }}
+              >
+                <CardContent>
+                  <h3>{child.title}</h3>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      </section>
+    </div>
+  )
 }
 
 export default Page

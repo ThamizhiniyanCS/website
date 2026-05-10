@@ -96,7 +96,7 @@ export default function AboutSection() {
           Thamizhiniyan C S
         </span>
         , an Ethical Hacker, Web Developer, and Cyber Security enthusiast
-        currently in my final year of engineering studies. My expertise is
+        currently working as a developer intern at SAP Labs. My expertise is
         centered around cyber security, digital forensics, and crafting engaging
         web applications with Next.js.
       </p>
