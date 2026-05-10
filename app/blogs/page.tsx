@@ -5,7 +5,7 @@ import getMetaJSON from "@/actions/get-meta-json"
 import MdxErrorComponent from "@/mdx/components/mdx-error-component"
 import buildOgMetadata from "@/utils/build-og-metadata"
 
-import type { BlogCardInput } from "@/types/blogs.type"
+import type { BlogCardInputArray } from "@/types/blogs.type"
 import { Card, CardContent } from "@/components/ui/card"
 import BlogCards from "@/components/blog-cards"
 
@@ -35,7 +35,7 @@ const Page = async () => {
     return <MdxErrorComponent error="Failed to fetch meta.json" />
   }
 
-  const latestBlogs: BlogCardInput[] | undefined = await getLatestBlogs()
+  const latestBlogs: BlogCardInputArray | undefined = await getLatestBlogs()
 
   return (
     <div className="prose prose-invert mx-auto flex min-h-svh w-full max-w-6xl flex-col gap-10 pt-20">

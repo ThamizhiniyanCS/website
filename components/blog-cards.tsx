@@ -2,7 +2,7 @@ import Link from "next/link"
 import generateShortLocaleDate from "@/utils/generate-short-locate-date"
 import { ArrowRightIcon } from "lucide-react"
 
-import type { BlogCardInput } from "@/types/blogs.type"
+import type { BlogCardInput, BlogCardInputArray } from "@/types/blogs.type"
 import { cn } from "@/lib/utils"
 import {
   Card,
@@ -43,7 +43,7 @@ const BlogCards = ({
   data,
   className,
 }: {
-  data: BlogCardInput[]
+  data: BlogCardInputArray
   className?: string
 }) => {
   return (

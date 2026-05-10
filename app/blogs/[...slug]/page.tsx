@@ -14,7 +14,7 @@ import buildOgMetadata from "@/utils/build-og-metadata"
 import generateShortLocaleDate from "@/utils/generate-short-locate-date"
 import { TOCItemType } from "fumadocs-core/toc"
 
-import type { BlogCardInput } from "@/types/blogs.type"
+import type { BlogCardInputArray } from "@/types/blogs.type"
 import { CDN_BASE_URL, DIRECTORIES } from "@/lib/constants"
 import { Separator } from "@/components/ui/separator"
 import BlogCards from "@/components/blog-cards"
@@ -94,7 +94,7 @@ export default async function Page({ params }: Props) {
 
   const metaJSON = await getMetaJSON(cdnPathname)
 
-  let blogCards: BlogCardInput[] = []
+  let blogCards: BlogCardInputArray = []
 
   let toc: TOCItemType[] = []
   let content: React.ReactNode = null

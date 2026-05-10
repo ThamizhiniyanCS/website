@@ -7,26 +7,18 @@ import type { Links } from "@/types/links.type"
 
 import getLatestBlogs from "./get-latest-blogs"
 
+const CONTENT_ROUTES = ["docs", "labs", "workshops", "writeups"] as const
+
 export default async function getLinks(): Promise<Links> {
-  const [
-    latestBlogs,
-    blogsMetadata,
-    docsMetadata,
-    labsMetadata,
-    workshopsMetadata,
-    writeupsMetadata,
-  ] = await Promise.all([
+  const [latestBlogs, blogsMetadata, ...routeMetadata] = await Promise.all([
     getLatestBlogs(),
     getMetaJSON("blogs"),
-    getMetaJSON("docs"),
-    getMetaJSON("labs"),
-    getMetaJSON("workshops"),
-    getMetaJSON("writeups"),
+    ...CONTENT_ROUTES.map((route) => getMetaJSON(route)),
   ])
 
-  let links: Links = []
+  const links: Links = []
 
-  blogsMetadata &&
+  if (blogsMetadata) {
     links.push({
       title: blogsMetadata.title,
       description: blogsMetadata.description,
@@ -38,50 +30,24 @@ export default async function getLinks(): Promise<Links> {
           }))
         : [],
     })
+  }
 
-  docsMetadata &&
-    links.push({
-      title: docsMetadata.title,
-      description: docsMetadata.description,
-      href: generateURL("docs"),
-      children: docsMetadata.children.map(({ slug, title }) => ({
-        title,
-        href: generateURL("docs", "/" + slug),
-      })),
-    })
+  for (let i = 0; i < CONTENT_ROUTES.length; i++) {
+    const route = CONTENT_ROUTES[i]
+    const meta = routeMetadata[i]
 
-  labsMetadata &&
-    links.push({
-      title: labsMetadata.title,
-      description: labsMetadata.description,
-      href: generateURL("labs"),
-      children: labsMetadata.children.map(({ slug, title }) => ({
-        title,
-        href: generateURL("labs", "/" + slug),
-      })),
-    })
-
-  workshopsMetadata &&
-    links.push({
-      title: workshopsMetadata.title,
-      description: workshopsMetadata.description,
-      href: generateURL("workshops"),
-      children: workshopsMetadata.children.map(({ slug, title }) => ({
-        title,
-        href: generateURL("workshops", "/" + slug),
-      })),
-    })
-
-  writeupsMetadata &&
-    links.push({
-      title: writeupsMetadata.title,
-      description: writeupsMetadata.description,
-      href: generateURL("writeups"),
-      children: writeupsMetadata.children.map(({ slug, title }) => ({
-        title,
-        href: generateURL("writeups", "/" + slug),
-      })),
-    })
+    if (meta) {
+      links.push({
+        title: meta.title,
+        description: meta.description,
+        href: generateURL(route),
+        children: meta.children.map(({ slug, title }) => ({
+          title,
+          href: generateURL(route, "/" + slug),
+        })),
+      })
+    }
+  }
 
   return links
 }
