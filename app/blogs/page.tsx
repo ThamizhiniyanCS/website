@@ -38,7 +38,7 @@ const Page = async () => {
   const latestBlogs: BlogCardInputArray | undefined = await getLatestBlogs()
 
   return (
-    <div className="prose prose-invert mx-auto flex min-h-svh w-full max-w-6xl flex-col gap-10 pt-20">
+    <div className="prose prose-invert mx-auto flex min-h-svh w-full max-w-6xl flex-col gap-10 px-4 pt-20 md:px-8 lg:px-10">
       {latestBlogs && (
         <section>
           <h1>Latest Blogs</h1>
@@ -50,7 +50,7 @@ const Page = async () => {
       <section>
         <h1>Archive</h1>
 
-        <div className="grid w-full grid-cols-3 gap-4">
+        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
           {response.children.map((child, index) => (
             <Link
               key={index}

@@ -5,6 +5,7 @@ import MdxBreadcrumbs from "@/mdx/components/mdx-breadcrumbs"
 import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer"
 import { TOCProvider, TOCScrollArea } from "@/mdx/components/mdx-toc"
 import * as TocClerk from "@/mdx/components/mdx-toc/clerk"
+import { buildDirectoryTOC } from "@/mdx/lib/build-directory-toc"
 import buildOgMetadata from "@/utils/build-og-metadata"
 
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable"
@@ -50,23 +51,7 @@ export default async function Page({ params }: Props) {
     notFound()
   }
 
-  const toc = [
-    {
-      title: response.title,
-      url: "#" + response.slug,
-      depth: 1,
-    },
-    {
-      title: "Directories",
-      url: "#directories",
-      depth: 2,
-    },
-    {
-      title: "Files",
-      url: "#files",
-      depth: 2,
-    },
-  ]
+  const toc = buildDirectoryTOC(response)
 
   return (
     <>

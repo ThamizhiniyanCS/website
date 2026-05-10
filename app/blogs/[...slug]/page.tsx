@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import getMetaJSON from "@/actions/get-meta-json"
 import MdxBreadcrumbs from "@/mdx/components/mdx-breadcrumbs"
 import MdxErrorComponent from "@/mdx/components/mdx-error-component"
 import MdxRenderer from "@/mdx/components/mdx-renderer"
@@ -8,14 +7,11 @@ import MdxStructuredData from "@/mdx/components/mdx-structured-data"
 import { TOCProvider, TOCScrollArea } from "@/mdx/components/mdx-toc"
 import * as TocClerk from "@/mdx/components/mdx-toc/clerk"
 import MobileMdxToc from "@/mdx/components/mdx-toc/mobile"
-import type Frontmatter from "@/mdx/types/frontmatter.type"
-import { cachedProcessMDX } from "@/mdx/utils/process-mdx"
-import buildOgMetadata from "@/utils/build-og-metadata"
+import { resolveContent } from "@/mdx/lib/resolve-content"
+import { resolveContentMetadata } from "@/mdx/lib/resolve-content-metadata"
 import generateShortLocaleDate from "@/utils/generate-short-locate-date"
-import { TOCItemType } from "fumadocs-core/toc"
 
 import type { BlogCardInputArray } from "@/types/blogs.type"
-import { CDN_BASE_URL, DIRECTORIES } from "@/lib/constants"
 import { Separator } from "@/components/ui/separator"
 import BlogCards from "@/components/blog-cards"
 
@@ -27,122 +23,35 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const baseRoute = "blogs"
 
   const pathname = slug.join("/")
-  const cdnPathname = baseRoute + "/" + pathname
-  const absoultePathname = `${CDN_BASE_URL}${cdnPathname}`
+  const cdnPathname = "blogs/" + pathname
 
-  const metaJSON = await getMetaJSON(cdnPathname)
-
-  if (metaJSON) {
-    return buildOgMetadata({
-      title: metaJSON.title,
-      description: metaJSON.description || "",
-      baseRoute,
-      route: pathname,
-    })
-  }
-
-  const response = await fetch(
-    DIRECTORIES.has(baseRoute)
-      ? `${absoultePathname}/index.mdx`
-      : `${absoultePathname}.mdx`,
-    {
-      cache: "force-cache",
-      next: {
-        revalidate: 86400, // 24 hours
-      },
-    }
-  )
-
-  if (!response) {
-    return {
-      title: "Page Not Found",
-      description: "The page you are looking for is not available",
-    }
-  }
-
-  const source = await response.text()
-  const result = await cachedProcessMDX(source, baseRoute, "", cdnPathname)
-
-  if (result.status === "failed") {
-    return {
-      title: "Render Page Error",
-      description: "Failed to Render Page",
-    }
-  }
-
-  const { frontmatter } = result
-
-  return buildOgMetadata({
-    title: frontmatter.title,
-    description: frontmatter.description || "",
-    baseRoute,
-    route: pathname,
-  })
+  return resolveContentMetadata("blogs", pathname, cdnPathname, "")
 }
 
 export default async function Page({ params }: Props) {
   const { slug } = await params
 
-  const baseRoute = "blogs"
-
   const pathname = slug.join("/")
-  const cdnPathname = baseRoute + "/" + pathname
-  const absoultePathname = `${CDN_BASE_URL}${cdnPathname}`
+  const cdnPathname = "blogs/" + pathname
 
-  const metaJSON = await getMetaJSON(cdnPathname)
+  const resolved = await resolveContent("blogs", cdnPathname, "")
+
+  if (!resolved) notFound()
+  if (resolved.type === "error") {
+    return <MdxErrorComponent error={resolved.error} />
+  }
 
   let blogCards: BlogCardInputArray = []
 
-  let toc: TOCItemType[] = []
-  let content: React.ReactNode = null
-  let frontmatter: Frontmatter | undefined = undefined
-
-  if (!metaJSON) {
-    const response = await fetch(
-      DIRECTORIES.has(baseRoute)
-        ? `${absoultePathname}/index.mdx`
-        : `${absoultePathname}.mdx`,
-      {
-        cache: "force-cache",
-        next: {
-          revalidate: 86400, // 24 hours
-        },
-      }
-    )
-
-    if (!response.ok) {
-      console.error(`[+] Failed to fetch MDX: ${absoultePathname}.mdx`)
-
-      notFound()
-    }
-
-    const source = await response.text()
-    const result = await cachedProcessMDX(source, baseRoute, "", cdnPathname)
-
-    if (result.status === "failed") {
-      console.error("Failed")
-      return <MdxErrorComponent error={result.error} />
-    }
-
-    toc =
-      result.scope.toc?.map(({ value, href, depth }) => ({
-        title: value,
-        url: href,
-        depth,
-      })) ?? []
-
-    frontmatter = result.frontmatter
-    content = result.content
-  } else {
-    blogCards = metaJSON.children
+  if (resolved.type === "directory") {
+    blogCards = resolved.meta.children
       .filter(
         (
           child
         ): child is Extract<
-          (typeof metaJSON.children)[number],
+          (typeof resolved.meta.children)[number],
           { type: "file" }
         > => child.type === "file"
       )
@@ -154,9 +63,11 @@ export default async function Page({ params }: Props) {
       }))
   }
 
+  const frontmatter = resolved.type === "mdx" ? resolved.frontmatter : undefined
+
   return (
     <div className="mx-auto mt-20 flex min-h-svh w-full max-w-[calc(100vw-25px)] justify-center">
-      {metaJSON ? (
+      {resolved.type === "directory" ? (
         <div className="flex w-full max-w-6xl flex-col gap-5">
           <MdxBreadcrumbs
             pathnameArray={slug}
@@ -176,41 +87,40 @@ export default async function Page({ params }: Props) {
         <div className="flex w-full max-w-4xl flex-col gap-5">
           <MdxBreadcrumbs
             pathnameArray={slug}
-            frontmatterTitle={frontmatter?.title}
+            frontmatterTitle={resolved.frontmatter.title}
             className="px-4 md:px-8 lg:px-10"
           />
 
           <article className="w-full">
-            {content && frontmatter && (
-              <>
-                <MdxStructuredData {...frontmatter} />
-                <MdxRenderer content={content} frontmatter={frontmatter} />
-              </>
-            )}
+            <MdxStructuredData {...resolved.frontmatter} />
+            <MdxRenderer
+              content={resolved.content}
+              frontmatter={resolved.frontmatter}
+            />
           </article>
         </div>
       )}
 
-      {!metaJSON && (
+      {resolved.type === "mdx" && (
         <>
           <div className="sticky top-0 hidden h-screen w-fit flex-none px-4 pt-16 xl:block">
-            {frontmatter?.lastmod && (
+            {resolved.frontmatter.lastmod && (
               <>
                 <p className="p-2 font-mono text-sm">
                   <span className="text-muted-foreground">Published on:</span>{" "}
-                  {generateShortLocaleDate(frontmatter.lastmod)}
+                  {generateShortLocaleDate(resolved.frontmatter.lastmod)}
                 </p>
                 <Separator className="mb-2 ml-2 max-w-[90%]" />
               </>
             )}
 
-            <TOCProvider toc={toc}>
+            <TOCProvider toc={resolved.toc}>
               <TOCScrollArea>
                 <TocClerk.TOCItems />
               </TOCScrollArea>
             </TOCProvider>
           </div>
-          <MobileMdxToc toc={toc} />
+          <MobileMdxToc toc={resolved.toc} />
         </>
       )}
     </div>

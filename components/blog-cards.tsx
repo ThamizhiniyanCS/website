@@ -47,7 +47,12 @@ const BlogCards = ({
   className?: string
 }) => {
   return (
-    <div className={cn("grid w-full grid-cols-3 gap-4", className)}>
+    <div
+      className={cn(
+        "grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3",
+        className
+      )}
+    >
       {data.map((props, index) => (
         <BlogCard key={`blog_card_${index}`} {...props} />
       ))}

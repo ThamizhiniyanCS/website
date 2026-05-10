@@ -1,12 +1,8 @@
-import { describe } from "node:test"
 import type { Metadata } from "next"
 import getMetaJSON from "@/actions/get-meta-json"
-import { env } from "@/env"
 import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer"
 import MdxErrorComponent from "@/mdx/components/mdx-error-component"
-import getOgToken from "@/utils/get-og-token"
-
-import { PROTOCOL } from "@/lib/constants"
+import buildOgMetadata from "@/utils/build-og-metadata"
 
 interface Props {
   params: Promise<{ baseRoute: string; baseSlug: string }>
@@ -26,44 +22,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
-  const ogToken = getOgToken(
-    response.title,
-    response.description || "",
-    baseRoute,
-    baseSlug
-  )
-
-  const url = `${PROTOCOL}og.${env.NEXT_PUBLIC_DOMAIN}/?title=${encodeURIComponent(response.title)}&description=${encodeURIComponent(response.description || "")}&subdomain=${encodeURIComponent(baseRoute)}&route=${encodeURIComponent(baseSlug)}&token=${encodeURIComponent(ogToken)}`
-
-  const canonicalUrl = `${PROTOCOL}${baseRoute}.${env.NEXT_PUBLIC_DOMAIN}/${baseSlug}`
-
-  return {
+  return buildOgMetadata({
     title: response.title,
-    description: response.description,
-    openGraph: {
-      title: response.title,
-      description: response.description,
-      url: canonicalUrl,
-      images: [
-        {
-          url,
-          width: 1200,
-          height: 630,
-          alt: `${response.title} - ${response.description} opengraph image`,
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: response.title,
-      description: response.description,
-      creator: "@ThamizhiniyanCS",
-      images: [url],
-    },
-    alternates: {
-      canonical: canonicalUrl,
-    },
-  }
+    description: response.description || "",
+    baseRoute,
+    route: baseSlug,
+  })
 }
 
 export default async function Page({ params }: Props) {

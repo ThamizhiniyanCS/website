@@ -7,7 +7,7 @@ export const MetaJsonChildSchema = z.discriminatedUnion("type", [
     title: z.string(),
     description: z.string(),
     filename: z.string(),
-    date: z.date().optional(),
+    date: z.coerce.date().optional(),
   }),
   z.object({
     type: z.literal("directory"),

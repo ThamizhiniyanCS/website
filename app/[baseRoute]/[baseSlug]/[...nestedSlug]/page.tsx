@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import getMetaJSON from "@/actions/get-meta-json"
 import MdxBreadcrumbs from "@/mdx/components/mdx-breadcrumbs"
 import DirectoryContentsRenderer from "@/mdx/components/mdx-directory-contents-renderer"
 import MdxErrorComponent from "@/mdx/components/mdx-error-component"
@@ -9,13 +8,11 @@ import MdxRenderer from "@/mdx/components/mdx-renderer"
 import MdxStructuredData from "@/mdx/components/mdx-structured-data"
 import { TOCProvider, TOCScrollArea } from "@/mdx/components/mdx-toc"
 import * as TocClerk from "@/mdx/components/mdx-toc/clerk"
-import type Frontmatter from "@/mdx/types/frontmatter.type"
-import { cachedProcessMDX } from "@/mdx/utils/process-mdx"
-import buildOgMetadata from "@/utils/build-og-metadata"
+import { resolveContent } from "@/mdx/lib/resolve-content"
+import { resolveContentMetadata } from "@/mdx/lib/resolve-content-metadata"
 import generateShortLocaleDate from "@/utils/generate-short-locate-date"
-import { TOCItemType } from "fumadocs-core/toc"
 
-import { CDN_BASE_URL, DIRECTORIES } from "@/lib/constants"
+import { DIRECTORIES } from "@/lib/constants"
 import { ResizableHandle, ResizablePanel } from "@/components/ui/resizable"
 import { Separator } from "@/components/ui/separator"
 
@@ -30,61 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const pathname = baseSlug + "/" + nestedSlug.join("/")
   const cdnPathname = baseRoute + "/" + pathname
-  const absoultePathname = `${CDN_BASE_URL}${cdnPathname}`
 
-  const metaJSON = await getMetaJSON(cdnPathname)
-
-  if (metaJSON) {
-    return buildOgMetadata({
-      title: metaJSON.title,
-      description: metaJSON.description || "",
-      baseRoute,
-      route: pathname,
-    })
-  }
-
-  const response = await fetch(
-    DIRECTORIES.has(baseRoute)
-      ? `${absoultePathname}/index.mdx`
-      : `${absoultePathname}.mdx`,
-    {
-      cache: "force-cache",
-      next: {
-        revalidate: 86400, // 24 hours
-      },
-    }
-  )
-
-  if (!response) {
-    return {
-      title: "Page Not Found",
-      description: "The page you are looking for is not available",
-    }
-  }
-
-  const source = await response.text()
-  const result = await cachedProcessMDX(
-    source,
-    baseRoute,
-    baseSlug,
-    cdnPathname
-  )
-
-  if (result.status === "failed") {
-    return {
-      title: "Render Page Error",
-      description: "Failed to Render Page",
-    }
-  }
-
-  const { frontmatter } = result
-
-  return buildOgMetadata({
-    title: frontmatter.title,
-    description: frontmatter.description || "",
-    baseRoute,
-    route: pathname,
-  })
+  return resolveContentMetadata(baseRoute, pathname, cdnPathname, baseSlug)
 }
 
 export default async function Page({ params }: Props) {
@@ -93,74 +37,15 @@ export default async function Page({ params }: Props) {
   const pathname = baseSlug + "/" + nestedSlug.join("/")
   const cdnPathname = baseRoute + "/" + pathname
   const pathnameArray = [baseSlug, ...nestedSlug]
-  const absoultePathname = `${CDN_BASE_URL}${cdnPathname}`
 
-  const metaJSON = await getMetaJSON(cdnPathname)
+  const resolved = await resolveContent(baseRoute, cdnPathname, baseSlug)
 
-  let toc: TOCItemType[] = []
-  let content: React.ReactNode = null
-  let frontmatter: Frontmatter | undefined = undefined
-
-  if (!metaJSON) {
-    const response = await fetch(
-      DIRECTORIES.has(baseRoute)
-        ? `${absoultePathname}/index.mdx`
-        : `${absoultePathname}.mdx`,
-      {
-        cache: "force-cache",
-        next: {
-          revalidate: 86400, // 24 hours
-        },
-      }
-    )
-
-    if (!response.ok) {
-      console.error(`[+] Failed to fetch MDX: ${absoultePathname}.mdx`)
-
-      notFound()
-    }
-
-    const source = await response.text()
-    const result = await cachedProcessMDX(
-      source,
-      baseRoute,
-      baseSlug,
-      cdnPathname
-    )
-
-    if (result.status === "failed") {
-      console.error("Failed")
-      return <MdxErrorComponent error={result.error} />
-    }
-
-    toc =
-      result.scope.toc?.map(({ value, href, depth }) => ({
-        title: value,
-        url: href,
-        depth,
-      })) ?? []
-
-    frontmatter = result.frontmatter
-    content = result.content
-  } else {
-    toc = [
-      {
-        title: metaJSON.title,
-        url: "#" + metaJSON.slug,
-        depth: 1,
-      },
-      {
-        title: "Directories",
-        url: "#directories",
-        depth: 2,
-      },
-      {
-        title: "Files",
-        url: "#files",
-        depth: 2,
-      },
-    ]
+  if (!resolved) notFound()
+  if (resolved.type === "error") {
+    return <MdxErrorComponent error={resolved.error} />
   }
+
+  const frontmatter = resolved.type === "mdx" ? resolved.frontmatter : undefined
 
   return (
     <>
@@ -171,20 +56,20 @@ export default async function Page({ params }: Props) {
         />
 
         <article className="w-full">
-          {metaJSON ? (
+          {resolved.type === "directory" ? (
             <DirectoryContentsRenderer
-              meta={metaJSON}
+              meta={resolved.meta}
               pathname={pathname}
               root={null}
             />
           ) : (
-            content &&
-            frontmatter && (
-              <>
-                <MdxStructuredData {...frontmatter} />
-                <MdxRenderer content={content} frontmatter={frontmatter} />
-              </>
-            )
+            <>
+              <MdxStructuredData {...resolved.frontmatter} />
+              <MdxRenderer
+                content={resolved.content}
+                frontmatter={resolved.frontmatter}
+              />
+            </>
           )}
         </article>
 
@@ -216,7 +101,7 @@ export default async function Page({ params }: Props) {
             </>
           )}
 
-          <TOCProvider toc={toc}>
+          <TOCProvider toc={resolved.toc}>
             <TOCScrollArea>
               <TocClerk.TOCItems />
             </TOCScrollArea>
