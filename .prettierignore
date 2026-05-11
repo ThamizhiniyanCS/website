@@ -1,0 +1,23 @@
+# Build outputs
+.next
+out
+build
+dist
+
+# Dependencies (Prettier ignores node_modules by default, but it's good practice to include it)
+node_modules
+
+# Lockfiles
+bun.lock
+bun.lockb
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Next.js specific
+next-env.d.ts
+
+# Misc
+.cache
+.mcp.json
+cli.json

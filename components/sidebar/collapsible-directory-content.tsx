@@ -79,7 +79,10 @@ export function CollapsibleDirectoryContentSkeleton() {
   return (
     <div className="flex flex-col pl-4">
       {Array.from({ length: 3 }).map((_, index) => (
-        <div key={index} className="border-l py-2 pr-4 pl-4 font-mono text-sm">
+        <div
+          key={index}
+          className="border-l-border border-l px-4 py-2 font-mono text-sm"
+        >
           <Skeleton className="h-4 w-full max-w-60 rounded-full" />
         </div>
       ))}

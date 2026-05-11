@@ -41,8 +41,12 @@ Design tokens are defined using `@theme inline {}`:
 ### Custom Utilities
 
 ```css
-@utility fd-steps { /* Fumadocs steps counter */ }
-@utility fd-step  { /* Individual step with counter */ }
+@utility fd-steps {
+  /* Fumadocs steps counter */
+}
+@utility fd-step {
+  /* Individual step with counter */
+}
 ```
 
 ## OKLCH Color System
@@ -79,7 +83,8 @@ All colors use the **OKLCH** color space for perceptual uniformity:
 Fumadocs colors are mapped to shadcn theme variables:
 
 ```css
-:root, .dark {
+:root,
+.dark {
   --color-fd-background: var(--background);
   --color-fd-foreground: var(--foreground);
   --color-fd-primary: var(--primary);
@@ -91,9 +96,9 @@ Fumadocs colors are mapped to shadcn theme variables:
 
 ### Fonts
 
-| Font | CSS Variable | Usage |
-|------|-------------|-------|
-| **Josefin Sans** | `--var-font-josefin-sans` | Primary text, headings |
+| Font               | CSS Variable                | Usage                     |
+| ------------------ | --------------------------- | ------------------------- |
+| **Josefin Sans**   | `--var-font-josefin-sans`   | Primary text, headings    |
 | **Lavishly Yours** | `--var-font-lavishly-yours` | Decorative/signature text |
 
 Loaded via `next/font/google` in `app/layout.tsx`:
@@ -124,8 +129,12 @@ Custom view transition styles for theme switching:
   mix-blend-mode: normal;
 }
 
-.dark::view-transition-old(root) { z-index: 9999; }
-.dark::view-transition-new(root) { z-index: 1; }
+.dark::view-transition-old(root) {
+  z-index: 9999;
+}
+.dark::view-transition-new(root) {
+  z-index: 1;
+}
 ```
 
 ## Prose Styles

@@ -136,6 +136,7 @@ block-beta
 ```
 
 The 3-panel layout is implemented using `react-resizable-panels` in `[baseSlug]/layout.tsx`:
+
 - **Left (order 1)**: Sidebar with React Query — base slug selector + collapsible directory tree
 - **Center (order 2)**: Breadcrumbs + MDX content or directory listing (rendered by `page.tsx`)
 - **Right (order 3)**: TOC with scroll spy from Fumadocs (rendered by `page.tsx`)

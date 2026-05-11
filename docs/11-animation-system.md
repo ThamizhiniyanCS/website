@@ -9,11 +9,11 @@
 
 The project uses three animation systems:
 
-| System | Use Case |
-|--------|----------|
-| **GSAP** | Complex scroll-driven animations, text effects, timelines |
-| **Framer Motion** (`motion`) | Simple component animations, layout transitions |
-| **Lenis** | Smooth scrolling |
+| System                       | Use Case                                                  |
+| ---------------------------- | --------------------------------------------------------- |
+| **GSAP**                     | Complex scroll-driven animations, text effects, timelines |
+| **Framer Motion** (`motion`) | Simple component animations, layout transitions           |
+| **Lenis**                    | Smooth scrolling                                          |
 
 ## GSAP Patterns
 
@@ -22,11 +22,11 @@ The project uses three animation systems:
 Register plugins at module level (outside the component):
 
 ```typescript
-import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
+import gsap from "gsap"
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { SplitText } from "gsap/SplitText"
-import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin"
 
 gsap.registerPlugin(SplitText, ScrollTrigger, ScrambleTextPlugin)
 ```
@@ -41,7 +41,7 @@ useGSAP(
     // All GSAP animations go here
     gsap.from(".element", { opacity: 0, y: 50 })
   },
-  { scope: containerRef }  // Scope to container for cleanup
+  { scope: containerRef } // Scope to container for cleanup
 )
 ```
 
@@ -70,16 +70,19 @@ useGSAP(
 ### SplitText for Reveals
 
 ```typescript
-useGSAP(() => {
-  const split = new SplitText(".heading", { type: "chars" })
+useGSAP(
+  () => {
+    const split = new SplitText(".heading", { type: "chars" })
 
-  gsap.from(split.chars, {
-    opacity: 0,
-    y: 50,
-    stagger: 0.03,
-    mask: "chars",  // or "lines"
-  })
-}, { scope: containerRef })
+    gsap.from(split.chars, {
+      opacity: 0,
+      y: 50,
+      stagger: 0.03,
+      mask: "chars", // or "lines"
+    })
+  },
+  { scope: containerRef }
+)
 ```
 
 ### ScrambleText Effect
@@ -99,12 +102,12 @@ gsap.to(".name", {
 
 ## Homepage Animations
 
-| Section | Animation Type | Key Effects |
-|---------|---------------|-------------|
-| `HeroSection` | GSAP Timeline | Name scramble, MatrixRain overlay, fade-in |
-| `AboutSection` | GSAP ScrollTrigger | Pin + scrub, text reveal, section transitions |
-| `SkillsSection` | GSAP ScrollTrigger | Staggered card reveals |
-| `CertificationsSection` | GSAP ScrollTrigger | Staggered certification card reveals |
+| Section                 | Animation Type     | Key Effects                                   |
+| ----------------------- | ------------------ | --------------------------------------------- |
+| `HeroSection`           | GSAP Timeline      | Name scramble, MatrixRain overlay, fade-in    |
+| `AboutSection`          | GSAP ScrollTrigger | Pin + scrub, text reveal, section transitions |
+| `SkillsSection`         | GSAP ScrollTrigger | Staggered card reveals                        |
+| `CertificationsSection` | GSAP ScrollTrigger | Staggered certification card reveals          |
 
 ## Framer Motion (`motion`)
 
@@ -124,14 +127,14 @@ import { motion } from "motion"
 
 ### When to Use Which
 
-| Scenario | Use |
-|----------|-----|
-| Scroll-driven animations | GSAP (ScrollTrigger) |
-| Complex timelines | GSAP |
+| Scenario                  | Use                            |
+| ------------------------- | ------------------------------ |
+| Scroll-driven animations  | GSAP (ScrollTrigger)           |
+| Complex timelines         | GSAP                           |
 | Text splitting / scramble | GSAP (SplitText, ScrambleText) |
-| Simple enter/exit | Framer Motion |
-| Layout animations | Framer Motion |
-| Hover state transitions | CSS or Framer Motion |
+| Simple enter/exit         | Framer Motion                  |
+| Layout animations         | Framer Motion                  |
+| Hover state transitions   | CSS or Framer Motion           |
 
 ## Lenis Smooth Scrolling
 
@@ -140,6 +143,7 @@ import { motion } from "motion"
 Provides smooth, inertia-based scrolling for the entire page. Imported in `app/layout.tsx` as `<Lenis />`.
 
 Key configuration:
+
 - Wraps the native scroll behavior
 - Provides lerp-based smooth interpolation
 - Works with GSAP ScrollTrigger via integration

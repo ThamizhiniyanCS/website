@@ -98,10 +98,10 @@ const MetaJsonSchema = z.object({
 
 ### Child Types
 
-| Type        | Fields                                  | Meaning                        |
-| ----------- | --------------------------------------- | ------------------------------ |
-| `file`      | `slug`, `title`, `description`, `filename` | Leaf content — renders MDX     |
-| `directory` | `slug`, `title`, `group?`               | Container — has its own `meta.json` |
+| Type        | Fields                                     | Meaning                             |
+| ----------- | ------------------------------------------ | ----------------------------------- |
+| `file`      | `slug`, `title`, `description`, `filename` | Leaf content — renders MDX          |
+| `directory` | `slug`, `title`, `group?`                  | Container — has its own `meta.json` |
 
 ## Content Resolution Flow
 
@@ -132,22 +132,22 @@ The `DIRECTORIES` set in `lib/constants.ts` determines the MDX file naming conve
 export const DIRECTORIES = new Set<string>(["blogs", "writeups"])
 ```
 
-| Route Type       | MDX File Location        | Example                                      |
-| ---------------- | ------------------------ | -------------------------------------------- |
-| **Default** (labs, workshops, docs) | `{slug}.mdx`  | `labs/tryhackme/room-name.mdx`               |
-| **Directory** (writeups)           | `{slug}/index.mdx` | `writeups/hackthebox/machine-name/index.mdx` |
+| Route Type                          | MDX File Location  | Example                                      |
+| ----------------------------------- | ------------------ | -------------------------------------------- |
+| **Default** (labs, workshops, docs) | `{slug}.mdx`       | `labs/tryhackme/room-name.mdx`               |
+| **Directory** (writeups)            | `{slug}/index.mdx` | `writeups/hackthebox/machine-name/index.mdx` |
 
 The directory convention allows writeups to have associated assets (images, files) co-located alongside the `index.mdx`.
 
 ## Content Types
 
-| Subdomain   | Route        | File Convention | Description                    |
-| ----------- | ------------ | --------------- | ------------------------------ |
-| `labs.*`    | `/labs/...`  | `.mdx`          | Lab walkthroughs               |
-| `workshops.*` | `/workshops/...` | `.mdx`    | Workshop guides                |
-| `writeups.*` | `/writeups/...` | `/index.mdx` | CTF writeups (directory-style) |
-| `docs.*`   | `/docs/...`  | `.mdx`          | Documentation articles         |
-| `blogs.*`  | `/blogs`     | N/A             | Under construction             |
+| Subdomain     | Route            | File Convention | Description                    |
+| ------------- | ---------------- | --------------- | ------------------------------ |
+| `labs.*`      | `/labs/...`      | `.mdx`          | Lab walkthroughs               |
+| `workshops.*` | `/workshops/...` | `.mdx`          | Workshop guides                |
+| `writeups.*`  | `/writeups/...`  | `/index.mdx`    | CTF writeups (directory-style) |
+| `docs.*`      | `/docs/...`      | `.mdx`          | Documentation articles         |
+| `blogs.*`     | `/blogs`         | N/A             | Under construction             |
 
 ## Related Docs
 

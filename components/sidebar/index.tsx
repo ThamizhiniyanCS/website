@@ -79,6 +79,8 @@ export default function Sidebar({ baseRoute, baseSlug, variant }: Props) {
             isRoot={contentsQuery.data?.root}
           />
         )}
+
+        <div className="pb-20" />
       </ScrollArea>
     </SidebarContext.Provider>
   )
@@ -97,6 +99,7 @@ export function SidebarSkeleton() {
     <ScrollArea className="size-full px-2">
       <BaseSlugSelectorSkeleton />
       <CollapsibleDirectorySkeleton />
+      <div className="pb-20" />
     </ScrollArea>
   )
 }

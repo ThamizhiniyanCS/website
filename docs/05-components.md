@@ -40,21 +40,23 @@ components/
 
 All homepage components are **client components** (use GSAP animations).
 
-| Component | File | Description |
-|-----------|------|-------------|
-| `HeroSection` | `app/(home)/HeroSection.tsx` | GSAP-animated hero with name scramble effect, MatrixRain overlay |
-| `AboutSection` | `app/(home)/AboutSection.tsx` | GSAP scroll-triggered about section |
-| `SkillsSection` | `app/(home)/SkillsSection.tsx` | Skills grid with categories |
-| `ProfessionalCertificationsSection` | `app/(home)/professional-certifications.tsx` | Certifications display |
+| Component                           | File                                         | Description                                                      |
+| ----------------------------------- | -------------------------------------------- | ---------------------------------------------------------------- |
+| `HeroSection`                       | `app/(home)/HeroSection.tsx`                 | GSAP-animated hero with name scramble effect, MatrixRain overlay |
+| `AboutSection`                      | `app/(home)/AboutSection.tsx`                | GSAP scroll-triggered about section                              |
+| `SkillsSection`                     | `app/(home)/SkillsSection.tsx`               | Skills grid with categories                                      |
+| `ProfessionalCertificationsSection` | `app/(home)/professional-certifications.tsx` | Certifications display                                           |
 
 ## Navbar
 
 **Server Component** (`components/navbar/index.tsx`):
+
 - Async — directly calls `getLinks()` and `getSocials()` server actions
 - Renders a fallback navbar if links fail to load
 - Integrates: `NavMenu`, `SearchDialog`, `AnimatedThemeToggler`, mobile dropdown (shadcn `DropdownMenu` + `Accordion`)
 
 **Client Component** (`components/navbar/nav-menu.tsx`):
+
 - Uses shadcn `NavigationMenu` with mega-menu style dropdowns
 - Receives `links`, `baseURL`, `cdnURL`, `socials` as props from server parent
 - Desktop only (`hidden lg:flex`)
@@ -82,6 +84,7 @@ flowchart TD
 ## Search Dialog
 
 **Client Component** (`components/search-dialog.tsx`):
+
 - Uses `cmdk` + shadcn `Command` components
 - `shouldFilter={false}` — Pagefind controls all search logic
 - Category filter checkboxes derived from `BASE_ROUTES`
@@ -92,18 +95,19 @@ flowchart TD
 ## ScrollToTop
 
 **Client Component** (`components/scroll-to-top.tsx`):
+
 - Appears when user scrolls down
 - Smooth scroll back to top on click
 
 ## UI Component Libraries
 
-| Source | Components | Import Path |
-|--------|-----------|-------------|
-| **shadcn/ui** | 33 components (Button, Card, Dialog, Command, Tabs, Table, etc.) | `@/components/ui/*` |
-| **fumadocs-ui** | File tree (`File`, `Files`, `Folder`) | `@/components/fumadocs-ui/files` |
-| **kibo-ui** | ImageZoom, VideoPlayer | `@/components/kibo-ui/*` |
-| **magic-ui** | AnimatedThemeToggler, MagicCard | `@/components/magic-ui/*` |
-| **unizoy-ui** | TextHoverEffect | `@/components/unizoy-ui/*` |
+| Source          | Components                                                       | Import Path                      |
+| --------------- | ---------------------------------------------------------------- | -------------------------------- |
+| **shadcn/ui**   | 33 components (Button, Card, Dialog, Command, Tabs, Table, etc.) | `@/components/ui/*`              |
+| **fumadocs-ui** | File tree (`File`, `Files`, `Folder`)                            | `@/components/fumadocs-ui/files` |
+| **kibo-ui**     | ImageZoom, VideoPlayer                                           | `@/components/kibo-ui/*`         |
+| **magic-ui**    | AnimatedThemeToggler, MagicCard                                  | `@/components/magic-ui/*`        |
+| **unizoy-ui**   | TextHoverEffect                                                  | `@/components/unizoy-ui/*`       |
 
 ### Installing New shadcn/ui Components
 

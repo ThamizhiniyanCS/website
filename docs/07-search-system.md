@@ -59,17 +59,19 @@ Run with: `bun run build:search`
 
 ```html
 <html lang="en">
-<head><title>{title}</title></head>
-<body>
-  <article data-pagefind-body>
-    <div data-pagefind-meta="description:{description}"></div>
-    <div data-pagefind-meta="path:{path}"></div>
-    <div data-pagefind-filter="category:{category}"></div>
-    <div data-pagefind-filter="subCategory:{subCategory}"></div>
-    <h1>{title}</h1>
-    {bodyHTML}
-  </article>
-</body>
+  <head>
+    <title>{title}</title>
+  </head>
+  <body>
+    <article data-pagefind-body>
+      <div data-pagefind-meta="description:{description}"></div>
+      <div data-pagefind-meta="path:{path}"></div>
+      <div data-pagefind-filter="category:{category}"></div>
+      <div data-pagefind-filter="subCategory:{subCategory}"></div>
+      <h1>{title}</h1>
+      {bodyHTML}
+    </article>
+  </body>
 </html>
 ```
 
@@ -145,6 +147,7 @@ const categoryColor: Record<string, string> = {
 ### Result Structure
 
 Each page result contains:
+
 - **Page-level result** — `FileTextIcon`, bold title
 - **Section sub-results** — `HashIcon`, links to `#anchor` within the page, with excerpt snippets
 
@@ -152,13 +155,13 @@ Each page result contains:
 
 **File**: `types/pagefind.type.ts`
 
-| Type | Purpose |
-|------|---------|
-| `Pagefind` | Client API type (init, search, debouncedSearch, preload, destroy) |
-| `PagefindResult` | Single result with lazy `data()` loader |
-| `PagefindResultData` | Loaded result with meta, filters, sub_results |
-| `PageSearchResult` | Processed result with constructed URLs |
-| `SubResult` | Individual heading match with title, url, excerpt |
+| Type                 | Purpose                                                           |
+| -------------------- | ----------------------------------------------------------------- |
+| `Pagefind`           | Client API type (init, search, debouncedSearch, preload, destroy) |
+| `PagefindResult`     | Single result with lazy `data()` loader                           |
+| `PagefindResultData` | Loaded result with meta, filters, sub_results                     |
+| `PageSearchResult`   | Processed result with constructed URLs                            |
+| `SubResult`          | Individual heading match with title, url, excerpt                 |
 
 ## Rebuilding the Index
 

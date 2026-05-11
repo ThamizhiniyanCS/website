@@ -15,11 +15,7 @@ import {
 export const BlogCard = ({ title, description, path, date }: BlogCardInput) => {
   return (
     <Link href={path} prefetch={true} className="group no-underline">
-      <Card
-        style={{
-          marginBlock: 0,
-        }}
-      >
+      <Card className="!m-0 h-full transition-all duration-300">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">{title}</CardTitle>
         </CardHeader>

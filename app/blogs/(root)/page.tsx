@@ -55,16 +55,14 @@ const Page = async () => {
             <Link
               key={index}
               href={"/" + child.slug}
-              className="no-underline"
+              className="group no-underline"
               prefetch={true}
             >
-              <Card
-                style={{
-                  marginBlock: 0,
-                }}
-              >
-                <CardContent>
-                  <h3>{child.title}</h3>
+              <Card className="!m-0 flex h-full items-center transition-all duration-300">
+                <CardContent className="w-full">
+                  <h3 className="!m-0 text-xl transition-colors">
+                    {child.title}
+                  </h3>
                 </CardContent>
               </Card>
             </Link>

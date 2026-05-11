@@ -21,8 +21,10 @@ export default function File({ href, title }: Props) {
       prefetch={true}
       href={href}
       className={cn(
-        "border-l-border w-full rounded-r-sm border-l px-4 py-2 text-sm",
-        pathname === href.pathname && "border-l-primary bg-primary/10"
+        "border-l-border w-full rounded-r-sm border-l px-4 py-2 text-sm transition-colors",
+        pathname === href.pathname
+          ? "border-l-primary bg-primary/10"
+          : "hover:bg-primary/5 hover:border-l-primary/50"
       )}
     >
       <span className="line-clamp-1">{title}</span>

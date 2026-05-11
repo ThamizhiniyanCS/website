@@ -101,14 +101,14 @@ Runtime:
 
 ### Server vs Client Boundary
 
-| Server Components                        | Client Components                                               |
-| ---------------------------------------- | --------------------------------------------------------------- |
-| Navbar, Footer                           | HeroSection, AboutSection, SkillsSection, CertificationsSection |
-| All page.tsx files                       | Sidebar (React Query)                                           |
-| MdxRenderer, MdxBreadcrumbs              | ScrollToTop, AnimatedThemeToggler                               |
-| DirectoryContentsRenderer                | MatrixRain, SearchDialog                                        |
-| MdxStructuredData, MdxPreviousNextButtons| NavMenu                                                         |
-| LinkHoverCard (server with client parts) | Mermaid (client for rendering)                                  |
+| Server Components                         | Client Components                                               |
+| ----------------------------------------- | --------------------------------------------------------------- |
+| Navbar, Footer                            | HeroSection, AboutSection, SkillsSection, CertificationsSection |
+| All page.tsx files                        | Sidebar (React Query)                                           |
+| MdxRenderer, MdxBreadcrumbs               | ScrollToTop, AnimatedThemeToggler                               |
+| DirectoryContentsRenderer                 | MatrixRain, SearchDialog                                        |
+| MdxStructuredData, MdxPreviousNextButtons | NavMenu                                                         |
+| LinkHoverCard (server with client parts)  | Mermaid (client for rendering)                                  |
 
 ### 3-Panel Layout (`react-resizable-panels`)
 
@@ -159,4 +159,3 @@ The project maintains in-repo documentation in `docs/` (13 numbered Markdown fil
 - Docs **must** be updated in the same session as related code changes (enforced by `AGENTS.md` rules)
 - Structure: `01-introduction.md` through `13-development-guide.md` covering architecture, routing, components, MDX, search, data flow, styling, SEO, animations, env/config, and dev guide
 - See `AGENTS.md` → "Project Documentation" section for the full structure and update triggers
-

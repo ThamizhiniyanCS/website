@@ -63,8 +63,13 @@ export default function CollapsibleDirectory({
     >
       <div
         className={cn(
-          "flex items-center justify-between gap-4 rounded-r-md",
-          browserPathname === "/" + pathname && "bg-primary/10"
+          "flex w-full items-center justify-between gap-4 rounded-r-md transition-colors",
+          !group &&
+            browserPathname === "/" + pathname &&
+            "bg-primary/10 text-primary",
+          !group &&
+            browserPathname !== "/" + pathname &&
+            "hover:bg-primary/5 hover:text-primary"
         )}
       >
         {!isRoot &&
@@ -73,12 +78,12 @@ export default function CollapsibleDirectory({
               {title}
             </p>
           ) : (
-            <div className="flex items-center">
+            <div className="flex w-full items-center">
               <CollapsibleTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="size-8 aria-expanded:bg-transparent"
+                  className="size-8 shrink-0 aria-expanded:bg-transparent"
                 >
                   <CaretDownIcon
                     className={cn(
@@ -91,15 +96,15 @@ export default function CollapsibleDirectory({
               </CollapsibleTrigger>
 
               {isOpen ? (
-                <FolderOpenIcon className="size-4 flex-none" />
+                <FolderOpenIcon className="size-4 shrink-0" />
               ) : (
-                <FolderIcon className="size-4 flex-none" />
+                <FolderIcon className="size-4 shrink-0" />
               )}
 
               <Link
                 prefetch={true}
                 href={"/" + pathname}
-                className="ml-2 line-clamp-1 size-full text-sm font-semibold"
+                className="ml-2 line-clamp-1 flex-1 py-1.5 text-sm font-semibold"
               >
                 {title}
               </Link>

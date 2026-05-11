@@ -63,21 +63,19 @@ export default async function Page({ params }: Props) {
     <div className="prose prose-invert mx-auto min-h-svh w-full max-w-7xl pt-20">
       <h1 className="">{response.title}</h1>
 
-      <div className="grid w-full grid-cols-3 gap-4">
+      <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         {response.children.map((child, index) => (
           <Link
             key={index}
             href={"/" + child.slug}
-            className="no-underline"
+            className="group no-underline"
             prefetch={true}
           >
-            <Card
-              style={{
-                marginBlock: 0,
-              }}
-            >
-              <CardContent>
-                <h3>{child.title}</h3>
+            <Card className="!m-0 flex h-full items-center transition-all duration-300">
+              <CardContent className="w-full">
+                <h3 className="!m-0 text-xl transition-colors">
+                  {child.title}
+                </h3>
               </CardContent>
             </Card>
           </Link>

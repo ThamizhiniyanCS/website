@@ -10,12 +10,10 @@ const Loading = () => {
         {Array.from({ length: 3 }).map((_, index) => (
           <Card
             key={`mobile-baseroute-loading-skeleton-${index}`}
-            style={{
-              marginBlock: 0,
-            }}
+            className="!m-0 flex h-full items-center"
           >
-            <CardContent>
-              <Skeleton className="mt-2 h-8 w-full rounded-full" />
+            <CardContent className="w-full">
+              <Skeleton className="h-8 w-full rounded-full" />
             </CardContent>
           </Card>
         ))}

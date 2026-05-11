@@ -36,15 +36,12 @@ export default function AboutSection() {
           trigger: container.current,
           pin: true,
           start: "top top",
-          end: "+=500",
+          end: "+=300",
           scrub: 1,
         },
       })
 
       timeline
-        .to(container.current, {
-          autoAlpha: 1,
-        })
         .from(
           headingSplit.chars,
           {
@@ -75,7 +72,7 @@ export default function AboutSection() {
   return (
     <section
       id="about-me"
-      className="font-josefin-sans mx-auto flex flex-col items-start justify-center gap-5 px-6 py-20 md:min-h-svh md:w-9/12"
+      className="font-josefin-sans mx-auto flex flex-col items-start justify-center gap-5 px-6 py-20 md:min-h-svh md:w-9/12 lg:py-32"
       ref={container}
     >
       <h2

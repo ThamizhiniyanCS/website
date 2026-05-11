@@ -15,7 +15,12 @@ Defined in `lib/constants.ts`:
 
 ```typescript
 export const ALLOWED_SUBDOMAINS = new Set<string>([
-  "blogs", "docs", "labs", "og", "workshops", "writeups",
+  "blogs",
+  "docs",
+  "labs",
+  "og",
+  "workshops",
+  "writeups",
 ])
 
 export const BASE_ROUTES = Array.from(ALLOWED_SUBDOMAINS).filter(
@@ -51,27 +56,26 @@ flowchart TD
 
 ## Rewrite Mapping Table
 
-| External URL                                    | Internal Route            |
-| ----------------------------------------------- | ------------------------- |
-| `labs.domain.com/tryhackme/room`                | `/labs/tryhackme/room`    |
-| `workshops.domain.com/portswigger/lab`          | `/workshops/portswigger/lab` |
-| `writeups.domain.com/htb/machine`               | `/writeups/htb/machine`   |
-| `docs.domain.com/topic/article`                 | `/docs/topic/article`     |
-| `blogs.domain.com`                              | `/blogs`                  |
-| `og.domain.com?title=...&token=...`             | `/api/og?title=...&token=...` |
-| `labs.domain.com/tryhackme/room` (mobile)       | `/mobile/labs/tryhackme/room` |
+| External URL                              | Internal Route                |
+| ----------------------------------------- | ----------------------------- |
+| `labs.domain.com/tryhackme/room`          | `/labs/tryhackme/room`        |
+| `workshops.domain.com/portswigger/lab`    | `/workshops/portswigger/lab`  |
+| `writeups.domain.com/htb/machine`         | `/writeups/htb/machine`       |
+| `docs.domain.com/topic/article`           | `/docs/topic/article`         |
+| `blogs.domain.com`                        | `/blogs`                      |
+| `og.domain.com?title=...&token=...`       | `/api/og?title=...&token=...` |
+| `labs.domain.com/tryhackme/room` (mobile) | `/mobile/labs/tryhackme/room` |
 
 ## Middleware Matcher
 
 ```typescript
 export const config = {
-  matcher: [
-    "/((?!api/|_next/|_static/|_vercel|media/|[\\w-]+\\.\\w+).*)",
-  ],
+  matcher: ["/((?!api/|_next/|_static/|_vercel|media/|[\\w-]+\\.\\w+).*)"],
 }
 ```
 
 This excludes: API routes, Next.js internals, static files, Vercel internals, media files, and files with extensions (like `icon.svg`).
+
 > **Performance Note**: The matcher properly double-escapes backslashes (`[\\w-]+\\.\\w+`) so that Next.js natively skips the Edge runtime for static assets. Also, to prevent bloating the Edge bundle and slowing down TTFB, `proxy.ts` avoids importing `zod` or `@t3-oss/env-nextjs` and instead uses `process.env` directly.
 
 ## Security Headers
@@ -80,7 +84,7 @@ Every rewritten response includes these security headers via `rewriteWithCustomH
 
 | Header                    | Value                                                       |
 | ------------------------- | ----------------------------------------------------------- |
-| `Content-Signal`          | `search=yes, ai-train=no`                                  |
+| `Content-Signal`          | `search=yes, ai-train=no`                                   |
 | `X-Frame-Options`         | `SAMEORIGIN`                                                |
 | `Content-Security-Policy` | `frame-ancestors 'self' {BASE_URL} https://*.{BASE_DOMAIN}` |
 | `X-Content-Type-Options`  | `nosniff`                                                   |

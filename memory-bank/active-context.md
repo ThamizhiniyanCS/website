@@ -11,6 +11,7 @@
 ## Recent Changes (since last update 2026-03-14)
 
 ### New Features
+
 - **Site-wide search** — Pagefind-powered search with CDN-hosted index, `SearchDialog` component using cmdk/shadcn Command, category filtering (checkboxes), grouped results with sub-results, keyboard navigation footer, `Ctrl+K` shortcut
 - **`useSearch` hook** — Lazy-loads pagefind.js from CDN, debounced search (300ms), preload support, constructs subdomain URLs from search metadata
 - **Search index builder** — `scripts/build-search-index.ts` walks all CDN content, converts MDX→HTML, builds Pagefind index with category/subCategory filters and path metadata
@@ -20,6 +21,7 @@
 - **Zustand theme store** — `useThemeStore` for global dark/light theme state management
 
 ### Infrastructure Changes
+
 - **Env variable refactor** — `CDN_DOMAIN` → `NEXT_PUBLIC_CDN_BASE_URL` (now shared/client-accessible), `DOMAIN` → `NEXT_PUBLIC_DOMAIN`
 - **Next.js version** — Updated from `^16.2.0-canary.98` to `^16.2.4` (stable)
 - **Fumadocs upgrade** — `fumadocs-core` from `^16.6.17` to `^16.8.3`
@@ -28,6 +30,7 @@
 - **New npm script** — `build:search` for Pagefind index generation
 
 ### Fixes Applied
+
 - Implemented route-level caching revalidation (`export const revalidate = 86400`)
 - Extracted shared `buildOgMetadata()` utility to deduplicate metadata logic
 - Fixed sitemap priorities, `globals.css` duplicates, and GSAP plugin registration

@@ -55,7 +55,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <>
-      <ResizablePanel defaultSize={60} minSize={40} className="pt-16">
+      <ResizablePanel defaultSize={60} minSize={40} order={2} className="pt-16">
         <MdxBreadcrumbs pathnameArray={pathnameArray} />
 
         <div className="w-full">
@@ -72,6 +72,7 @@ export default async function Page({ params }: Props) {
       <ResizablePanel
         defaultSize={20}
         minSize={10}
+        order={3}
         style={{ overflow: "visible" }}
       >
         <div className="sticky top-0 h-screen w-full pt-16">

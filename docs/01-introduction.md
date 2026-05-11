@@ -56,30 +56,30 @@ bun run build:search
 
 ### Available Scripts
 
-| Script           | Command                                    | Purpose                              |
-| ---------------- | ------------------------------------------ | ------------------------------------ |
-| `dev`            | `next dev`                                 | Start development server             |
-| `build`          | `next build`                               | Production build                     |
-| `build:search`   | `bun run scripts/build-search-index.ts`    | Build Pagefind search index from CDN |
-| `analyze`        | `ANALYZE=true next build`                  | Bundle analysis                      |
-| `start`          | `next start`                               | Start production server              |
-| `lint`           | `eslint`                                   | Run ESLint                           |
-| `format`         | `prettier . --write`                       | Format all files with Prettier       |
+| Script         | Command                                 | Purpose                              |
+| -------------- | --------------------------------------- | ------------------------------------ |
+| `dev`          | `next dev`                              | Start development server             |
+| `build`        | `next build`                            | Production build                     |
+| `build:search` | `bun run scripts/build-search-index.ts` | Build Pagefind search index from CDN |
+| `analyze`      | `ANALYZE=true next build`               | Bundle analysis                      |
+| `start`        | `next start`                            | Start production server              |
+| `lint`         | `eslint`                                | Run ESLint                           |
+| `format`       | `prettier . --write`                    | Format all files with Prettier       |
 
 ## Documentation Index
 
-| # | Document | Contents |
-|---|----------|----------|
-| 01 | [Introduction](./01-introduction.md) | This file — overview, stack, quick-start |
-| 02 | [Architecture](./02-architecture.md) | System architecture, high-level diagrams |
-| 03 | [Content System](./03-content-system.md) | CDN content model, meta.json, DIRECTORIES |
-| 04 | [Routing & Middleware](./04-routing-and-middleware.md) | Subdomain routing, proxy.ts, device detection |
-| 05 | [Components](./05-components.md) | Component documentation |
-| 06 | [MDX System](./06-mdx-system.md) | MDX pipeline, plugins, custom components |
-| 07 | [Search System](./07-search-system.md) | Pagefind build + runtime |
-| 08 | [Data Flow](./08-data-flow.md) | Server actions, caching, navigation data |
-| 09 | [Styling & Theming](./09-styling-and-theming.md) | Tailwind v4, OKLCH, fonts, Zustand theme |
-| 10 | [SEO & Metadata](./10-seo-and-metadata.md) | Metadata, OG images, sitemap, structured data |
-| 11 | [Animation System](./11-animation-system.md) | GSAP, Framer Motion, Lenis |
-| 12 | [Environment & Config](./12-environment-and-config.md) | Env vars, next.config, build tooling |
-| 13 | [Development Guide](./13-development-guide.md) | Local setup, how-tos, conventions |
+| #   | Document                                               | Contents                                      |
+| --- | ------------------------------------------------------ | --------------------------------------------- |
+| 01  | [Introduction](./01-introduction.md)                   | This file — overview, stack, quick-start      |
+| 02  | [Architecture](./02-architecture.md)                   | System architecture, high-level diagrams      |
+| 03  | [Content System](./03-content-system.md)               | CDN content model, meta.json, DIRECTORIES     |
+| 04  | [Routing & Middleware](./04-routing-and-middleware.md) | Subdomain routing, proxy.ts, device detection |
+| 05  | [Components](./05-components.md)                       | Component documentation                       |
+| 06  | [MDX System](./06-mdx-system.md)                       | MDX pipeline, plugins, custom components      |
+| 07  | [Search System](./07-search-system.md)                 | Pagefind build + runtime                      |
+| 08  | [Data Flow](./08-data-flow.md)                         | Server actions, caching, navigation data      |
+| 09  | [Styling & Theming](./09-styling-and-theming.md)       | Tailwind v4, OKLCH, fonts, Zustand theme      |
+| 10  | [SEO & Metadata](./10-seo-and-metadata.md)             | Metadata, OG images, sitemap, structured data |
+| 11  | [Animation System](./11-animation-system.md)           | GSAP, Framer Motion, Lenis                    |
+| 12  | [Environment & Config](./12-environment-and-config.md) | Env vars, next.config, build tooling          |
+| 13  | [Development Guide](./13-development-guide.md)         | Local setup, how-tos, conventions             |

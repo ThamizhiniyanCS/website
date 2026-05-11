@@ -61,13 +61,9 @@ export default async function Page({ params }: Props) {
             className="no-underline"
             prefetch={true}
           >
-            <Card
-              style={{
-                marginBlock: 0,
-              }}
-            >
-              <CardContent>
-                <h3>{child.title}</h3>
+            <Card className="!m-0 flex h-full items-center">
+              <CardContent className="w-full">
+                <h3 className="!m-0 text-xl">{child.title}</h3>
               </CardContent>
             </Card>
           </Link>

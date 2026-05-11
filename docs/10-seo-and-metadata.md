@@ -77,9 +77,11 @@ export function buildOgMetadata(title: string, description: string) {
     title,
     description,
     openGraph: {
-      images: [{
-        url: `og.${env.NEXT_PUBLIC_DOMAIN}?title=${title}&token=${getOgToken(title)}`,
-      }],
+      images: [
+        {
+          url: `og.${env.NEXT_PUBLIC_DOMAIN}?title=${title}&token=${getOgToken(title)}`,
+        },
+      ],
     },
   }
 }
@@ -125,6 +127,7 @@ The `MdxStructuredData` component (`mdx/components/mdx-structured-data.tsx`) gen
 ## Sitemap (`app/sitemap.ts`)
 
 Generates a sitemap with:
+
 - Homepage (priority 1.0)
 - All content routes with 0.9 priority scale
 - Revalidates every 24 hours
@@ -134,9 +137,11 @@ Generates a sitemap with:
 Standard robots.txt configuration allowing all crawlers.
 
 ## Twitter Cards
+
 All pages use `summary_large_image` card type with `@ThamizhiniyanCS` as creator.
 
 ## Icons & Favicons
+
 The application uses the native Next.js App Router convention `app/icon.svg`. This file is automatically detected by Next.js, cached, and injected as a `<link>` tag into the root `<head>` with the appropriate MIME types and variants. Manual icon metadata configuration is not required in `layout.tsx`.
 
 ## Related Docs

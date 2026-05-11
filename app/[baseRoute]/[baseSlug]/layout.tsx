@@ -28,7 +28,7 @@ export default async function Layout({ params, children }: Readonly<Props>) {
         style={{ overflow: "visible" }}
         order={1}
       >
-        <div className="sticky top-0 h-screen w-full px-4 pt-18">
+        <div className="sticky top-0 h-screen w-full px-4 pt-16">
           <Sidebar
             baseRoute={baseRoute}
             baseSlug={baseSlug}

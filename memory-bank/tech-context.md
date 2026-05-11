@@ -2,34 +2,34 @@
 
 ## Core Dependencies
 
-| Package                    | Version           | Purpose                                                  |
-| -------------------------- | ----------------- | -------------------------------------------------------- |
-| next                       | ^16.2.4           | Framework (App Router, RSC, middleware)                  |
-| react / react-dom          | 19.2.4            | UI library                                               |
-| typescript                 | ^5.9.3            | Language                                                 |
-| tailwindcss                | ^4.2.4            | Styling (v4 with `@theme inline`, `@utility`)            |
-| gsap + @gsap/react         | ^3.15.0 / ^2.1.2  | Animations (ScrollTrigger, SplitText, ScrambleText)      |
-| motion                     | ^12.38.0          | Framer Motion for simpler animations                     |
-| lenis                      | ^1.3.23           | Smooth scrolling                                         |
-| next-mdx-remote-client     | ^2.1.10           | RSC MDX rendering                                        |
-| @tanstack/react-query      | ^5.99.2           | Client-side data fetching (sidebar)                      |
-| zod                        | ^4.3.6            | Schema validation                                        |
-| @t3-oss/env-nextjs         | ^0.13.11          | Env variable validation                                  |
-| fumadocs-core              | ^16.8.3           | TOC types, MDX plugins (remarkMdxFiles, remarkMdxMermaid), framework integration |
-| react-resizable-panels     | ^3.0.6            | 3-panel content layout                                   |
-| shadcn                     | ^4.4.0            | UI component CLI                                         |
-| rehype-expressive-code     | ^0.41.7           | Syntax highlighting (tokyo-night theme + line numbers)   |
-| rehype-katex / remark-math | ^7.0.1 / ^6.0.0   | LaTeX math rendering                                    |
-| cmdk                       | ^1.1.1            | Command palette / search UI                              |
-| pagefind                   | ^1.5.2 (dev)      | Offline search index builder                             |
-| zustand                    | ^5.0.12           | Lightweight state management (theme store)               |
-| cheerio                    | ^1.2.0            | HTML parsing for link metadata extraction                |
-| mermaid                    | ^11.14.0          | Mermaid diagram rendering in MDX                         |
-| media-chrome               | ^4.19.0           | Video player UI (kibo-ui video-player)                   |
-| react-medium-image-zoom    | ^5.4.3            | Image zoom (kibo-ui image-zoom)                          |
-| reading-time-estimator     | ^2.6.0            | Reading time calculation for MDX content                 |
-| radix-ui                   | ^1.4.3            | UI primitives (via shadcn)                               |
-| @base-ui/react             | ^1.4.1            | Base UI components                                       |
+| Package                    | Version          | Purpose                                                                          |
+| -------------------------- | ---------------- | -------------------------------------------------------------------------------- |
+| next                       | ^16.2.4          | Framework (App Router, RSC, middleware)                                          |
+| react / react-dom          | 19.2.4           | UI library                                                                       |
+| typescript                 | ^5.9.3           | Language                                                                         |
+| tailwindcss                | ^4.2.4           | Styling (v4 with `@theme inline`, `@utility`)                                    |
+| gsap + @gsap/react         | ^3.15.0 / ^2.1.2 | Animations (ScrollTrigger, SplitText, ScrambleText)                              |
+| motion                     | ^12.38.0         | Framer Motion for simpler animations                                             |
+| lenis                      | ^1.3.23          | Smooth scrolling                                                                 |
+| next-mdx-remote-client     | ^2.1.10          | RSC MDX rendering                                                                |
+| @tanstack/react-query      | ^5.99.2          | Client-side data fetching (sidebar)                                              |
+| zod                        | ^4.3.6           | Schema validation                                                                |
+| @t3-oss/env-nextjs         | ^0.13.11         | Env variable validation                                                          |
+| fumadocs-core              | ^16.8.3          | TOC types, MDX plugins (remarkMdxFiles, remarkMdxMermaid), framework integration |
+| react-resizable-panels     | ^3.0.6           | 3-panel content layout                                                           |
+| shadcn                     | ^4.4.0           | UI component CLI                                                                 |
+| rehype-expressive-code     | ^0.41.7          | Syntax highlighting (tokyo-night theme + line numbers)                           |
+| rehype-katex / remark-math | ^7.0.1 / ^6.0.0  | LaTeX math rendering                                                             |
+| cmdk                       | ^1.1.1           | Command palette / search UI                                                      |
+| pagefind                   | ^1.5.2 (dev)     | Offline search index builder                                                     |
+| zustand                    | ^5.0.12          | Lightweight state management (theme store)                                       |
+| cheerio                    | ^1.2.0           | HTML parsing for link metadata extraction                                        |
+| mermaid                    | ^11.14.0         | Mermaid diagram rendering in MDX                                                 |
+| media-chrome               | ^4.19.0          | Video player UI (kibo-ui video-player)                                           |
+| react-medium-image-zoom    | ^5.4.3           | Image zoom (kibo-ui image-zoom)                                                  |
+| reading-time-estimator     | ^2.6.0           | Reading time calculation for MDX content                                         |
+| radix-ui                   | ^1.4.3           | UI primitives (via shadcn)                                                       |
+| @base-ui/react             | ^1.4.1           | Base UI components                                                               |
 
 ## Development Setup
 
@@ -46,12 +46,12 @@ bun run format        # Prettier
 
 ## Environment Variables (`env.ts`)
 
-| Variable                 | Type   | Default                 | Purpose                          |
-| ------------------------ | ------ | ----------------------- | -------------------------------- |
-| `NODE_ENV`               | enum   | `"development"`         | Environment mode                 |
-| `NEXT_PUBLIC_DOMAIN`     | string | `"localhost:3000"`      | Main domain for URL generation   |
+| Variable                   | Type   | Default                   | Purpose                           |
+| -------------------------- | ------ | ------------------------- | --------------------------------- |
+| `NODE_ENV`                 | enum   | `"development"`           | Environment mode                  |
+| `NEXT_PUBLIC_DOMAIN`       | string | `"localhost:3000"`        | Main domain for URL generation    |
 | `NEXT_PUBLIC_CDN_BASE_URL` | string | `"http://localhost:8000"` | CDN base URL for content fetching |
-| `OG_SECRET`              | string | _(required)_            | HMAC secret for OG image tokens  |
+| `OG_SECRET`                | string | _(required)_              | HMAC secret for OG image tokens   |
 
 Note: `NEXT_PUBLIC_DOMAIN` and `NEXT_PUBLIC_CDN_BASE_URL` are shared env variables (available in both server and client). `CDN_DOMAIN` was renamed to `NEXT_PUBLIC_CDN_BASE_URL` for client-side access.
 

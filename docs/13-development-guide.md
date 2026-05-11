@@ -88,14 +88,14 @@ bun run build:search
 
 ### File Naming
 
-| Type | Convention | Example |
-|------|-----------|---------|
-| Components | kebab-case, `.tsx`, default export | `hero-section.tsx` |
-| Actions | kebab-case, `.ts`, `"use server"`, default export | `get-meta-json.ts` |
-| Types | kebab-case, `.type.ts` | `meta-json.type.ts` |
-| Schemas | kebab-case, `.schema.ts` | `meta-json.schema.ts` |
-| Hooks | camelCase with `use-` prefix, `.ts` | `use-mobile.ts` |
-| Index files | `index.tsx` for component directories | `navbar/index.tsx` |
+| Type        | Convention                                        | Example               |
+| ----------- | ------------------------------------------------- | --------------------- |
+| Components  | kebab-case, `.tsx`, default export                | `hero-section.tsx`    |
+| Actions     | kebab-case, `.ts`, `"use server"`, default export | `get-meta-json.ts`    |
+| Types       | kebab-case, `.type.ts`                            | `meta-json.type.ts`   |
+| Schemas     | kebab-case, `.schema.ts`                          | `meta-json.schema.ts` |
+| Hooks       | camelCase with `use-` prefix, `.ts`               | `use-mobile.ts`       |
+| Index files | `index.tsx` for component directories             | `navbar/index.tsx`    |
 
 ### TypeScript Rules
 
@@ -143,19 +143,19 @@ bun run build:search
 
 Format: `type(scope): description`
 
-| Type | When |
-|------|------|
-| `feat` | New feature |
-| `fix` | Bug fix |
-| `docs` | Documentation only |
-| `style` | Formatting (no logic) |
+| Type       | When                             |
+| ---------- | -------------------------------- |
+| `feat`     | New feature                      |
+| `fix`      | Bug fix                          |
+| `docs`     | Documentation only               |
+| `style`    | Formatting (no logic)            |
 | `refactor` | Restructure (no behavior change) |
-| `perf` | Performance improvement |
-| `test` | Tests |
-| `build` | Build/dependencies |
-| `ci` | CI changes |
-| `chore` | Miscellaneous |
-| `revert` | Undo a commit |
+| `perf`     | Performance improvement          |
+| `test`     | Tests                            |
+| `build`    | Build/dependencies               |
+| `ci`       | CI changes                       |
+| `chore`    | Miscellaneous                    |
+| `revert`   | Undo a commit                    |
 
 For documentation: `docs(section): description`
 

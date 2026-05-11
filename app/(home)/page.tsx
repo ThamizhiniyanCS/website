@@ -15,7 +15,10 @@ export const metadata: Metadata = {
   },
 }
 
-export default function Page() {
+export default async function Page() {
+  // Artificial delay to play the terminal boot sequence
+  await new Promise((resolve) => setTimeout(resolve, 1500))
+
   return (
     <Fragment>
       <HeroSection />

@@ -55,18 +55,18 @@
 
 ## Decision History
 
-| Date       | Decision                             | Rationale                                                                     |
-| ---------- | ------------------------------------ | ----------------------------------------------------------------------------- |
-| —          | CDN over database for content        | Static MDX doesn't need a DB; CDN provides edge caching                       |
-| —          | Subdomain routing via middleware     | Clean URL separation for content types                                        |
-| —          | React Query for sidebar only         | Server components handle all other data; sidebar needs client-side reactivity |
-| —          | GSAP over CSS animations             | Complex scroll-driven timelines not achievable with CSS alone                 |
-| —          | Fumadocs integration                 | Reuse battle-tested TOC, file tree, and MDX plugins                           |
-| 2026-03-14 | Memory Bank system adopted           | Cross-agent context persistence for all AI coding assistants                  |
-| 2026-04-20 | Pagefind for site-wide search        | CDN-hosted index, zero server cost, offline build, fast client-side search    |
-| 2026-04-20 | cmdk `shouldFilter={false}`          | External Pagefind controls all search logic, cmdk provides only UI shell      |
-| 2026-04-20 | Zustand for theme state              | Lightweight, minimal boilerplate, no provider needed                          |
-| 2026-04-20 | Env vars → `NEXT_PUBLIC_*` prefix    | Client-side access needed for CDN URL in `useSearch` hook                     |
-| 2026-04-20 | Mermaid via fumadocs plugin          | `remarkMdxMermaid` from fumadocs-core for consistent MDX integration          |
-| 2026-04-23 | Docs + Blogs subdomains added        | Expanding content types beyond labs/workshops/writeups                        |
-| 2026-04-25 | In-repo `docs/` folder adopted       | 13 numbered Markdown files, Mermaid diagrams, must stay in sync with code changes |
+| Date       | Decision                          | Rationale                                                                         |
+| ---------- | --------------------------------- | --------------------------------------------------------------------------------- |
+| —          | CDN over database for content     | Static MDX doesn't need a DB; CDN provides edge caching                           |
+| —          | Subdomain routing via middleware  | Clean URL separation for content types                                            |
+| —          | React Query for sidebar only      | Server components handle all other data; sidebar needs client-side reactivity     |
+| —          | GSAP over CSS animations          | Complex scroll-driven timelines not achievable with CSS alone                     |
+| —          | Fumadocs integration              | Reuse battle-tested TOC, file tree, and MDX plugins                               |
+| 2026-03-14 | Memory Bank system adopted        | Cross-agent context persistence for all AI coding assistants                      |
+| 2026-04-20 | Pagefind for site-wide search     | CDN-hosted index, zero server cost, offline build, fast client-side search        |
+| 2026-04-20 | cmdk `shouldFilter={false}`       | External Pagefind controls all search logic, cmdk provides only UI shell          |
+| 2026-04-20 | Zustand for theme state           | Lightweight, minimal boilerplate, no provider needed                              |
+| 2026-04-20 | Env vars → `NEXT_PUBLIC_*` prefix | Client-side access needed for CDN URL in `useSearch` hook                         |
+| 2026-04-20 | Mermaid via fumadocs plugin       | `remarkMdxMermaid` from fumadocs-core for consistent MDX integration              |
+| 2026-04-23 | Docs + Blogs subdomains added     | Expanding content types beyond labs/workshops/writeups                            |
+| 2026-04-25 | In-repo `docs/` folder adopted    | 13 numbered Markdown files, Mermaid diagrams, must stay in sync with code changes |

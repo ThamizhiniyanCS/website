@@ -41,15 +41,12 @@ export default function SkillsSection() {
           trigger: container.current,
           pin: true,
           start: "top top",
-          end: "bottom top",
+          end: "+=300",
           scrub: 1,
         },
       })
 
       timeline
-        .to(container.current, {
-          autoAlpha: 1,
-        })
         .from(
           split.chars,
           {
@@ -80,7 +77,7 @@ export default function SkillsSection() {
   return (
     <section
       id="skills"
-      className="font-josefin-sans min-h-svg invisible mx-auto flex flex-col items-start justify-center gap-5 px-6 py-20 md:w-9/13 lg:py-40"
+      className="font-josefin-sans mx-auto flex min-h-svh flex-col items-start justify-center gap-5 px-6 py-20 md:w-9/12 lg:py-32"
       ref={container}
     >
       <h2
