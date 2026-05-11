@@ -71,7 +71,8 @@ export const config = {
 }
 ```
 
-This excludes: API routes, Next.js internals, static files, Vercel internals, media files, and files with extensions.
+This excludes: API routes, Next.js internals, static files, Vercel internals, media files, and files with extensions (like `icon.svg`).
+> **Performance Note**: The matcher properly double-escapes backslashes (`[\\w-]+\\.\\w+`) so that Next.js natively skips the Edge runtime for static assets. Also, to prevent bloating the Edge bundle and slowing down TTFB, `proxy.ts` avoids importing `zod` or `@t3-oss/env-nextjs` and instead uses `process.env` directly.
 
 ## Security Headers
 
@@ -105,7 +106,7 @@ Then access via `http://labs.localhost:3000/tryhackme/room-name`.
 
 ## Device Detection
 
-The middleware uses `userAgent()` from `next/server` to detect device type:
+The middleware uses `userAgent()` from `next/server` to detect device type. For Edge performance optimization, this computationally expensive parsing is deferred and only executed for the specific subdomains that require device-specific layout routing:
 
 - **Mobile** → rewrites to `/mobile/{subdomain}{path}`
 - **Tablet** → also rewrites to `/mobile/{subdomain}{path}`

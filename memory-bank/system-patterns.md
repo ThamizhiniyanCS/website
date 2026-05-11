@@ -50,7 +50,7 @@ Browser Request
 2. It calls `getMetaJSON(cdnPathname)` to fetch `meta.json` from CDN.
 3. If `meta.json` exists → Page is a **directory** → return directory data and static TOC.
 4. If `meta.json` doesn't exist → Page is **content** → fallback to fetching `.mdx` file via `fetchMDXSource()`.
-5. MDX suffix convention: `DIRECTORIES` set routes (`writeups`) use `/index.mdx`, others use `.mdx`.
+5. MDX suffix convention: `DIRECTORIES` set routes (`blogs`, `writeups`) use `/index.mdx`, others use `.mdx`.
 6. Result is a discriminated union `ResolvedContent` (`type: "directory" | "mdx" | "error"`) for page components to render.
 
 ### MDX Processing Pipeline
@@ -146,7 +146,7 @@ Runtime:
 2. **Server Actions as data layer** — All CDN fetches go through `actions/` with `"use server"`. Keeps URLs server-side.
 3. **HMAC-signed OG tokens** — Prevents unauthorized OG image generation via `og.*` subdomain.
 4. **Fumadocs integration** — Uses fumadocs-core's TOC types, MDX plugins (remarkMdxFiles, remarkMdxMermaid), CSS variable system, and file tree components.
-5. **`DIRECTORIES` set** — Writeups use directory-style content (`/index.mdx`), while labs/workshops/docs use flat files (`.mdx`).
+5. **`DIRECTORIES` set** — Blogs and Writeups use directory-style content (`/index.mdx`), while labs/workshops/docs use flat files (`.mdx`).
 6. **Pagefind for search** — CDN-hosted search index built offline, loaded on-demand. No server-side search required.
 7. **cmdk with `shouldFilter={false}`** — Pagefind handles all search logic; cmdk provides only the UI shell and keyboard navigation.
 8. **`NextProvider` from fumadocs** — Wraps the app at root level for fumadocs framework integration.

@@ -134,8 +134,10 @@ Generates a sitemap with:
 Standard robots.txt configuration allowing all crawlers.
 
 ## Twitter Cards
-
 All pages use `summary_large_image` card type with `@ThamizhiniyanCS` as creator.
+
+## Icons & Favicons
+The application uses the native Next.js App Router convention `app/icon.svg`. This file is automatically detected by Next.js, cached, and injected as a `<link>` tag into the root `<head>` with the appropriate MIME types and variants. Manual icon metadata configuration is not required in `layout.tsx`.
 
 ## Related Docs
 

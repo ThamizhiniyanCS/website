@@ -36,6 +36,8 @@
 - Fixed Pagefind import URL
 - **Refactoring:** Centralized CDN fetching into `actions/lib/fetch-cdn.ts` with runtime Zod validation.
 - **Refactoring:** Extracted shared logic into `mdx/lib/resolve-content.ts` and related utilities to deduplicate data fetching, MDX processing, and metadata generation across desktop, mobile, and blogs routes.
+- **Proxy Optimization:** Fixed `proxy.ts` matcher regex escaping to skip static files natively at Edge, deferred `userAgent` parsing, and removed `env.ts` import to prevent Zod Edge bloat.
+- **UI & Performance:** Replaced legacy `favicon.ico` with `icon.svg`. Refactored `Logo` component to use `fill` and `sizes` to resolve aspect ratio and performance warnings. Fixed division-by-zero bug in SVG `<radialGradient>` for `text-hover-effect.tsx`.
 
 ## Next Steps
 

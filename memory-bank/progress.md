@@ -37,6 +37,8 @@
 - [x] **Reading time estimation** for MDX content
 - [x] **Centralized CDN fetching** with runtime Zod validation (`fetchFromCDN`)
 - [x] **Shared content resolution** (`resolveContent`) to deduplicate logic across device-specific route trees
+- [x] **Edge Proxy Optimization** (matcher escaping, deferred `userAgent`, removed Zod from Edge bundle)
+- [x] **UI Polishing** (converted favicon to SVG, fixed `next/image` sizes for SVGs, fixed `NaN%` SVG animation bug)
 
 ## Known Issues
 

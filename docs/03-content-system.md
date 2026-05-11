@@ -129,7 +129,7 @@ flowchart TD
 The `DIRECTORIES` set in `lib/constants.ts` determines the MDX file naming convention:
 
 ```typescript
-export const DIRECTORIES = new Set<string>(["writeups"])
+export const DIRECTORIES = new Set<string>(["blogs", "writeups"])
 ```
 
 | Route Type       | MDX File Location        | Example                                      |
