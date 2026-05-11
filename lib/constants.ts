@@ -19,4 +19,4 @@ export const BASE_ROUTES = Array.from(ALLOWED_SUBDOMAINS).filter(
   (route) => route !== "og"
 )
 
-export const DIRECTORIES = new Set<string>(["writeups"])
+export const DIRECTORIES = new Set<string>(["blogs", "writeups"])

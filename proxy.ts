@@ -4,9 +4,7 @@ import type { NextRequest } from "next/server"
 
 import { ALLOWED_SUBDOMAINS, BASE_URL } from "@/lib/constants"
 
-import { env } from "./env"
-
-const BASE_DOMAIN = `.${env.NEXT_PUBLIC_DOMAIN}`
+const BASE_DOMAIN = `.${process.env.NEXT_PUBLIC_DOMAIN || "localhost:3000"}`
 
 export const config = {
   matcher: [
@@ -17,19 +15,15 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico, sitemap.xml, robots.txt (metadata files)
      */
-    "/((?!api/|_next/|_static/|_vercel|media/|[\w-]+\.\w+).*)",
+    "/((?!api/|_next/|_static/|_vercel|media/|[\\w-]+\\.\\w+).*)",
   ],
 }
 
 export default async function proxy(request: NextRequest) {
   const url = request.nextUrl
 
-  if (url.pathname === "/favicon.svg") return NextResponse.next()
-
   // NOTE: Extract the hostname (e.g., "labs.thamizhiniyancs.com" or "labs.localhost:3000")
   const hostname = request.headers.get("host")
-
-  const { device } = userAgent(request)
 
   if (hostname?.endsWith(BASE_DOMAIN)) {
     const subdomain = hostname.replace(BASE_DOMAIN, "")
@@ -45,11 +39,10 @@ export default async function proxy(request: NextRequest) {
         )
       }
 
+      const { device } = userAgent(request)
+
       switch (device.type) {
         case "mobile":
-          return rewriteWithCustomHeaders(
-            new URL(`/mobile/${subdomain}${url.pathname}`, request.url)
-          )
         case "tablet":
           return rewriteWithCustomHeaders(
             new URL(`/mobile/${subdomain}${url.pathname}`, request.url)

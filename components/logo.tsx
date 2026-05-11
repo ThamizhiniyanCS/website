@@ -23,22 +23,22 @@ export default function Logo({
     return (
       <div
         className={cn("relative flex items-center justify-center", className)}
-        style={{ width: size, height: size }}
+        style={className ? undefined : { width: size, height: size }}
       >
         <Image
           src={src.light!}
           alt={alt}
-          width={size}
-          height={size}
-          className={cn("hidden dark:block", imageClassName)}
+          fill
+          sizes={`${size}px`}
+          className={cn("hidden object-contain dark:block", imageClassName)}
           priority
         />
         <Image
           src={src.dark!}
           alt={alt}
-          width={size}
-          height={size}
-          className={cn("dark:hidden", imageClassName)}
+          fill
+          sizes={`${size}px`}
+          className={cn("object-contain dark:hidden", imageClassName)}
           priority
         />
       </div>
@@ -48,13 +48,18 @@ export default function Logo({
   const finalSrc = src.light || src.dark!
 
   return (
-    <Image
-      src={finalSrc}
-      alt={alt}
-      width={size}
-      height={size}
-      className={cn(className, imageClassName)}
-      priority
-    />
+    <div
+      className={cn("relative flex items-center justify-center", className)}
+      style={className ? undefined : { width: size, height: size }}
+    >
+      <Image
+        src={finalSrc}
+        alt={alt}
+        fill
+        sizes={`${size}px`}
+        className={cn("object-contain", imageClassName)}
+        priority
+      />
+    </div>
   )
 }

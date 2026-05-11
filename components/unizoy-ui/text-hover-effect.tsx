@@ -44,8 +44,10 @@ export const TextHoverEffect = ({
   const updateCursorPosition = (x: number, y: number) => {
     if (svgRef.current && x !== null && y !== null) {
       const svgRect = svgRef.current.getBoundingClientRect()
-      const cxPercentage = ((x - svgRect.left) / svgRect.width) * 100
-      const cyPercentage = ((y - svgRect.top) / svgRect.height) * 100
+      const cxPercentage =
+        svgRect.width === 0 ? 50 : ((x - svgRect.left) / svgRect.width) * 100
+      const cyPercentage =
+        svgRect.height === 0 ? 50 : ((y - svgRect.top) / svgRect.height) * 100
 
       const newPosition = {
         cx: `${cxPercentage}%`,

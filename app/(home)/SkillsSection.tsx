@@ -104,7 +104,7 @@ export default function SkillsSection() {
                   src={icon.src}
                   alt={icon.alt}
                   size={60}
-                  imageClassName="size-8 md:size-10 lg:size-16"
+                  className="size-8 md:size-10 lg:size-16"
                 />
 
                 <div className="flex items-center">

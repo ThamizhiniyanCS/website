@@ -1,17 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
   <style>
     /* Default: Light Theme (Black Circle, White T) */
-    .bg { fill: #000000; }
-    .text { fill: #FFFFFF; }
-
-    /* Dark Theme (White Circle, Black T) */
-    @media (prefers-color-scheme: dark) {
-      .bg { fill: #FFFFFF; }
-      .text { fill: #000000; }
+    .bg {
+      fill: #000000;
+    }
+    .text {
+      fill: #ffffff;
     }
   </style>
-  
+
   <circle class="bg" cx="50" cy="50" r="50" />
-  
+
   <path class="text" d="M32 28H68V38H55V72H45V38H32V28Z" />
 </svg>
+
