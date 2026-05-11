@@ -46,10 +46,12 @@ Browser Request
 
 ### Content Resolution
 
-1. Server action `getMetaJSON(cdnPathname)` fetches `meta.json` from CDN
-2. If `meta.json` exists → Page is a **directory** → render directory listing
-3. If `meta.json` doesn't exist → Page is **content** → fetch `.mdx` file
-4. MDX suffix convention: `DIRECTORIES` set routes (`writeups`) use `/index.mdx`, others use `.mdx`
+1. The central orchestrator `resolveContent` (`mdx/lib/resolve-content.ts`) handles fetching for all dynamic content routes.
+2. It calls `getMetaJSON(cdnPathname)` to fetch `meta.json` from CDN.
+3. If `meta.json` exists → Page is a **directory** → return directory data and static TOC.
+4. If `meta.json` doesn't exist → Page is **content** → fallback to fetching `.mdx` file via `fetchMDXSource()`.
+5. MDX suffix convention: `DIRECTORIES` set routes (`writeups`) use `/index.mdx`, others use `.mdx`.
+6. Result is a discriminated union `ResolvedContent` (`type: "directory" | "mdx" | "error"`) for page components to render.
 
 ### MDX Processing Pipeline
 

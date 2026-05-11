@@ -35,6 +35,8 @@
 - [x] **Env variable refactored** to `NEXT_PUBLIC_*` for client-side access
 - [x] **NextProvider** from fumadocs-core integrated at root layout
 - [x] **Reading time estimation** for MDX content
+- [x] **Centralized CDN fetching** with runtime Zod validation (`fetchFromCDN`)
+- [x] **Shared content resolution** (`resolveContent`) to deduplicate logic across device-specific route trees
 
 ## Known Issues
 

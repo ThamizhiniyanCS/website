@@ -13,9 +13,11 @@ All data comes from the external CDN. Server Actions in the `actions/` directory
 
 | Action | File | Purpose | Cache |
 |--------|------|---------|-------|
-| `getMetaJSON` | `actions/get-meta-json.ts` | Fetch `meta.json` from CDN path | `force-cache`, 24hr |
+| `fetchFromCDN` | `actions/lib/fetch-cdn.ts` | **Generic wrapper**: handles Zod validation and CDN URL construction | `force-cache`, 24hr |
+| `getMetaJSON` | `actions/get-meta-json.ts` | Fetch `meta.json` via `fetchFromCDN` | `force-cache`, 24hr |
 | `getLinks` | `actions/get-links.ts` | Aggregate nav links for docs, labs, workshops, writeups | Calls `getMetaJSON` |
-| `getSocials` | `actions/get-socials.ts` | Fetch `socials.json` from CDN | `force-cache`, 24hr |
+| `getSocials` | `actions/get-socials.ts` | Fetch `socials.json` via `fetchFromCDN` | `force-cache`, 24hr |
+| `getLatestBlogs`| `actions/get-latest-blogs.ts`| Fetch latest blog cards via `fetchFromCDN` | `force-cache`, 24hr |
 | `fetchLinkMetadata` | `actions/fetch-link-metadata.ts` | Extract OG metadata from any URL (cheerio) | `force-cache`, 24hr |
 | `canEmbedInIframe` | `actions/can-embed-in-iframe.ts` | HEAD request to check X-Frame-Options/CSP | `force-cache`, 24hr |
 | `isExternalLink` | `actions/is-external-link.ts` | Check if URL is external to the domain | No fetch |

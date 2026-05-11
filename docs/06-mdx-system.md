@@ -14,16 +14,19 @@ MDX content is fetched from the CDN, processed through a remark/rehype plugin pi
 ```mermaid
 sequenceDiagram
     participant CDN
-    participant SA as Server Action
+    participant RC as resolveContent()
+    participant FMDX as fetchMDXSource()
     participant PM as processMDX
     participant RM as Remark Plugins
     participant RH as Rehype Plugins
     participant MC as MdxComponents
     participant R as React
 
-    SA->>CDN: fetch({slug}.mdx)
-    CDN-->>SA: MDX source text
-    SA->>PM: cachedProcessMDX(source, baseRoute, baseSlug, pathname)
+    RC->>FMDX: If meta.json not found
+    FMDX->>CDN: fetch({slug}.mdx)
+    CDN-->>FMDX: MDX source text
+    FMDX-->>RC: MDX source text
+    RC->>PM: cachedProcessMDX(source, baseRoute, baseSlug, pathname)
     PM->>RM: Parse & transform markdown
     Note over RM: GFM, Math, FlexibleTOC,<br/>NormalizeHeadings,<br/>MdxFiles, MdxMermaid
     RM->>RH: Convert to HTML tree
@@ -159,8 +162,16 @@ Resolves relative video paths to CDN URLs (same pattern as images). Uses `kibo-u
 | `MdxPreviousNextButtons` | `mdx/components/mdx-previous-next-buttons.tsx` | Prev/Next navigation |
 | `MdxStructuredData` | `mdx/components/mdx-structured-data.tsx` | JSON-LD structured data |
 | `MdxErrorComponent` | `mdx/components/mdx-error-component.tsx` | Error display |
-| `MdxLoadingComponent` | `mdx/components/mdx-loading-component.tsx` | Loading state |
 | `MdxLoadingSkeleton` | `mdx/components/mdx-loading-skeleton.tsx` | Loading skeleton |
+
+### Content Resolution Utilities
+
+Instead of duplicating the meta.json fallback logic and MDX fetching across different route handlers (desktop, mobile, blogs), shared utilities in `mdx/lib/` orchestrate the process:
+
+- `resolveContent.ts`: Primary orchestrator. Tries `meta.json`, falls back to `fetchMDXSource()`, then `cachedProcessMDX()`. Returns a `ResolvedContent` discriminated union type.
+- `resolveContentMetadata.ts`: Equivalent flow but returns Next.js `Metadata` for `generateMetadata()` exports.
+- `buildDirectoryTOC.ts`: Creates a static 3-item TOC for directory pages.
+- `fetchMDXSource.ts` (in `mdx/utils/`): Handles the `DIRECTORIES` suffix logic (`.mdx` vs `/index.mdx`) and cached fetching from CDN.
 
 ## TOC (Table of Contents)
 

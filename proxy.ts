@@ -24,7 +24,7 @@ export const config = {
 export default async function proxy(request: NextRequest) {
   const url = request.nextUrl
 
-  if (url.pathname === "/favicon.ico") return NextResponse.next()
+  if (url.pathname === "/favicon.svg") return NextResponse.next()
 
   // NOTE: Extract the hostname (e.g., "labs.thamizhiniyancs.com" or "labs.localhost:3000")
   const hostname = request.headers.get("host")

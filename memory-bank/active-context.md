@@ -34,6 +34,8 @@
 - Added `generateStaticParams` for known routes and created route-level `error.tsx` boundaries
 - Fixed responsive Breadcrumbs collapse logic and React hydration error
 - Fixed Pagefind import URL
+- **Refactoring:** Centralized CDN fetching into `actions/lib/fetch-cdn.ts` with runtime Zod validation.
+- **Refactoring:** Extracted shared logic into `mdx/lib/resolve-content.ts` and related utilities to deduplicate data fetching, MDX processing, and metadata generation across desktop, mobile, and blogs routes.
 
 ## Next Steps
 

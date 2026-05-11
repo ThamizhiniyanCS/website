@@ -105,19 +105,23 @@ const MetaJsonSchema = z.object({
 
 ## Content Resolution Flow
 
+The central orchestrator `resolveContent` (`mdx/lib/resolve-content.ts`) is used across desktop, mobile, and blogs routes to deduplicate logic. It returns a discriminated union (`ResolvedContent`).
+
 ```mermaid
 flowchart TD
-    A["Page Request: /labs/tryhackme/room-1"] --> B["getMetaJSON('labs/tryhackme/room-1')"]
-    B --> C{meta.json exists?}
-    C -- Yes --> D["Page is a DIRECTORY"]
-    D --> E[Render DirectoryContentsRenderer]
-    C -- No --> F["Page is CONTENT"]
-    F --> G{Is DIRECTORY type route?}
-    G -- "Yes (writeups)" --> H["Fetch: CDN/.../room-1/index.mdx"]
-    G -- "No (labs, workshops, docs)" --> I["Fetch: CDN/.../room-1.mdx"]
-    H --> J[cachedProcessMDX]
-    I --> J
-    J --> K[Render MdxRenderer]
+    A["Page Request: /labs/tryhackme/room-1"] --> B["resolveContent(baseRoute, cdnPathname, baseSlug)"]
+    B --> C["getMetaJSON('labs/tryhackme/room-1')"]
+    C --> D{meta.json exists?}
+    D -- Yes --> E["Return { type: 'directory', meta, toc }"]
+    E --> F[Render DirectoryContentsRenderer]
+    D -- No --> G["Fallback to fetchMDXSource()"]
+    G --> H{Is DIRECTORY type route?}
+    H -- "Yes (writeups)" --> I["Fetch: CDN/.../room-1/index.mdx"]
+    H -- "No (labs, workshops, docs)" --> J["Fetch: CDN/.../room-1.mdx"]
+    I --> K[cachedProcessMDX]
+    J --> K
+    K --> L["Return { type: 'mdx', content, frontmatter, toc }"]
+    L --> M[Render MdxRenderer]
 ```
 
 ## The `DIRECTORIES` Convention
